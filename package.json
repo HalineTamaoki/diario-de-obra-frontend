@@ -9,9 +9,13 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@reduxjs/toolkit": "^2.11.2",
     "@tailwindcss/vite": "^4.1.18",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
     "react": "^19.2.3",
     "react-dom": "^19.2.3",
+    "react-redux": "^9.2.0",
     "react-router-dom": "^7.10.1",
     "tailwindcss": "^4.1.18"
   },

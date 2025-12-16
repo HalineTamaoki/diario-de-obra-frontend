@@ -1,11 +1,15 @@
-import type { ReactNode } from 'react'
+import { Outlet } from 'react-router-dom'
 import { Header } from './Header'
+import { Footer } from './Footer'
 
-export const Layout = ({children}: {children: ReactNode}) => {
+export const Layout = () => {
     return (
-        <div className='w-full'>
+        <div className='min-h-screen w-full flex flex-col'>
             <Header />
-            {children}
+            <main className='pt-10 w-full absolute top-0 left-0 '>
+                <Outlet />
+            </main>
+            <Footer />
         </div>
     )
 }
