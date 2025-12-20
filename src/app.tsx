@@ -4,15 +4,17 @@ import { Layout } from './components/layout/Layout'
 import { Provider } from 'react-redux';
 import { store } from './app/store';
 import './app.css';
+import { DetalhesObra } from './pages/DetalhesObra';
 
 export function App() {
   return (
     <Provider store={store}>
       <BrowserRouter>
         <Routes>
-          <Route path='*' element={<Layout />}>
-            <Route path='*' element={<Obra />} />
-          </Route>          
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Obra />} />
+            <Route path=':nome' element={<DetalhesObra />} />
+          </Route>
         </Routes>
       </BrowserRouter>
     </Provider>

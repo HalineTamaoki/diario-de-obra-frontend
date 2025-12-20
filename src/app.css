@@ -5,3 +5,11 @@
 .border-left-none {
   border-left: none !important;
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.btn {
+  border: none !important;
+}

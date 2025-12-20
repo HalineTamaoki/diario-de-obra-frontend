@@ -1,6 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react'
 import { useDispatch } from 'react-redux';
 import { addObra } from '../../features/obraSlice';
+import { BsPlus } from 'react-icons/bs';
 
 export const AdicionarObraInput = () => {
     const dispach = useDispatch();
@@ -24,7 +25,7 @@ export const AdicionarObraInput = () => {
     return (
         <div 
             id='adicionar-obra-input-wrapper' 
-            className="w-full flex md:w-[70%] lg:w-1/2 pl-4 rounded-lg" 
+            className="w-full flex md:w-[70%] lg:w-1/2 pl-4 py-1 rounded-lg" 
             style={{ borderColor: 'var(--grey)', borderWidth: '1px', borderStyle: 'solid'}}
         >
             <input 
@@ -44,7 +45,7 @@ export const AdicionarObraInput = () => {
                 onClick={adicionarObra}
                 id='adicionar-obra-btn'
             >
-                <i className="bi bi-plus text-lg"></i>
+                <BsPlus className='text-lg'/>
             </button>
         </div>
     )

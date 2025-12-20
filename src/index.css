@@ -29,7 +29,7 @@
 }
 
 a {
-  color: var(--black);
+  color: inherit;
   cursor: pointer;
   text-decoration: inherit;
 }
@@ -71,11 +71,11 @@ button {
   border-radius: 0.5em;
   cursor: pointer;
   transition: border-color 0.25s;
+  border: none;
 }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:active{
+  border: none;
 }
 
 input {
