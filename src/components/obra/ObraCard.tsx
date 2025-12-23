@@ -1,14 +1,20 @@
-import { useMemo, useState } from 'react';
-import { BsPencil } from 'react-icons/bs';
+import { useCallback, useMemo, useState } from 'react';
+import { BsPencil, BsTrash3 } from 'react-icons/bs';
+import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { removerObra } from '../../features/obraSlice';
 import type { Obra } from '../../types/Obra';
-import { AcaoButton } from '../common/AcaoButton';
 import { AcoesButton } from '../common/AcoesButton';
-import { DeletarObraButton } from './DeletarObraButton';
-import { EditarNomeObraInput } from './EditarNomeObraInput';
+import { NomeObraInput } from './NomeObraInput';
 
 export const ObraCard = ({obra}: {obra: Obra}) => {
     const [editMode, setEditMode] = useState<boolean>(false);
+
+    const dispach = useDispatch();
+
+    const deletar = useCallback(() => {
+        dispach(removerObra(obra.id));
+    }, []);
 
     const bgColor = useMemo(() => {
         const { porcentagem } = obra;
@@ -33,19 +39,19 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                 state={{id: obra.id}}
             >
                 {editMode ? (
-                    <EditarNomeObraInput valorInicial={obra.nome} sairModoEdicao={() => setEditMode(false)} />
+                    <NomeObraInput sairModoEdicao={() => setEditMode(false)} obra={obra}/>
                 ) : (
                     <span className='truncate max-w-[70%] min-w-0 p-0'>{obra.nome}</span>
                 )}
                 <div className='flex gap-3 flex-none'>
                     <span>{obra.porcentagem.toFixed(0)}%</span>
-                    <AcoesButton color={textColor}>
-                        <DeletarObraButton idObra={obra.id} />
-                        <AcaoButton id='acoes-obra-editar' onClick={() => setEditMode(true)}>
-                            <BsPencil />
-                            Editar
-                        </AcaoButton>
-                    </AcoesButton>
+                    <AcoesButton 
+                        color={textColor} 
+                        itens={[
+                            {id: 'acoes-obra-deletar', text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
+                            {id: 'acoes-obra-editar', text: 'Editar', onClick: () => setEditMode(true), icon: <BsPencil />}
+                        ]}
+                    />
                 </div>
             </Link>
         </>

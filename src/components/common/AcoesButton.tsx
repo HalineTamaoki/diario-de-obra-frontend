@@ -2,8 +2,9 @@ import React, { useCallback, useState } from 'react';
 import { Button, Dropdown, Offcanvas } from 'react-bootstrap';
 import { BsThreeDots } from 'react-icons/bs';
 import { useMediaQuery } from 'react-responsive';
+import { AcoesButtonItens } from './AcoesButtonItens';
 
-export const AcoesButton = ({color, children}: {color?: string, children: React.ReactNode}) => {
+export const AcoesButton = ({color, itens}: {color?: string, itens: AcoesButtonItens[]}) => {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -20,14 +21,14 @@ export const AcoesButton = ({color, children}: {color?: string, children: React.
 
     const onClick = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
         e.stopPropagation();
-        handleClose();
+        e.preventDefault();
     }, []);
 
     return (
     <>
         {isMobile ? (
             <div>
-                <Button variant="button" onClick={handleShow} id="acoes-btn" >
+                <Button variant="button" onClick={handleShow} id="acoes-btn" onMouseDown={e => e.preventDefault()}>
                     <BsThreeDots className={color}/>
                 </Button>
 
@@ -36,26 +37,25 @@ export const AcoesButton = ({color, children}: {color?: string, children: React.
                         <Offcanvas className='offcanvas-autoheight h-auto!' show={show} onHide={handleClose} placement="bottom">
                             <Offcanvas.Title></Offcanvas.Title>
                             <Offcanvas.Body className='gap-3 grid'>
-                                {children}
+                                <AcoesButtonItens itens={itens} handleClose={handleClose}/>
                             </Offcanvas.Body>
                         </Offcanvas>
                     </div>
                 )}
             </div>
         ) : (
-            <Dropdown onClick={onClick} >
+            <Dropdown show={show} onClick={onClick} onToggle={setShow}>
                 <Dropdown.Toggle 
                     variant="button" 
                     id="acoes-btn"
-                    className=''
                 >
                     <BsThreeDots className={color}/>
                 </Dropdown.Toggle>
 
-                <Dropdown.Menu>
-                    <Dropdown.Item id='acoes-obra-deletar'>
-                        {children}
-                    </Dropdown.Item>
+                <Dropdown.Menu onMouseDown={e => e.preventDefault()}>
+                    <div className='py-1 px-2'>
+                        <AcoesButtonItens itens={itens} handleClose={handleClose}/>
+                    </div>
                 </Dropdown.Menu>
             </Dropdown>
         )}
