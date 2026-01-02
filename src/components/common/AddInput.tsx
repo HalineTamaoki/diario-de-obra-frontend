@@ -2,7 +2,7 @@ import React, { useCallback, useRef, useState } from 'react';
 import { BsPlus } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 
-export const AddInput = ({add, id, placeholder}: {add: (value: string) => void, id: string, placeholder: string}) => {
+export const AddInput = ({add, id, placeholder, className}: {add: (value: string) => void, id: string, placeholder: string, className?: string}) => {
     const dispach = useDispatch();
     const [inputValue, setInputValue] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -24,7 +24,7 @@ export const AddInput = ({add, id, placeholder}: {add: (value: string) => void, 
     return (
         <div 
             id={`${id}-wrapper`} 
-            className="w-full flex md:w-[70%] lg:w-1/2 pl-4 py-1 rounded-lg mb-6" 
+            className={`w-full flex pl-4 py-1 rounded-lg mb-6 ${className}`} 
             style={{ borderColor: 'var(--grey)', borderWidth: '1px', borderStyle: 'solid'}}
         >
             <input 

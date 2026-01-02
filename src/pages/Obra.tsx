@@ -20,6 +20,7 @@ export const Obra = () => {
                 id='adicionar-obra' 
                 placeholder="Adicionar nova obra"
                 add={adicionarObra}
+                className='md:w-[70%] lg:w-1/2'
             />
             <div>
                 {obras.length === 0 ? (

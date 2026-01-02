@@ -3,6 +3,7 @@ import type { ItemObra } from '../../types/DetalhesObra'
 import { ItemObraAccordionHeader } from './ItemObraAccordionHeader'
 import { useCallback, useState } from 'react'
 import { ItemObraAccordionTitle } from './ItemObraAccordionTitle'
+import { IdeacaoCard } from './ideacao/IdeacaoCard'
 
 interface ItemObraCardProps {
     itemObra: ItemObra,
@@ -42,8 +43,11 @@ export const ItemObraCard = ({itemObra, index}: ItemObraCardProps) => {
         <Accordion id='detalhes-obra-accordion' activeKey={activeKey} >
             <Accordion.Item eventKey={itemObra.id.toString()} style={getBgColor(itemObra.ultimaEtapa)}>
                 <ItemObraAccordionHeader itemObra={itemObra} active={!!activeKey} toogleActive={toogleSelect}/>
-                <Accordion.Body>
+                <Accordion.Body className='px-1'>
                     <ItemObraAccordionTitle id={itemObra.id} ultimaEtapa={itemObra.ultimaEtapa}/>
+                    <div className='mt-2'>
+                        {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard id={itemObra.id}/>}
+                    </div>
                 </Accordion.Body>
             </Accordion.Item >
         </Accordion>

@@ -24,6 +24,7 @@ export const DetalhesObra = () => {
                 id='adicionar-item-obra' 
                 placeholder="Adicionar novo item"
                 add={addItem}
+                className='md:w-[70%] lg:w-1/2'
             />
             {itemsObra.length === 0 && 
                 <p className="text-gray-500 text-center md:text-start! md:px-2">Nenhum item adicionado.</p>
