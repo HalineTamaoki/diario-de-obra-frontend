@@ -1,16 +1,27 @@
-import { useSelector } from "react-redux";
+import { useCallback } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import { AddInput } from "../components/common/AddInput";
 import { PageLayout } from "../components/layout/PageLayout";
-import { AdicionarObraInput } from "../components/obra/AdicionarObraInput";
-import type { Obra as ObraType } from "../types/Obra";
 import { ObraCard } from "../components/obra/ObraCard";
+import { addObra } from "../features/obraSlice";
+import type { Obra as ObraType } from "../types/Obra";
 
 export const Obra = () => {
     const { obras } = useSelector((state: any) => state.obra);
-    
+    const dispach = useDispatch();
+
+    const adicionarObra = useCallback((value: string) => {
+        dispach(addObra({ nome: value, porcentagem: Math.random() * 100 }));
+    }, [dispach]);
+
     return (
         <PageLayout titulo="Minhas obras" id="minhas-obras">
-            <AdicionarObraInput />
-            <div className="mt-6">
+            <AddInput 
+                id='adicionar-obra' 
+                placeholder="Adicionar nova obra"
+                add={adicionarObra}
+            />
+            <div>
                 {obras.length === 0 ? (
                     <p className="text-gray-500 text-center md:text-start! md:px-2">Nenhuma obra adicionada.</p>
                 ) : (

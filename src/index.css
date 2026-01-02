@@ -29,13 +29,9 @@
 }
 
 a {
-  color: inherit;
+  color: var(--black) !important;
   cursor: pointer;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: var(--blue);
+  text-decoration: none !important;
 }
 
 body {
@@ -88,9 +84,6 @@ input {
   :root {
     color: var(--black);
     background-color: var(--white);
-  }
-  a:hover {
-    color: var(--secondary);
   }
 }
 

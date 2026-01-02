@@ -3,7 +3,7 @@ import { AcaoButton } from './AcaoButton'
 import { useMediaQuery } from 'react-responsive';
 
 export interface AcoesButtonItens {
-    onClick: () => void,
+    onClick: (e: MouseEvent) => void,
     text: string,
     className?: string,
     id: string,
@@ -20,9 +20,9 @@ export const AcoesButtonItens = ({itens, handleClose}: {itens: AcoesButtonItens[
                     <AcaoButton 
                         key={item.id}
                         id={item.id} 
-                        onClick={() => {
+                        onClick={(e) => {
                             handleClose();
-                            item.onClick();
+                            item.onClick(e);
                         }} 
                         className={item.className}
                     >
