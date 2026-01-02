@@ -2,6 +2,7 @@ import { Accordion } from 'react-bootstrap'
 import type { ItemObra } from '../../types/DetalhesObra'
 import { ItemObraAccordionHeader } from './ItemObraAccordionHeader'
 import { useCallback, useState } from 'react'
+import { ItemObraAccordionTitle } from './ItemObraAccordionTitle'
 
 interface ItemObraCardProps {
     itemObra: ItemObra,
@@ -42,7 +43,7 @@ export const ItemObraCard = ({itemObra, index}: ItemObraCardProps) => {
             <Accordion.Item eventKey={itemObra.id.toString()} style={getBgColor(itemObra.ultimaEtapa)}>
                 <ItemObraAccordionHeader itemObra={itemObra} active={!!activeKey} toogleActive={toogleSelect}/>
                 <Accordion.Body>
-                    This is the content for section 1.
+                    <ItemObraAccordionTitle id={itemObra.id} ultimaEtapa={itemObra.ultimaEtapa}/>
                 </Accordion.Body>
             </Accordion.Item >
         </Accordion>

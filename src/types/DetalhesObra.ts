@@ -1,4 +1,4 @@
-type EtapasObra = 'ideacao' | 'orcamento' | 'execucao' | 'finalizado';
+export type EtapasObra = 'ideacao' | 'orcamento' | 'execucao' | 'finalizado';
 
 export type ItemObra = {
     id: number;

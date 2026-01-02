@@ -12,7 +12,7 @@ export const DetalhesObra = () => {
     const { itemsObra } = useSelector((state: any) => state.detalhesObra);
     const dispach = useDispatch();
 
-    const addItem = useCallback(() => dispach(addItemObra()), []);
+    const addItem = useCallback((value: string) => dispach(addItemObra({nome: value})), []);
 
     return (
         <PageLayout 

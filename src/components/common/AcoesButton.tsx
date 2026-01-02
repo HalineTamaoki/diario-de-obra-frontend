@@ -28,7 +28,7 @@ export const AcoesButton = ({color, itens}: {color?: string, itens: AcoesButtonI
     <>
         {isMobile ? (
             <div>
-                <Button variant="button" onClick={handleShow} id="acoes-btn" onMouseDown={e => e.preventDefault()}>
+                <Button variant="button" onClick={handleShow} id="acoes-btn" onMouseDown={e => e.preventDefault()} className='py-2'>
                     <BsThreeDots className={color}/>
                 </Button>
 

@@ -1,5 +1,5 @@
 import { useCallback, useMemo, useState } from 'react';
-import { BsPencil, BsTrash3 } from 'react-icons/bs';
+import { BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { removerObra } from '../../features/obraSlice';
@@ -33,7 +33,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
         <>
             <Link 
                 id={`obra-card-${obra.id}`}
-                className={`w-full flex justify-between md:py-6! min-w-0 px-4 py-2 text-decoration-none ${bgColor} ${textColor}`}
+                className={`w-full flex justify-between md:py-6! min-w-0 px-4 align-items-center text-decoration-none ${bgColor} ${textColor}`}
                 style={{borderRadius: '0.5em'}}
                 to={`/${obra.nome}`}
                 state={{id: obra.id}}
@@ -41,15 +41,20 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                 {editMode ? (
                     <NomeObraInput sairModoEdicao={() => setEditMode(false)} obra={obra}/>
                 ) : (
-                    <span className='truncate max-w-[70%] min-w-0 p-0'>{obra.nome}</span>
+                    <button className='truncate max-w-[70%] min-w-0 px-0 py-2.5' onClick={e => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        setEditMode(true)
+                    }}>
+                        <span>{obra.nome}</span>
+                    </button>
                 )}
-                <div className='flex gap-3 flex-none'>
+                <div className='flex gap-3 flex-none align-items-center'>
                     <span>{obra.porcentagem.toFixed(0)}%</span>
                     <AcoesButton 
                         color={textColor} 
                         itens={[
                             {id: 'acoes-obra-deletar', text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
-                            {id: 'acoes-obra-editar', text: 'Editar', onClick: () => setEditMode(true), icon: <BsPencil />}
                         ]}
                     />
                 </div>

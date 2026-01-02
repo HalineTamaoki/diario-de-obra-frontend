@@ -22,7 +22,7 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
         } else return 'bg-(--green) hover:bg-(--green-2)'
     }, [itemObra.ultimaEtapa]);
 
-    const textColor = useMemo(() => itemObra.ultimaEtapa === 'orcamento' ? 'text-white' : 'text-(--black)!', [itemObra.ultimaEtapa]);
+    const textColor = useMemo(() => itemObra.ultimaEtapa === 'execucao' ? 'text-white' : 'text-(--black)!', [itemObra.ultimaEtapa]);
     
     const editar = useCallback((value: string) => {
         dispach(editarItemObra({id: itemObra.id, nome: value}));
@@ -34,7 +34,7 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
 
     return (
         <div 
-            className={`flex justify-between w-100 align-items-center py-2.5 px-3 rounded-t-md ${bgColor} ${textColor} ${!active && 'rounded-b-md'}`}
+            className={`flex justify-between w-100 align-items-center px-3 rounded-t-md ${bgColor} ${textColor} ${!active && 'rounded-b-md'}`}
             onClick={toogleActive}
         >
             {editMode ? (
@@ -45,7 +45,7 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
                     sairModoEdicao={() => setEditMode(false)}
                 />
             ) : (
-                <button className='truncate max-w-[70%] min-w-0 p-0' onClick={e => {
+                <button className='truncate max-w-[70%] min-w-0 px-0 py-2.5' onClick={e => {
                     e.preventDefault();
                     e.stopPropagation();
                     setEditMode(true)

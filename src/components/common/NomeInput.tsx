@@ -21,7 +21,10 @@ export const NomeInput = ({valorInicial, id, editar, sairModoEdicao}: NomeInputP
             handleEditar();
         }, 1000);
 
-        return () => clearTimeout(timer);
+        return () => {
+            handleEditar();
+            clearTimeout(timer);
+        };
     }, [value]);
 
     const handleChange = useCallback((e: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,11 +43,10 @@ export const NomeInput = ({valorInicial, id, editar, sairModoEdicao}: NomeInputP
         e.preventDefault();
     }, []);
     
-    
     return (
         <input 
             id={id}
-            className='w-full'
+            className='w-full py-2.5'
             type="text"
             autoFocus
             onClick={onClick}
