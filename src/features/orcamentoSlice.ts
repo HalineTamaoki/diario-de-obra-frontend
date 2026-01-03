@@ -8,11 +8,14 @@ const ideacaoSlice = createSlice({
   name: 'orcamentos',
   initialState,
   reducers: {
-    selecionar: (state, action: PayloadAction<number>) => {
-      state.resumoOrcamentos.map(orcamento => orcamento.id === action.payload ? {...orcamento, selecionado: true} : orcamento);
+    selecionarOrcamento: (state, action: PayloadAction<number>) => {
+      state.resumoOrcamentos.map(orcamento => orcamento.id === action.payload ? {...orcamento, selecionado: true} : {...orcamento, selecionado: false});
+    },
+    deletarOrcamento: (state, action: PayloadAction<number>) => {
+      state.resumoOrcamentos = state.resumoOrcamentos.filter(orcamento => orcamento.id !== action.payload);
     },
   },
 })
 
-export const { selecionar } = ideacaoSlice.actions
+export const { selecionarOrcamento, deletarOrcamento } = ideacaoSlice.actions
 export default ideacaoSlice.reducer

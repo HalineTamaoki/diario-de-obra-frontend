@@ -1,6 +1,6 @@
 export type OrcamentoResumo = {
     id: number,
     empresa: string,
-    valor: string,
+    valor: number,
     selecionado?: boolean
 }

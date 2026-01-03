@@ -6,10 +6,11 @@ import { ItemObraCard } from '../components/detalhesObra/ItemObraCard';
 import { PageLayout } from '../components/layout/PageLayout';
 import { addItemObra } from '../features/itemsObraSlice';
 import type { ItemObra } from '../types/DetalhesObra';
+import type { RootState } from '../app/store';
 
 export const DetalhesObra = () => {
     const { nome } = useParams();
-    const { itemsObra } = useSelector((state: any) => state.detalhesObra);
+    const { itemsObra } = useSelector((state: RootState) => state.detalhesObra);
     const dispach = useDispatch();
 
     const addItem = useCallback((value: string) => dispach(addItemObra({nome: value})), []);

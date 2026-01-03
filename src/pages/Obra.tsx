@@ -5,9 +5,10 @@ import { PageLayout } from "../components/layout/PageLayout";
 import { ObraCard } from "../components/obra/ObraCard";
 import { addObra } from "../features/obraSlice";
 import type { Obra as ObraType } from "../types/Obra";
+import type { RootState } from "../app/store";
 
 export const Obra = () => {
-    const { obras } = useSelector((state: any) => state.obra);
+    const { obras } = useSelector((state: RootState) => state.obra);
     const dispach = useDispatch();
 
     const adicionarObra = useCallback((value: string) => {
