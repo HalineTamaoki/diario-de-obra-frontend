@@ -5,3 +5,15 @@
 .border-left-none {
   border-left: none !important;
 }
+
+.dropdown-toggle::after {
+  display: none !important;
+}
+
+.btn {
+  border: none !important;
+}
+
+.accordion-item {
+  border: 1px solid var(--grey) !important;
+}

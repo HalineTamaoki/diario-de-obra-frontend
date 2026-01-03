@@ -29,13 +29,9 @@
 }
 
 a {
-  color: var(--black);
+  color: var(--black) !important;
   cursor: pointer;
-  text-decoration: inherit;
-}
-
-a:hover {
-  color: var(--blue);
+  text-decoration: none !important;
 }
 
 body {
@@ -71,11 +67,11 @@ button {
   border-radius: 0.5em;
   cursor: pointer;
   transition: border-color 0.25s;
+  border: none;
 }
 
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+button:active{
+  border: none;
 }
 
 input {
@@ -88,9 +84,6 @@ input {
   :root {
     color: var(--black);
     background-color: var(--white);
-  }
-  a:hover {
-    color: var(--secondary);
   }
 }
 

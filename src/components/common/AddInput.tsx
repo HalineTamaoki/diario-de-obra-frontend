@@ -1,50 +1,50 @@
-import React, { useCallback, useRef, useState } from 'react'
+import React, { useCallback, useRef, useState } from 'react';
+import { BsPlus } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { addObra } from '../../features/obraSlice';
 
-export const AdicionarObraInput = () => {
+export const AddInput = ({add, id, placeholder, className}: {add: (value: string) => void, id: string, placeholder: string, className?: string}) => {
     const dispach = useDispatch();
     const [inputValue, setInputValue] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 
-    const adicionarObra = useCallback(() => {
+    const adicionar = useCallback(() => {
         if(inputValue === '') return;
 
         setInputValue('');
-        dispach(addObra({ nome: inputValue, porcentagem: Math.random() * 100 }));
+        add(inputValue);
     }, [dispach, inputValue]);
 
     const onInputKeyDown = useCallback((event: React.KeyboardEvent<HTMLInputElement>) => {
         if (event.key === 'Enter') {
-            adicionarObra();
+            adicionar();
             inputRef.current?.blur();
         }
-    }, [adicionarObra]);
+    }, [adicionar]);
 
     return (
         <div 
-            id='adicionar-obra-input-wrapper' 
-            className="w-full flex md:w-[70%] lg:w-1/2 pl-4 rounded-lg" 
+            id={`${id}-wrapper`} 
+            className={`w-full flex pl-4 py-1 rounded-lg mb-6 ${className}`} 
             style={{ borderColor: 'var(--grey)', borderWidth: '1px', borderStyle: 'solid'}}
         >
             <input 
                 type="text"
                 className="w-full" 
-                aria-label="Adicionar nova obra" 
-                placeholder="Adicionar nova obra"
+                aria-label={placeholder}
+                placeholder={placeholder}
                 value={inputValue}
                 onChange={e => setInputValue(e.target.value)}
-                id='adicionar-obra-input'
+                id={`${id}-input`} 
                 onKeyDown={onInputKeyDown}
                 ref={inputRef}
             />
             <button
                 className="btn"
                 type="button"
-                onClick={adicionarObra}
-                id='adicionar-obra-btn'
+                onClick={adicionar}
+                id={`${id}-btn`} 
             >
-                <i className="bi bi-plus text-lg"></i>
+                <BsPlus className='text-lg'/>
             </button>
         </div>
     )
