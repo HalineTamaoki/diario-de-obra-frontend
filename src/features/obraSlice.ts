@@ -21,4 +21,4 @@ const obraSlice = createSlice({
 })
 
 export const { addObra, editarObra, removerObra } = obraSlice.actions
-export default obraSlice.reducer
+export default obraSlice.reducer;

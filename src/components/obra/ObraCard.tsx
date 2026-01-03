@@ -35,8 +35,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                 id={`obra-card-${obra.id}`}
                 className={`w-full flex justify-between md:py-6! min-w-0 px-4 align-items-center text-decoration-none ${bgColor} ${textColor}`}
                 style={{borderRadius: '0.5em'}}
-                to={`/${obra.nome}`}
-                state={{id: obra.id}}
+                to={`/${obra.id}`}
             >
                 {editMode ? (
                     <NomeObraInput sairModoEdicao={() => setEditMode(false)} obra={obra}/>

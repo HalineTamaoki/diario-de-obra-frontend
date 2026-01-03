@@ -40,7 +40,9 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
             {editMode ? (
                 <NomeInput 
                     id='editar-nome-obra-input'
+                    className='py-2.5'
                     valorInicial={itemObra.nome}
+                    defaultValue='Nome do item'
                     editar={editar} 
                     sairModoEdicao={() => setEditMode(false)}
                 />

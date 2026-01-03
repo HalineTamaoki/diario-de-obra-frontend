@@ -1,27 +1,26 @@
 import React from 'react'
 import { BsChevronLeft } from 'react-icons/bs'
 import { Link } from 'react-router-dom'
+import { PageWrapper } from './PageWrapper'
+import { PageTitleWrapper } from './PageTitleWrapper'
 
-interface PageLayoutProps {
+export interface PageLayoutProps {
     children: React.ReactNode, 
     titulo: string, 
-    id?: string, 
-    backPath?: string,
-    headerChildren?: React.ReactNode,
-    headerClassName?: string,
+    id: string, 
+    backPath?: string
 }
 
-export const PageLayout = ({children, titulo, id, backPath, headerChildren, headerClassName}: PageLayoutProps) => {    
+export const PageLayout = ({children, titulo, id, backPath}: PageLayoutProps) => {    
     return (
-        <div className='min-h-screen w-full flex flex-col px-4 py-8 md:px-16 md:py-12' id={id}>
-            <h1 className={`pb-4 md:pb-8 flex ${headerClassName}`} id={`${id}-title`}>
+        <PageWrapper id={id}>
+            <PageTitleWrapper id={id}>
                 {backPath ? <Link to={backPath} id={`${id}-link-back`} className='flex align-items-center'>
-                    <BsChevronLeft className='cursor-pointer mr-2.5 text-[1.25rem]' />
+                    <BsChevronLeft className='cursor-pointer mr-2.5 text-[1.25rem] md:text-[2rem] md:mr-4' />
                     <span>{titulo}</span>
                 </Link> : titulo}
-                {headerChildren}
-            </h1>
+            </PageTitleWrapper>
             {children}
-        </div>
+        </PageWrapper>
     )
 }

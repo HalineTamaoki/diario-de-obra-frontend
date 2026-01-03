@@ -2,17 +2,19 @@ import { useCallback, useEffect, useState } from 'react';
 
 interface NomeInputProps {
     valorInicial: string,
+    defaultValue: string,
+    className?: string,
     id: string,
     editar: (value: string) => void,
     sairModoEdicao: () => void
 }
 
-export const NomeInput = ({valorInicial, id, editar, sairModoEdicao}: NomeInputProps) => {
+export const NomeInput = ({valorInicial, defaultValue, id, className, editar, sairModoEdicao}: NomeInputProps) => {
     const [value, setValue] = useState<string>(valorInicial);
     
     const handleEditar = useCallback(() => {
         if(value !== valorInicial){
-            editar(value);
+            editar(value === '' ? defaultValue : value);
         }
     }, [value, valorInicial]);
 
@@ -46,7 +48,7 @@ export const NomeInput = ({valorInicial, id, editar, sairModoEdicao}: NomeInputP
     return (
         <input 
             id={id}
-            className='w-full py-2.5'
+            className={`w-full ${className}`}
             type="text"
             autoFocus
             onClick={onClick}

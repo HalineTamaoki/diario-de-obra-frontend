@@ -1,23 +1,26 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import type { RootState } from '../app/store';
 import { AddInput } from '../components/common/AddInput';
 import { ItemObraCard } from '../components/detalhesObra/ItemObraCard';
 import { PageLayout } from '../components/layout/PageLayout';
 import { addItemObra } from '../features/itemsObraSlice';
 import type { ItemObra } from '../types/DetalhesObra';
-import type { RootState } from '../app/store';
 
 export const DetalhesObra = () => {
-    const { nome } = useParams();
+    const { idObra } = useParams();
     const { itemsObra } = useSelector((state: RootState) => state.detalhesObra);
+    const { obras } = useSelector((state: RootState) => state.obra);
     const dispach = useDispatch();
 
     const addItem = useCallback((value: string) => dispach(addItemObra({nome: value})), []);
 
+    const obra = useMemo(() => obras.find(obra => obra.id === parseInt(idObra ?? '0')), [idObra, obras]);
+
     return (
         <PageLayout 
-            titulo={nome ?? 'Itens da obra'} 
+            titulo={obra?.nome ?? 'Itens da obra'} 
             id="detalhes-obra" 
             backPath='/' 
         >
