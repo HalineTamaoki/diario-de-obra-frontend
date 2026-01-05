@@ -3,6 +3,7 @@ import obraSlice from '../features/obraSlice'
 import itemsObraSlice from '../features/itemsObraSlice'
 import ideacaoSlice from '../features/ideacaoSlice'
 import orcamentoSlice from '../features/orcamentoSlice'
+import detalhesOrcamentoSlice from '../features/detalhesOrcamentoSlice'
 
 export const store = configureStore({
     reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
         detalhesObra: itemsObraSlice,
         ideacao: ideacaoSlice,
         orcamento: orcamentoSlice,
+        detalhesOrcamento: detalhesOrcamentoSlice,
     },
 })
 

@@ -4,7 +4,7 @@ import type { NovoOrcamentoType, OrcamentoResumo } from '../types/Orcamento';
 type OrcamentoState = { resumoOrcamentos: OrcamentoResumo[] }
 const initialState: OrcamentoState = { resumoOrcamentos: [] }
 
-const ideacaoSlice = createSlice({
+const orcamentoSlice = createSlice({
   name: 'orcamentos',
   initialState,
   reducers: {
@@ -23,5 +23,5 @@ const ideacaoSlice = createSlice({
   },
 })
 
-export const { addOrcamento, selecionarOrcamento, desselecionarOrcamento, deletarOrcamento } = ideacaoSlice.actions
-export default ideacaoSlice.reducer
+export const { addOrcamento, selecionarOrcamento, desselecionarOrcamento, deletarOrcamento } = orcamentoSlice.actions
+export default orcamentoSlice.reducer

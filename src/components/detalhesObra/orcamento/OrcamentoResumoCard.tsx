@@ -29,7 +29,7 @@ export const OrcamentoResumoCard = ({orcamento, idObra}: {orcamento: OrcamentoRe
     }, [navigate, orcamento.id]);
 
     return (
-        <div id={`orcamento-${orcamento.id}-wrapper`} className={`flex justify-between items-center border border-(--secondary) rounded p-2 ${bgColor}`}>
+        <div id={`orcamento-${orcamento.id}-wrapper`} className={`flex justify-between items-center border-1 border-(--secondary) rounded p-2 ${bgColor}`}>
             <div>
                 <div className='flex items-center gap-2'>
                     <h4 id={`orcamento-${orcamento.id}-title`} className='text-[1rem]! font-semibold!'>{orcamento.empresa}</h4>
