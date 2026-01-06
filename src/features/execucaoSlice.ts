@@ -15,19 +15,22 @@ const execucaoSlice = createSlice({
       state.execucao?.outrasDatas?.push({...action.payload, id: Math.random()});
     },
     removerOutraData: (state, action: PayloadAction<number>) => {
-      state.execucao = {...state, outrasDatas: state.execucao?.outrasDatas?.filter(outraData => outraData.id !== action.payload)}
+      state.execucao = {...state.execucao, outrasDatas: state.execucao?.outrasDatas?.filter(outraData => outraData.id !== action.payload)}
     },
     editarOutraData: (state, action: PayloadAction<Omit<OutraData, 'nome'>>) => {
       state.execucao = {
-        ...state, 
+        ...state.execucao, 
         outrasDatas: state.execucao?.outrasDatas?.map(outraData => 
           outraData.id === action.payload.id ? {...outraData, data: action.payload.data} : outraData)}
     },
     editarPrevisao: (state, action: PayloadAction<Previsao>) => {
-      state.execucao = {...state, previsao: action.payload}
+      state.execucao = {...state.execucao, previsao: action.payload}
+    },
+    editarComentario: (state, action: PayloadAction<string>) => {
+      state.execucao = {...state.execucao, comentarios: action.payload}
     }
   },
 })
 
-export const { addOutraData, removerOutraData, editarOutraData, editarPrevisao } = execucaoSlice.actions
+export const { addOutraData, removerOutraData, editarOutraData, editarPrevisao, editarComentario } = execucaoSlice.actions
 export default execucaoSlice.reducer

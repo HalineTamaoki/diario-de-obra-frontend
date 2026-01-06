@@ -7,6 +7,7 @@ import './app.css';
 import { DetalhesObra } from './pages/DetalhesObra';
 import { NovoOrcamento } from './components/detalhesObra/orcamento/NovoOrcamento';
 import { OrcamentoDetalhes } from './components/detalhesObra/orcamento/OrcamentoDetalhes';
+import { OutraDataForm } from './components/detalhesObra/execucao/OutraDataForm';
 
 export function App() {
   return (
@@ -18,6 +19,7 @@ export function App() {
             <Route path=':idObra' element={<DetalhesObra />} />
             <Route path='/orcamento/:idObra/novo' element={<NovoOrcamento />} />
             <Route path='/orcamento/:idObra/:idOrcamento' element={<OrcamentoDetalhes />} />
+            <Route path='/nova-data/:idObra' element={<OutraDataForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

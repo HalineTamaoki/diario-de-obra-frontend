@@ -33,7 +33,7 @@ export const DetalhesObra = () => {
             {itemsObra.length === 0 && 
                 <p className="text-gray-500 text-center md:text-start! md:px-2">Nenhum item adicionado.</p>
             }
-            <div className='grid gap-3 md:grid-cols-4'>
+            <div className='grid gap-3 md:grid-cols-4 mb-4'>
                 {itemsObra.map((item: ItemObra, index: number) => <ItemObraCard 
                     key={item.id}
                     itemObra={item}

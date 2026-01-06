@@ -1,11 +1,11 @@
-import { BsThreeDots } from 'react-icons/bs';
+import { BsThreeDots, BsThreeDotsVertical } from 'react-icons/bs';
 import { AcoesButtonItens } from './AcoesButtonItens';
 import { AcoesWithChildren } from './AcoesWithChildren';
 
-export const AcoesButton = ({color, itens}: {color?: string, itens: AcoesButtonItens[]}) => {
+export const AcoesButton = ({color, itens, direction = 'horizontal', btnClassName}: {color?: string, itens: AcoesButtonItens[], direction?: 'horizontal' | 'vertical', btnClassName?: string}) => {
     return (
-        <AcoesWithChildren itens={itens}>
-            <BsThreeDots className={color}/>
+        <AcoesWithChildren itens={itens} btnClassName={btnClassName}>
+            {direction === 'horizontal' ? <BsThreeDots className={color}/> : <BsThreeDotsVertical className={color}/>}
         </AcoesWithChildren>
     );
 }

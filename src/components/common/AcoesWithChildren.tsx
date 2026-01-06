@@ -3,7 +3,7 @@ import { Button, Dropdown, Offcanvas } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 import { AcoesButtonItens } from './AcoesButtonItens';
 
-export const AcoesWithChildren = ({itens, children}: {itens: AcoesButtonItens[], children?: React.ReactNode}) => {
+export const AcoesWithChildren = ({itens, children, btnClassName}: {itens: AcoesButtonItens[], children?: React.ReactNode, btnClassName?: string}) => {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -27,7 +27,7 @@ export const AcoesWithChildren = ({itens, children}: {itens: AcoesButtonItens[],
     <>
         {isMobile ? (
             <div>
-                <Button variant="button" onClick={handleShow} id="acoes-btn" onMouseDown={e => e.preventDefault()} className='py-2'>
+                <Button variant="button" onClick={handleShow} id="acoes-btn" onMouseDown={e => e.preventDefault()} className={`py-2 ${btnClassName}`}>
                     {children}
                 </Button>
 
@@ -47,6 +47,7 @@ export const AcoesWithChildren = ({itens, children}: {itens: AcoesButtonItens[],
                 <Dropdown.Toggle 
                     variant="button" 
                     id="acoes-btn"
+                    className={btnClassName}
                 >
                     {children}
                 </Dropdown.Toggle>
