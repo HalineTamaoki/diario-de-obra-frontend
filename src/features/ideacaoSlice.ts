@@ -2,9 +2,7 @@ import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
 import type { Ideia } from '../types/Ideia';
 
 type IdeacaoState = { ideias: Ideia[] }
-const initialState: IdeacaoState = { ideias: [
-  {id: 1, link: 'https://www.instagram.com/p/DTH6UB8Dcjg/?igsh=MXIxOXZkZDdvMDZzdg='}
-] }
+const initialState: IdeacaoState = { ideias: [] }
 
 const ideacaoSlice = createSlice({
   name: 'ideias',
