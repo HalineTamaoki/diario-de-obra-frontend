@@ -5,6 +5,7 @@ import { useCallback, useState } from 'react'
 import { ItemObraAccordionTitle } from './ItemObraAccordionTitle'
 import { IdeacaoCard } from './ideacao/IdeacaoCard'
 import { OrcamentoCard } from './orcamento/OrcamentoCard'
+import { ExecucaoCard } from './execucao/ExecucaoCard'
 
 interface ItemObraCardProps {
     itemObra: ItemObra,
@@ -49,6 +50,7 @@ export const ItemObraCard = ({itemObra, index}: ItemObraCardProps) => {
                     <div className='mt-2'>
                         {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard id={itemObra.id}/>}
                         {itemObra.ultimaEtapa === 'orcamento' && <OrcamentoCard id={itemObra.id}/>}
+                        {itemObra.ultimaEtapa === 'execucao' && <ExecucaoCard id={itemObra.id}/>}
                     </div>
                 </Accordion.Body>
             </Accordion.Item >
