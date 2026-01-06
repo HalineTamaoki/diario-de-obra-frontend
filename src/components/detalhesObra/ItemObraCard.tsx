@@ -41,7 +41,7 @@ export const ItemObraCard = ({itemObra, index}: ItemObraCardProps) => {
     }, [itemObra.id, activeKey]);
     
     return (
-        <Accordion id='detalhes-obra-accordion' activeKey={activeKey} >
+        <Accordion id='detalhes-obra-accordion' activeKey={activeKey} className='max-w-full min-w-0'>
             <Accordion.Item eventKey={itemObra.id.toString()} style={getBgColor(itemObra.ultimaEtapa)}>
                 <ItemObraAccordionHeader itemObra={itemObra} active={!!activeKey} toogleActive={toogleSelect}/>
                 <Accordion.Body className='px-1'>
