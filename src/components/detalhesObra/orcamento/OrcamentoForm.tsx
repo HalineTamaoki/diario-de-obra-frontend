@@ -1,6 +1,7 @@
 import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import type { NovoOrcamentoType } from '../../../types/Orcamento';
+import { useCallback } from 'react';
 
 interface OrcamentoFormProps {
     onSubmit: (data: NovoOrcamentoType) => void,
@@ -19,8 +20,15 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
     });
     const { handleSubmit, register, formState: {errors} } = form;
 
+    const submit = useCallback((data: NovoOrcamentoType) => {
+        if(Number.isNaN(data.valor)) {
+            data.valor = undefined;
+        }
+        onSubmit(data);
+    }, [onSubmit]);
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)} className='lg:w-1/2' noValidate>
+        <form onSubmit={handleSubmit(submit)} className='lg:w-1/2' noValidate>
             {mostrarCampoEmpresa && <div className='mb-3'>
                 <p className='mb-2'>Empresa: <span className='text-(--red)'>*</span></p>
                 <input
@@ -39,16 +47,14 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
                     step={0.01}
                     className='border border-(--secondary)! w-full rounded-md p-2'
                     {...register('valor', {
-                        valueAsNumber: true, 
+                        valueAsNumber: true,
                         validate: (v) => {
                             if (v === undefined || v === null || Number.isNaN(v)) return;
-
                             const temDecimais = Math.abs(v % 1) > 0;
                             if (!temDecimais) return true;
-                                const casas = v.toString().split('.')[1]?.length || 0;
-                                return casas <= 2 || 'Use no máximo 2 casas decimais';
+                            const casas = v.toString().split('.')[1]?.length || 0;
+                            return casas <= 2 || 'Use no máximo 2 casas decimais';
                         },
-
                     })}
                 />
                 {errors.valor && (

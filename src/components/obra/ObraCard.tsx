@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
-import { BsTrash3 } from 'react-icons/bs';
+import { BsEye, BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { removerObra } from '../../features/obraSlice';
 import type { Obra } from '../../types/Obra';
 import { AcoesButton } from '../common/AcoesButton';
@@ -9,12 +9,16 @@ import { NomeObraInput } from './NomeObraInput';
 
 export const ObraCard = ({obra}: {obra: Obra}) => {
     const [editMode, setEditMode] = useState<boolean>(false);
-
+    const navigate = useNavigate();
     const dispach = useDispatch();
 
     const deletar = useCallback(() => {
         dispach(removerObra(obra.id));
     }, []);
+
+    const verDetalhes = useCallback(() => {
+        navigate(`/${obra.id}`);
+    }, [obra.id]);
 
     const bgColor = useMemo(() => {
         const { porcentagem } = obra;
@@ -54,6 +58,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                         color={textColor} 
                         itens={[
                             {id: 'acoes-obra-deletar', text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
+                            {id: 'acoes-obra-ver', text: 'Ver detalhes', onClick: verDetalhes, icon: <BsEye />},
                         ]}
                     />
                 </div>

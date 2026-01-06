@@ -14,7 +14,11 @@ const detalhesOrcamentoSlice = createSlice({
   initialState,
   reducers: {
     editarDetalhesOrcamento: (state, action: PayloadAction<Partial<OrcamentoDetalhesType>>) => {
-      state = {...state, ...action}
+        let orcamento = state.orcamento ?? {} as OrcamentoDetalhesType;
+        Object.entries(action.payload).forEach(([key, value]) => {
+          (orcamento as any)[key as keyof OrcamentoDetalhesType] = value;
+        });
+        state.orcamento = orcamento;
     }, 
   },
 })
