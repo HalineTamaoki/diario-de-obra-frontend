@@ -1,5 +1,5 @@
 import { useCallback } from 'react';
-import { BsTrash3 } from 'react-icons/bs';
+import { BsEye, BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { removerLink } from '../../../features/ideacaoSlice';
 import type { Ideia } from '../../../types/Ideia';
@@ -16,24 +16,34 @@ export const IdeacaoImagem = ({ideia}: {ideia: Ideia}) => {
         dispach(removerLink(ideia.id));
     }, [removerLink, ideia.id]);
 
+    const verImagem = useCallback(() => {
+        window.open(ideia.link, '_blank');
+    }, []);
+
     return isMobile ? (
-        <AcoesWithChildren itens={[{id: `acoes-ideia-${ideia.id}-deletar`, text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />}]}>
+        <AcoesWithChildren itens={[
+            {id: `acoes-ideia-${ideia.id}-deletar`, text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
+            {id: `acoes-ideia-${ideia.id}-abrir`, text: 'Abrir', onClick: verImagem, icon: <BsEye />}
+        ]}>
             <IdeacaoImg url={ideia.link} />
         </AcoesWithChildren>
     ) : (
-        <button
-            onClick={deletar}
-            className="relative group p-0 border-none bg-transparent cursor-pointer"
-            style={{ outline: 'none' }}
-        >
-            <span className="block">
-                <IdeacaoImg url={ideia.link} />
-            </span>
-            <span
-                className="absolute inset-0 flex items-center justify-center transition duration-200 group-hover:bg-(--black)/40"
+        <div className='grid'>
+            <button
+                onClick={verImagem}
+                className="relative group p-0 border-none bg-transparent cursor-pointer"
+                style={{ outline: 'none' }}
             >
-                <BsTrash3 className="opacity-0 group-hover:opacity-100! text-(--white) text-3xl transition duration-200" />
-            </span>
-        </button>
+                <span className="block">
+                    <IdeacaoImg url={ideia.link} />
+                </span>
+                <span
+                    className="absolute inset-0 flex items-center justify-center transition duration-200 group-hover:bg-(--black)/40"
+                >
+                    <BsEye className="opacity-0 group-hover:opacity-100! text-(--white) text-3xl transition duration-200" />
+                </span>
+            </button>
+            <button onClick={deletar} className='text-sm! text-(--red) p-0 mt-1'>Deletar</button>
+        </div>
     )
 }

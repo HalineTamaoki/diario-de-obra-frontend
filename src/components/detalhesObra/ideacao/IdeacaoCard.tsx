@@ -23,7 +23,7 @@ export const IdeacaoCard = ({id}: {id: number}) => {
             {ideias.length === 0 ? (
                 <p className="text-gray-500 text-start text-sm mb-0 ml-2">Nenhum link adicionado.</p>
             ) : (
-                <div className="w-full flex overflow-x-auto whitespace-nowrap max-w-full" id={`ideacao-carrossel-${id}`}>
+                <div className="w-full flex overflow-x-auto whitespace-nowrap max-w-full md:gap-2" id={`ideacao-carrossel-${id}`}>
                     {ideias.map(ideia => (
                         <IdeacaoImagem key={ideia.id} ideia={ideia} />
                     ))}
