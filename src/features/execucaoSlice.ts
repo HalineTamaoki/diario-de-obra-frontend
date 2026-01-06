@@ -28,9 +28,12 @@ const execucaoSlice = createSlice({
     },
     editarComentario: (state, action: PayloadAction<string>) => {
       state.execucao = {...state.execucao, comentarios: action.payload}
+    },
+    marcarFinalizado: (state) => {
+      state.execucao = {...state.execucao, finalizado: true}
     }
   },
 })
 
-export const { addOutraData, removerOutraData, editarOutraData, editarPrevisao, editarComentario } = execucaoSlice.actions
+export const { addOutraData, removerOutraData, editarOutraData, editarPrevisao, editarComentario, marcarFinalizado } = execucaoSlice.actions
 export default execucaoSlice.reducer

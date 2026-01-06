@@ -6,6 +6,7 @@ import { ItemObraAccordionTitle } from './ItemObraAccordionTitle'
 import { IdeacaoCard } from './ideacao/IdeacaoCard'
 import { OrcamentoCard } from './orcamento/OrcamentoCard'
 import { ExecucaoCard } from './execucao/ExecucaoCard'
+import { FinalizadoCard } from './finalizado/FinalizadoCard'
 
 interface ItemObraCardProps {
     itemObra: ItemObra,
@@ -51,6 +52,7 @@ export const ItemObraCard = ({itemObra, index}: ItemObraCardProps) => {
                         {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard id={itemObra.id}/>}
                         {itemObra.ultimaEtapa === 'orcamento' && <OrcamentoCard id={itemObra.id}/>}
                         {itemObra.ultimaEtapa === 'execucao' && <ExecucaoCard id={itemObra.id}/>}
+                        {itemObra.ultimaEtapa === 'finalizado' && <FinalizadoCard id={itemObra.id}/>}
                     </div>
                 </Accordion.Body>
             </Accordion.Item >

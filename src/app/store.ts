@@ -5,6 +5,7 @@ import ideacaoSlice from '../features/ideacaoSlice'
 import orcamentoSlice from '../features/orcamentoSlice'
 import detalhesOrcamentoSlice from '../features/detalhesOrcamentoSlice'
 import execucaoSlice from '../features/execucaoSlice'
+import finalizacaoSlice from '../features/finalizacaoSlice'
 
 export const store = configureStore({
     reducer: {
@@ -14,6 +15,7 @@ export const store = configureStore({
         orcamento: orcamentoSlice,
         detalhesOrcamento: detalhesOrcamentoSlice,
         execucao: execucaoSlice,
+        finalizacao: finalizacaoSlice,
     },
 })
 

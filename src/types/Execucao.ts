@@ -1,7 +1,8 @@
 export type Execucao = {
     comentarios?: string;
     previsao?: Previsao,
-    outrasDatas?: OutraData[]
+    outrasDatas?: OutraData[];
+    finalizado?: boolean
 }
 
 export type Previsao = {
