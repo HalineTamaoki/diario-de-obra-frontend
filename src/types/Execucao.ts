@@ -2,7 +2,8 @@ export type Execucao = {
     comentarios?: string;
     previsao?: Previsao,
     outrasDatas?: OutraData[];
-    finalizado?: boolean
+    finalizado?: boolean,
+    idObra: number,
 }
 
 export type Previsao = {
@@ -13,5 +14,5 @@ export type Previsao = {
 export type OutraData = {
     id: number,
     nome: string,
-    data: string
+    data: string,
 }

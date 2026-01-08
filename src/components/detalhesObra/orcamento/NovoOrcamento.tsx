@@ -1,7 +1,7 @@
 import { useCallback } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { addOrcamento } from '../../../features/orcamentoSlice'
+import { itemsObraActions } from '../../../features/itemsObraSlice'
 import type { NovoOrcamentoType } from '../../../types/Orcamento'
 import { PageLayout } from '../../layout/PageLayout'
 import { OrcamentoForm } from './OrcamentoForm'
@@ -12,9 +12,9 @@ export const NovoOrcamento = () => {
     const dispach = useDispatch();
 
     const onSubmit = useCallback((data: NovoOrcamentoType) => {
-        dispach(addOrcamento(data));
+        dispach(itemsObraActions.addOrcamento(data));
         navigate(`/${idObra}`);
-    }, [addOrcamento]);
+    }, [itemsObraActions.addOrcamento]);
 
     return (
         <PageLayout

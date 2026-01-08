@@ -1,21 +1,23 @@
-import { useCallback } from 'react'
+import { useCallback, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import type { RootState } from '../../../app/store'
-import { editarComentario, editarData } from '../../../features/finalizacaoSlice'
+import { itemsObraActions, selectItemObra } from '../../../features/itemsObraSlice'
 import { ComentarioInput } from '../../common/ComentarioInput'
 import { DatePicker } from '../../common/DatePicker'
 
 export const FinalizadoCard = ({id}: {id: number}) => {
-    const { finalizacao }  = useSelector((state: RootState) => state.finalizacao);
+    const detalhesObra = useSelector((state: RootState) => state.detalhesObra);
+    const itemObra = selectItemObra(detalhesObra, id);
+    const finalizacao = useMemo(() => itemObra?.finalizacao, [itemObra]);
     const dispatch = useDispatch();
 
     const alterarData = useCallback((novaData?: string) => {
-        dispatch(editarData(novaData));
-    }, [editarData]);
+        dispatch(itemsObraActions.editarDataFinalizacao({data: novaData, idObra: id}));
+    }, [itemsObraActions.editarDataFinalizacao]);
 
     const alterarComentario = useCallback((novoComentario: string) => {
-        dispatch(editarComentario(novoComentario));
-    }, [editarData]);
+        dispatch(itemsObraActions.editarComentarioFinalizacao({comentarios: novoComentario, idObra: id}));
+    }, [itemsObraActions.editarComentarioFinalizacao]);
 
     return (
         <div id={`execucao-${id}`} className='px-2 pt-2 grid gap-1 w-full max-w-full min-w-0 max-h-60 overflow-auto'>

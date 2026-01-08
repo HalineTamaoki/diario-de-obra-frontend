@@ -5,7 +5,7 @@ import type { RootState } from '../app/store';
 import { AddInput } from '../components/common/AddInput';
 import { ItemObraCard } from '../components/detalhesObra/ItemObraCard';
 import { PageLayout } from '../components/layout/PageLayout';
-import { addItemObra } from '../features/itemsObraSlice';
+import { itemsObraActions } from '../features/itemsObraSlice';
 import type { ItemObra } from '../types/DetalhesObra';
 
 export const DetalhesObra = () => {
@@ -14,7 +14,7 @@ export const DetalhesObra = () => {
     const { obras } = useSelector((state: RootState) => state.obra);
     const dispach = useDispatch();
 
-    const addItem = useCallback((value: string) => dispach(addItemObra({nome: value})), []);
+    const addItem = useCallback((value: string) => dispach(itemsObraActions.addItemObra({nome: value})), []);
 
     const obra = useMemo(() => obras.find(obra => obra.id === parseInt(idObra ?? '0')), [idObra, obras]);
 

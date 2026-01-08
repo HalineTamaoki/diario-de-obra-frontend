@@ -1,17 +1,19 @@
-import { useCallback } from 'react';
+import { useCallback, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addLink } from '../../../features/ideacaoSlice';
+import type { RootState } from '../../../app/store';
+import { itemsObraActions, selectItemObra } from '../../../features/itemsObraSlice';
 import { AddInput } from '../../common/AddInput';
 import { IdeacaoImagem } from './IdeacaoImagem';
-import type { RootState } from '../../../app/store';
 
 export const IdeacaoCard = ({id}: {id: number}) => {
     const dispach = useDispatch();
-    const { ideias } = useSelector((state: RootState) => state.ideacao);
+    const detalhesObra = useSelector((state: RootState) => state.detalhesObra);
+    const itemObra = selectItemObra(detalhesObra, id);
+    const ideias = useMemo(() => itemObra?.ideacao ?? [], [itemObra]);
  
     const addIdeia = useCallback((value: string) => {
-        dispach(addLink({link: value}));
-    }, [addLink]);
+        dispach(itemsObraActions.addLink({link: value, idObra: id}));
+    }, [itemsObraActions.addLink]);
 
     return (
         <div className='w-full' id={`ideacao-card-${id}`}>
@@ -20,11 +22,11 @@ export const IdeacaoCard = ({id}: {id: number}) => {
                 add={addIdeia}
                 id={`ideacao-input-${id}`}
             />
-            {ideias.length === 0 ? (
+            {!ideias || ideias?.length === 0 ? (
                 <p className="text-gray-500 text-start text-sm mb-0 ml-2">Nenhum link adicionado.</p>
             ) : (
                 <div className="w-full flex overflow-x-auto whitespace-nowrap max-w-full md:gap-2" id={`ideacao-carrossel-${id}`}>
-                    {ideias.map(ideia => (
+                    {ideias?.map(ideia => (
                         <IdeacaoImagem key={ideia.id} ideia={ideia} />
                     ))}
                 </div>

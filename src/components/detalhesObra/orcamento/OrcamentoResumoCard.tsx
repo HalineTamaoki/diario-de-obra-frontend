@@ -2,7 +2,7 @@ import { useCallback, useMemo } from 'react'
 import { BsEye, BsPatchCheck, BsPatchCheckFill, BsTrash3 } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
-import { deletarOrcamento, desselecionarOrcamento, selecionarOrcamento } from '../../../features/orcamentoSlice'
+import { itemsObraActions } from '../../../features/itemsObraSlice'
 import type { OrcamentoResumo } from '../../../types/Orcamento'
 import { AcoesButton } from '../../common/AcoesButton'
 
@@ -13,16 +13,16 @@ export const OrcamentoResumoCard = ({orcamento, idObra}: {orcamento: OrcamentoRe
     const bgColor = useMemo(() => orcamento.selecionado ? 'bg-(--secondary)' : '', [orcamento.selecionado]);
     
     const selecionar = useCallback(() => {
-        dispach(selecionarOrcamento(orcamento.id));
-    }, [selecionarOrcamento, orcamento.id]);
+        dispach(itemsObraActions.selecionarOrcamento({id: orcamento.id, idObra: idObra}));
+    }, [itemsObraActions.selecionarOrcamento, orcamento.id]);
 
     const desselecionar = useCallback(() => {
-        dispach(desselecionarOrcamento(orcamento.id));
-    }, [selecionarOrcamento, orcamento.id]);
+        dispach(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idObra: idObra}));
+    }, [itemsObraActions.desselecionarOrcamento, orcamento.id]);
 
     const deletar = useCallback(() => {
-        dispach(deletarOrcamento(orcamento.id));
-    }, [deletarOrcamento, orcamento.id]);
+        dispach(itemsObraActions.deletarOrcamento({id: orcamento.id, idObra: idObra}));
+    }, [itemsObraActions.deletarOrcamento, orcamento.id, idObra]);
 
     const verDetalhes = useCallback(() => {
         navigate(`/orcamento/${idObra}/${orcamento.id}`);

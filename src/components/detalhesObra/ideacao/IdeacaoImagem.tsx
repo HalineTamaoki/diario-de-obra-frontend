@@ -1,11 +1,11 @@
 import { useCallback } from 'react';
 import { BsEye, BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { removerLink } from '../../../features/ideacaoSlice';
+import { useMediaQuery } from 'react-responsive';
+import { itemsObraActions } from '../../../features/itemsObraSlice';
 import type { Ideia } from '../../../types/Ideia';
 import { AcoesWithChildren } from '../../common/AcoesWithChildren';
 import { IdeacaoImg } from './IdeacaoImg';
-import { useMediaQuery } from 'react-responsive';
 
 export const IdeacaoImagem = ({ideia}: {ideia: Ideia}) => {
     const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -13,8 +13,8 @@ export const IdeacaoImagem = ({ideia}: {ideia: Ideia}) => {
     const dispach = useDispatch();
    
     const deletar = useCallback(() => {
-        dispach(removerLink(ideia.id));
-    }, [removerLink, ideia.id]);
+        dispach(itemsObraActions.removerLink({id: ideia.id, idObra: ideia.idObra}));
+    }, [itemsObraActions.removerLink, ideia.id]);
 
     const verImagem = useCallback(() => {
         window.open(ideia.link, '_blank');

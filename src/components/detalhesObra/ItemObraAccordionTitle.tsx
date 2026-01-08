@@ -1,7 +1,7 @@
 import { useCallback, useMemo } from 'react';
 import { BsChevronLeft, BsChevronRight } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { avancarEtapa, voltarEtapa } from '../../features/itemsObraSlice';
+import { itemsObraActions } from '../../features/itemsObraSlice';
 import type { EtapasObra } from '../../types/DetalhesObra';
 
 export const ItemObraAccordionTitle = ({ultimaEtapa, id}: {ultimaEtapa: EtapasObra, id: number}) => {
@@ -21,12 +21,12 @@ export const ItemObraAccordionTitle = ({ultimaEtapa, id}: {ultimaEtapa: EtapasOb
     }, [ultimaEtapa]);
 
     const avancar = useCallback(() => {
-        dispach(avancarEtapa(id))
-    }, [avancarEtapa, id]);
+        dispach(itemsObraActions.avancarEtapa(id))
+    }, [itemsObraActions.avancarEtapa, id]);
 
     const voltar = useCallback(() => {
-        dispach(voltarEtapa(id))
-    }, [voltarEtapa, id]);
+        dispach(itemsObraActions.voltarEtapa(id))
+    }, [itemsObraActions.voltarEtapa, id]);
 
     return (
         <div className='flex justify-between align-items-center' id={`${id}-accordion-title`}>

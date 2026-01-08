@@ -1,16 +1,22 @@
 import { useCallback, useEffect, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import type { RootState } from '../../../app/store'
 import { editarDetalhesOrcamento } from '../../../features/detalhesOrcamentoSlice'
-import { deletarOrcamento, desselecionarOrcamento, selecionarOrcamento } from '../../../features/orcamentoSlice'
-import type { NovoOrcamentoType } from '../../../types/Orcamento'
+import { itemsObraActions } from '../../../features/itemsObraSlice'
+import type { NovoOrcamentoType, OrcamentoDetalhesType } from '../../../types/Orcamento'
 import { OrcamentoDetalhesPageWrapper } from './OrcamentoDetalhesPageWrapper'
 import { OrcamentoForm } from './OrcamentoForm'
 
+const mockOrcamento = {
+  empresa: 'Test',
+  data: new Date().toISOString().split('T')[0],
+  idObra: 1,
+  id: 1
+}
+
 export const OrcamentoDetalhes = () => {
     const { idObra, idOrcamento } = useParams<{idObra: string, idOrcamento: string}>();
-    const { orcamento } = useSelector((state: RootState) => state.detalhesOrcamento);
+    const [orcamento, setOrcamento] = useState<OrcamentoDetalhesType>(mockOrcamento);
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const [editMode, setEditMode] = useState<boolean>(false);
@@ -18,8 +24,8 @@ export const OrcamentoDetalhes = () => {
     //TODO: remover esse useEffect. Ele apenas seta o id da obra como o atual
     useEffect(() => {
         if(idObra && idOrcamento){
-            dispatch(editarDetalhesOrcamento({idObra: parseFloat(idObra), id: parseFloat(idOrcamento)}));
-    }
+            setOrcamento({...orcamento, idObra: parseFloat(idObra), id: parseFloat(idOrcamento)});
+        }
     }, [idObra])
 
     const voltar = useCallback(() => {
@@ -31,34 +37,39 @@ export const OrcamentoDetalhes = () => {
     }, [editMode, idObra]);
 
     const editar = useCallback((novoOrcamento: NovoOrcamentoType) => {
-        console.log(novoOrcamento);
-        dispatch(editarDetalhesOrcamento(novoOrcamento));
+        setOrcamento({...orcamento, ...novoOrcamento});
         setEditMode(false);
     }, [editarDetalhesOrcamento]);
 
     const selecionar = useCallback(() => {
         if(orcamento?.id){
-            dispatch(selecionarOrcamento(orcamento.id));
+            dispatch(itemsObraActions.selecionarOrcamento({id: orcamento.id, idObra: orcamento.idObra}));
             navigate(`/${idObra}`);
         }
-    }, [orcamento?.id]);
+    }, [orcamento, itemsObraActions.selecionarOrcamento]);
 
     const desselecionar = useCallback(() => {
         if(orcamento?.id){
-            dispatch(desselecionarOrcamento(orcamento.id));
+            dispatch(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idObra: orcamento.idObra}));
             navigate(`/${idObra}`);
         }
-    }, [orcamento?.id]);
+    }, [orcamento, itemsObraActions.desselecionarOrcamento]);
 
     const deletar = useCallback(() => {
         if(orcamento?.id){
-            dispatch(deletarOrcamento(orcamento.id));
+            dispatch(itemsObraActions.deletarOrcamento({id: orcamento.id, idObra: orcamento.idObra}));
             navigate(`/${idObra}`);
         }
-    }, [orcamento?.id]);
+    }, [orcamento?.id, itemsObraActions.deletarOrcamento]);
 
     return (
-        <OrcamentoDetalhesPageWrapper voltar={voltar} editMode={editMode} setEditMode={setEditMode}>
+        <OrcamentoDetalhesPageWrapper 
+            voltar={voltar} 
+            editMode={editMode} 
+            setEditMode={setEditMode}
+            orcamento={orcamento}
+            editar={editar}
+        >
             {editMode && orcamento ? (
                 <OrcamentoForm onSubmit={editar} valorInicial={orcamento} onCancel={() => setEditMode(false)}/>
             ) : (

@@ -1,10 +1,10 @@
 import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
+import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
+import { itemsObraActions } from '../../../features/itemsObraSlice';
 import type { OutraData } from '../../../types/Execucao';
 import { PageLayout } from '../../layout/PageLayout';
-import { useDispatch } from 'react-redux';
-import { addOutraData } from '../../../features/execucaoSlice';
 
 type NovaData = Omit<OutraData, 'id'>;
 
@@ -22,9 +22,9 @@ export const OutraDataForm = () => {
     const { handleSubmit, register, formState: {errors} } = form;
 
     const submit = useCallback((data: NovaData) => {
-        dispatch(addOutraData(data));
+        dispatch(itemsObraActions.addOutraData({...data, idObra: idObra ? parseFloat(idObra) : 0}));
         navigate(`/${idObra}`);
-    }, [addOutraData]);
+    }, [itemsObraActions.addOutraData]);
 
     const onCancel = useCallback(() => {
         navigate(`/${idObra}`)

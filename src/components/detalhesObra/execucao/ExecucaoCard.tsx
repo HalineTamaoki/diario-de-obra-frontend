@@ -1,54 +1,60 @@
 import { useCallback, useMemo } from 'react';
 import { BsTrash3 } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
+import { Link } from 'react-router-dom';
 import type { RootState } from '../../../app/store';
-import { editarComentario, editarOutraData, editarPrevisao, marcarFinalizado, removerOutraData } from '../../../features/execucaoSlice';
+import { itemsObraActions, selectItemObra } from '../../../features/itemsObraSlice';
+import type { Previsao } from '../../../types/Execucao';
 import { AcoesButton } from '../../common/AcoesButton';
+import { ComentarioInput } from '../../common/ComentarioInput';
 import { DatePicker } from '../../common/DatePicker';
 import { diffDays } from '../../common/utils';
-import type { Previsao } from '../../../types/Execucao';
-import { Link } from 'react-router-dom';
-import { ComentarioInput } from '../../common/ComentarioInput';
-import { editarData } from '../../../features/finalizacaoSlice';
-import { avancarEtapa } from '../../../features/itemsObraSlice';
 
 
 export const ExecucaoCard = ({id}: {id: number}) => {
-    const { execucao }  = useSelector((state: RootState) => state.execucao);
+    const detalhesObra = useSelector((state: RootState) => state.detalhesObra);
+    const itemObra = selectItemObra(detalhesObra, id);
+    const execucao = useMemo(() => itemObra?.execucao, [itemObra]);
+
     const dispatch = useDispatch();
 
     const duracao = useMemo(() => diffDays(execucao?.previsao?.inicio, execucao?.previsao?.termino), [execucao?.previsao]);
     
     const alterarPrevisao = useCallback((key: keyof Previsao, novoValor: string) => {
-        dispatch(editarPrevisao({
+        dispatch(itemsObraActions.editarPrevisao({
             ...execucao?.previsao,
-            [key]: novoValor
+            [key]: novoValor,
+            idObra: id,
         }))
-    }, [execucao?.previsao, editarPrevisao]); 
+    }, [execucao?.previsao, itemsObraActions.editarPrevisao]); 
 
     const alterarOutraData = useCallback((idOutraData: number, novoValor: string) => {
-        dispatch(editarOutraData({
+        dispatch(itemsObraActions.editarOutraData({
             id: idOutraData,
-            data: novoValor
+            data: novoValor,
+            idObra: id,
         }));
-    }, [editarOutraData]);
+    }, [itemsObraActions.editarOutraData]);
 
     const deletarOutraData = useCallback((idOutraData: number) => {
-        dispatch(removerOutraData(idOutraData));
-    }, [removerOutraData]);
+        dispatch(itemsObraActions.removerOutraData({id: idOutraData, idObra: id}));
+    }, [itemsObraActions.removerOutraData]);
 
     const marcarComoFinalizado = useCallback(() => {
-        dispatch(marcarFinalizado());
-        dispatch(editarData(new Date().toISOString().split('T')[0]));
-    }, [editarData, marcarFinalizado]);
+        dispatch(itemsObraActions.marcarFinalizado(id));
+        dispatch(itemsObraActions.editarDataFinalizacao({
+            data: new Date().toISOString().split('T')[0],
+            idObra: id,
+        }));
+        dispatch(itemsObraActions.avancarEtapa(id));
+    }, [itemsObraActions.editarDataFinalizacao, itemsObraActions.marcarFinalizado]);
 
     const alterarComentario = useCallback((value: string) => {
         if(value !== execucao?.comentarios){
-            dispatch(editarComentario(value));
-            dispatch(avancarEtapa(id));
+            dispatch(itemsObraActions.editarComentarioExecucao({comentario: value, idObra: id}));
         }
-    }, [editarComentario]);
-    
+    }, [itemsObraActions.editarComentarioExecucao, itemsObraActions.avancarEtapa]);
+
     return (
         <div id={`execucao-${id}`} className='px-2 pt-2 grid gap-1 w-full max-w-full min-w-0 max-h-60 overflow-auto'>
             <DatePicker 

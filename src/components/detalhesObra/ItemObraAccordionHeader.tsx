@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { BsChevronDown, BsChevronUp, BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
-import { editarItemObra, removerItemObra } from '../../features/itemsObraSlice';
+import { itemsObraActions } from '../../features/itemsObraSlice';
 import type { ItemObra } from '../../types/DetalhesObra';
 import { AcoesButton } from '../common/AcoesButton';
 import { NomeInput } from '../common/NomeInput';
@@ -25,11 +25,11 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
     const textColor = useMemo(() => itemObra.ultimaEtapa === 'execucao' ? 'text-white' : 'text-(--black)!', [itemObra.ultimaEtapa]);
     
     const editar = useCallback((value: string) => {
-        dispach(editarItemObra({id: itemObra.id, nome: value}));
+        dispach(itemsObraActions.editarItemObra({id: itemObra.id, nome: value}));
     }, [itemObra.id]);
 
     const deletar = useCallback(() => {
-        dispach(removerItemObra(itemObra.id));
+        dispach(itemsObraActions.removerItemObra(itemObra.id));
     }, [itemObra.id]);
 
     return (

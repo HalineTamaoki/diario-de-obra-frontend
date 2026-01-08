@@ -1,14 +1,17 @@
 import { useMemo } from 'react';
 import { useSelector } from 'react-redux';
-import type { RootState } from '../../../app/store';
 import { Link } from 'react-router-dom';
+import type { RootState } from '../../../app/store';
 import { OrcamentoResumoCard } from './OrcamentoResumoCard';
+import { selectItemObra } from '../../../features/itemsObraSlice';
 
 export const OrcamentoCard = ({id}: {id: number}) => {
-    const { resumoOrcamentos } = useSelector((state: RootState) => state.orcamento);
+    const detalhesObra = useSelector((state: RootState) => state.detalhesObra);
+    const itemObra = selectItemObra(detalhesObra, id);
+    const resumoOrcamentos = useMemo(() => itemObra?.orcamento ?? [], [itemObra]);
 
     const valorMedio = useMemo(() => {
-        if (!resumoOrcamentos || resumoOrcamentos.length === 0) return 0;
+        if (!itemObra?.orcamento || itemObra.orcamento.length === 0) return 0;
 
         const total = resumoOrcamentos.reduce((sum, item) => sum + (item.valor ?? 0), 0);
         return total / resumoOrcamentos.length;

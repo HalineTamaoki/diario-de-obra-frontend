@@ -14,7 +14,7 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
     const {idObra} = useParams<{idObra: string}>();
     const form = useForm<NovoOrcamentoType>({
         defaultValues: valorInicial ?? {
-            idObra: idObra  ? parseInt(idObra) : 0,
+            idObra: idObra  ? parseFloat(idObra) : 0,
             data: new Date().toISOString().split('T')[0],
         },
     });

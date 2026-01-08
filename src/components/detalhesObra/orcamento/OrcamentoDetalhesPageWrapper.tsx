@@ -1,9 +1,6 @@
 import { useCallback, useState, type ReactNode } from 'react'
 import { BsChevronLeft, BsPencilFill } from 'react-icons/bs'
-import { useDispatch, useSelector } from 'react-redux'
-import type { RootState } from '../../../app/store'
-import { editarDetalhesOrcamento } from '../../../features/detalhesOrcamentoSlice'
-import type { NovoOrcamentoType } from '../../../types/Orcamento'
+import type { NovoOrcamentoType, OrcamentoDetalhesType } from '../../../types/Orcamento'
 import { NomeInput } from '../../common/NomeInput'
 import { PageTitleWrapper } from '../../layout/PageTitleWrapper'
 import { PageWrapper } from '../../layout/PageWrapper'
@@ -12,17 +9,13 @@ interface OrcamentoDetalhesPageWrapperProps {
     children: ReactNode, 
     editMode: boolean, 
     voltar?: () => void, 
-    setEditMode: (editMode: boolean) => void
+    setEditMode: (editMode: boolean) => void,
+    orcamento: OrcamentoDetalhesType,
+    editar: (novoOrcamento: NovoOrcamentoType) => void
 }
 
-export const OrcamentoDetalhesPageWrapper = ({children, editMode, voltar, setEditMode}: OrcamentoDetalhesPageWrapperProps) => {
-    const { orcamento } = useSelector((state: RootState) => state.detalhesOrcamento);
+export const OrcamentoDetalhesPageWrapper = ({children, editMode, voltar, setEditMode, orcamento, editar}: OrcamentoDetalhesPageWrapperProps) => {
     const [nomeEditMode, setNomeEditMode] = useState<boolean>(editMode);
-    const dispatch = useDispatch();
-
-    const editar = useCallback((key: keyof NovoOrcamentoType, value: string | number) => {
-        dispatch(editarDetalhesOrcamento({[key]: value}));
-    }, [editarDetalhesOrcamento]);
 
     const enterEditMode = useCallback(() => {
         setNomeEditMode(true);
@@ -40,7 +33,7 @@ export const OrcamentoDetalhesPageWrapper = ({children, editMode, voltar, setEdi
                         id='detalhes-orcamento-input'
                         valorInicial={orcamento?.empresa ?? ''}
                         defaultValue={orcamento?.empresa ?? 'Nome da empresa'}
-                        editar={nome => editar('empresa', nome)} 
+                        editar={nome => editar({...orcamento, empresa: nome})} 
                         sairModoEdicao={() => setNomeEditMode(false)}
                     />
                 ) : (
