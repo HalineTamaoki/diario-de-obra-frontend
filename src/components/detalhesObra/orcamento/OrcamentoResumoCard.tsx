@@ -1,31 +1,32 @@
 import { useCallback, useMemo } from 'react'
 import { BsEye, BsPatchCheck, BsPatchCheckFill, BsTrash3 } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import { itemsObraActions } from '../../../features/itemsObraSlice'
 import type { OrcamentoResumo } from '../../../types/Orcamento'
 import { AcoesButton } from '../../common/AcoesButton'
 
-export const OrcamentoResumoCard = ({orcamento, idObra}: {orcamento: OrcamentoResumo, idObra: number}) => {
+export const OrcamentoResumoCard = ({orcamento, idItem}: {orcamento: OrcamentoResumo, idItem: number}) => {
     const dispach = useDispatch();
     const navigate = useNavigate();
+    const { idObra } = useParams<{idObra: string}>();
 
     const bgColor = useMemo(() => orcamento.selecionado ? 'bg-(--secondary)' : '', [orcamento.selecionado]);
     
     const selecionar = useCallback(() => {
-        dispach(itemsObraActions.selecionarOrcamento({id: orcamento.id, idObra: idObra}));
+        dispach(itemsObraActions.selecionarOrcamento({id: orcamento.id, idItem: idItem}));
     }, [itemsObraActions.selecionarOrcamento, orcamento.id]);
 
     const desselecionar = useCallback(() => {
-        dispach(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idObra: idObra}));
+        dispach(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idItem: idItem}));
     }, [itemsObraActions.desselecionarOrcamento, orcamento.id]);
 
     const deletar = useCallback(() => {
-        dispach(itemsObraActions.deletarOrcamento({id: orcamento.id, idObra: idObra}));
-    }, [itemsObraActions.deletarOrcamento, orcamento.id, idObra]);
+        dispach(itemsObraActions.deletarOrcamento({id: orcamento.id, idItem: idItem}));
+    }, [itemsObraActions.deletarOrcamento, orcamento.id, idItem]);
 
     const verDetalhes = useCallback(() => {
-        navigate(`/orcamento/${idObra}/${orcamento.id}`);
+        navigate(`/orcamento/${idObra}/${idItem}/${orcamento.id}`);
     }, [navigate, orcamento.id]);
 
     return (

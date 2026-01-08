@@ -13,7 +13,7 @@ export const IdeacaoImagem = ({ideia}: {ideia: Ideia}) => {
     const dispach = useDispatch();
    
     const deletar = useCallback(() => {
-        dispach(itemsObraActions.removerLink({id: ideia.id, idObra: ideia.idObra}));
+        dispach(itemsObraActions.removerLink({id: ideia.id, idItem: ideia.idItem}));
     }, [itemsObraActions.removerLink, ideia.id]);
 
     const verImagem = useCallback(() => {

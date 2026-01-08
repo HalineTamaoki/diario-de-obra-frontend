@@ -3,7 +3,7 @@ export type Execucao = {
     previsao?: Previsao,
     outrasDatas?: OutraData[];
     finalizado?: boolean,
-    idObra: number,
+    idItem: number,
 }
 
 export type Previsao = {

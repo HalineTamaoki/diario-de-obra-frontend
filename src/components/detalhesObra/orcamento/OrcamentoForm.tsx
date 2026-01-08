@@ -11,10 +11,10 @@ interface OrcamentoFormProps {
 }
 
 export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorInicial}: OrcamentoFormProps) => {
-    const {idObra} = useParams<{idObra: string}>();
+    const {idItem} = useParams<{idItem: string}>();
     const form = useForm<NovoOrcamentoType>({
         defaultValues: valorInicial ?? {
-            idObra: idObra  ? parseFloat(idObra) : 0,
+            idItem: idItem ? parseFloat(idItem) : 0,
             data: new Date().toISOString().split('T')[0],
         },
     });

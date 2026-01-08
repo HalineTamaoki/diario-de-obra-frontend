@@ -15,7 +15,7 @@ export type ItemObra = {
     finalizacao?: Finalizacao
 }
 
-export type IdObraId = { 
-  idObra: number;
+export type IdItemId = { 
+  idItem: number;
   id: number;
 }

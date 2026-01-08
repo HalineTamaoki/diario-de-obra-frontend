@@ -24,7 +24,7 @@ export const ExecucaoCard = ({id}: {id: number}) => {
         dispatch(itemsObraActions.editarPrevisao({
             ...execucao?.previsao,
             [key]: novoValor,
-            idObra: id,
+            idItem: id,
         }))
     }, [execucao?.previsao, itemsObraActions.editarPrevisao]); 
 
@@ -32,26 +32,26 @@ export const ExecucaoCard = ({id}: {id: number}) => {
         dispatch(itemsObraActions.editarOutraData({
             id: idOutraData,
             data: novoValor,
-            idObra: id,
+            idItem: id,
         }));
     }, [itemsObraActions.editarOutraData]);
 
     const deletarOutraData = useCallback((idOutraData: number) => {
-        dispatch(itemsObraActions.removerOutraData({id: idOutraData, idObra: id}));
+        dispatch(itemsObraActions.removerOutraData({id: idOutraData, idItem: id}));
     }, [itemsObraActions.removerOutraData]);
 
     const marcarComoFinalizado = useCallback(() => {
         dispatch(itemsObraActions.marcarFinalizado(id));
         dispatch(itemsObraActions.editarDataFinalizacao({
             data: new Date().toISOString().split('T')[0],
-            idObra: id,
+            idItem: id,
         }));
         dispatch(itemsObraActions.avancarEtapa(id));
     }, [itemsObraActions.editarDataFinalizacao, itemsObraActions.marcarFinalizado]);
 
     const alterarComentario = useCallback((value: string) => {
         if(value !== execucao?.comentarios){
-            dispatch(itemsObraActions.editarComentarioExecucao({comentario: value, idObra: id}));
+            dispatch(itemsObraActions.editarComentarioExecucao({comentario: value, idItem: id}));
         }
     }, [itemsObraActions.editarComentarioExecucao, itemsObraActions.avancarEtapa]);
 
@@ -109,7 +109,7 @@ export const ExecucaoCard = ({id}: {id: number}) => {
                 )
             }
             <Link 
-                to={`/nova-data/${id}`} 
+                to={`/nova-data/${id}/${itemObra?.id}`} 
                 id={`execucao-nova-data-${id}`} 
                 className='text-(--blue)! text-sm w-full block underline! hover:text-(--blue-2)! mb-1 mt-2 text-end'
             >

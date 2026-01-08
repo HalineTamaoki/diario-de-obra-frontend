@@ -6,7 +6,7 @@ export type OrcamentoResumo = {
 export type OrcamentoDetalhesType = NovoOrcamentoType & OrcamentoResumo;
 
 export type NovoOrcamentoType = OrcamentoBase & OrcamentoExtendido & {
-    idObra: number;
+    idItem: number;
 };
 
 type OrcamentoExtendido = {

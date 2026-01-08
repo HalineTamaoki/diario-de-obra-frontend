@@ -12,7 +12,7 @@ export const IdeacaoCard = ({id}: {id: number}) => {
     const ideias = useMemo(() => itemObra?.ideacao ?? [], [itemObra]);
  
     const addIdeia = useCallback((value: string) => {
-        dispach(itemsObraActions.addLink({link: value, idObra: id}));
+        dispach(itemsObraActions.addLink({link: value, idItem: id}));
     }, [itemsObraActions.addLink]);
 
     return (

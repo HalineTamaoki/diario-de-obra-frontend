@@ -17,9 +17,9 @@ export function App() {
           <Route path='/' element={<Layout />}>
             <Route index element={<Obra />} />
             <Route path=':idObra' element={<DetalhesObra />} />
-            <Route path='/orcamento/:idObra/novo' element={<NovoOrcamento />} />
-            <Route path='/orcamento/:idObra/:idOrcamento' element={<OrcamentoDetalhes />} />
-            <Route path='/nova-data/:idObra' element={<OutraDataForm />} />
+            <Route path='/orcamento/:idObra/:idItem/novo' element={<NovoOrcamento />} />
+            <Route path='/orcamento/:idObra/:idItem/:idOrcamento' element={<OrcamentoDetalhes />} />
+            <Route path='/nova-data/:idObra/:idItem' element={<OutraDataForm />} />
           </Route>
         </Routes>
       </BrowserRouter>

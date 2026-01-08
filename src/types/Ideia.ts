@@ -1,5 +1,5 @@
 export type Ideia = {
     id: number;
-    idObra: number;
+    idItem: number;
     link: string;
 }

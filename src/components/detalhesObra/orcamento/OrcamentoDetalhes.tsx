@@ -1,7 +1,6 @@
 import { useCallback, useEffect, useState } from 'react'
 import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
-import { editarDetalhesOrcamento } from '../../../features/detalhesOrcamentoSlice'
 import { itemsObraActions } from '../../../features/itemsObraSlice'
 import type { NovoOrcamentoType, OrcamentoDetalhesType } from '../../../types/Orcamento'
 import { OrcamentoDetalhesPageWrapper } from './OrcamentoDetalhesPageWrapper'
@@ -10,12 +9,12 @@ import { OrcamentoForm } from './OrcamentoForm'
 const mockOrcamento = {
   empresa: 'Test',
   data: new Date().toISOString().split('T')[0],
-  idObra: 1,
+  idItem: 1,
   id: 1
 }
 
 export const OrcamentoDetalhes = () => {
-    const { idObra, idOrcamento } = useParams<{idObra: string, idOrcamento: string}>();
+    const { idObra, idItem, idOrcamento } = useParams<{idObra: string, idItem: string, idOrcamento: string}>();
     const [orcamento, setOrcamento] = useState<OrcamentoDetalhesType>(mockOrcamento);
     const dispatch = useDispatch();
     const navigate = useNavigate();
@@ -23,10 +22,10 @@ export const OrcamentoDetalhes = () => {
 
     //TODO: remover esse useEffect. Ele apenas seta o id da obra como o atual
     useEffect(() => {
-        if(idObra && idOrcamento){
-            setOrcamento({...orcamento, idObra: parseFloat(idObra), id: parseFloat(idOrcamento)});
+        if(idItem && idOrcamento){
+            setOrcamento({...orcamento, idItem: parseFloat(idItem), id: parseFloat(idOrcamento)});
         }
-    }, [idObra])
+    }, [idItem, idOrcamento]);
 
     const voltar = useCallback(() => {
         if(editMode){
@@ -39,25 +38,25 @@ export const OrcamentoDetalhes = () => {
     const editar = useCallback((novoOrcamento: NovoOrcamentoType) => {
         setOrcamento({...orcamento, ...novoOrcamento});
         setEditMode(false);
-    }, [editarDetalhesOrcamento]);
+    }, [orcamento]);
 
     const selecionar = useCallback(() => {
         if(orcamento?.id){
-            dispatch(itemsObraActions.selecionarOrcamento({id: orcamento.id, idObra: orcamento.idObra}));
+            dispatch(itemsObraActions.selecionarOrcamento({id: orcamento.id, idItem: orcamento.idItem}));
             navigate(`/${idObra}`);
         }
     }, [orcamento, itemsObraActions.selecionarOrcamento]);
 
     const desselecionar = useCallback(() => {
         if(orcamento?.id){
-            dispatch(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idObra: orcamento.idObra}));
+            dispatch(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idItem: orcamento.idItem}));
             navigate(`/${idObra}`);
         }
     }, [orcamento, itemsObraActions.desselecionarOrcamento]);
 
     const deletar = useCallback(() => {
         if(orcamento?.id){
-            dispatch(itemsObraActions.deletarOrcamento({id: orcamento.id, idObra: orcamento.idObra}));
+            dispatch(itemsObraActions.deletarOrcamento({id: orcamento.id, idItem: orcamento.idItem}));
             navigate(`/${idObra}`);
         }
     }, [orcamento?.id, itemsObraActions.deletarOrcamento]);

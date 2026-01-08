@@ -9,7 +9,7 @@ import { PageLayout } from '../../layout/PageLayout';
 type NovaData = Omit<OutraData, 'id'>;
 
 export const OutraDataForm = () => {
-    const {idObra} = useParams<{idObra: string}>();
+    const { idItem, idObra } = useParams<{idItem: string, idObra: string}>();
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -22,7 +22,7 @@ export const OutraDataForm = () => {
     const { handleSubmit, register, formState: {errors} } = form;
 
     const submit = useCallback((data: NovaData) => {
-        dispatch(itemsObraActions.addOutraData({...data, idObra: idObra ? parseFloat(idObra) : 0}));
+        dispatch(itemsObraActions.addOutraData({...data, idItem: idItem ? parseFloat(idItem) : 0}));
         navigate(`/${idObra}`);
     }, [itemsObraActions.addOutraData]);
 

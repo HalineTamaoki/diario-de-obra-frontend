@@ -12,11 +12,11 @@ export const FinalizadoCard = ({id}: {id: number}) => {
     const dispatch = useDispatch();
 
     const alterarData = useCallback((novaData?: string) => {
-        dispatch(itemsObraActions.editarDataFinalizacao({data: novaData, idObra: id}));
+        dispatch(itemsObraActions.editarDataFinalizacao({data: novaData, idItem: id}));
     }, [itemsObraActions.editarDataFinalizacao]);
 
     const alterarComentario = useCallback((novoComentario: string) => {
-        dispatch(itemsObraActions.editarComentarioFinalizacao({comentarios: novoComentario, idObra: id}));
+        dispatch(itemsObraActions.editarComentarioFinalizacao({comentarios: novoComentario, idItem: id}));
     }, [itemsObraActions.editarComentarioFinalizacao]);
 
     return (
