@@ -1,4 +1,4 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
 import type { RootState } from '../app/store';
@@ -18,11 +18,20 @@ export const DetalhesObra = () => {
 
     const obra = useMemo(() => obras.find(obra => obra.id === parseInt(idObra ?? '0')), [idObra, obras]);
 
+    useEffect(() => {
+        sessionStorage.setItem('ultimaObraVista', idObra ?? '0');
+    }, []);
+    
+    const clearSessionStorage = useCallback(() => {
+        sessionStorage.removeItem('ultimaObraVista');
+    }, []);
+
     return (
         <PageLayout 
             titulo={obra?.nome ?? 'Itens da obra'} 
             id="detalhes-obra" 
             backPath='/' 
+            onClick={clearSessionStorage}
         >
             <AddInput 
                 id='adicionar-item-obra' 
