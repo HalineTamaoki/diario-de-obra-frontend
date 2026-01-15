@@ -1,25 +1,19 @@
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+.border-right-none {
+  border-right: none !important;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.preact:hover {
-  filter: drop-shadow(0 0 2em #673ab8aa);
+.border-left-none {
+  border-left: none !important;
 }
 
-.card {
-  padding: 2em;
+.dropdown-toggle::after {
+  display: none !important;
 }
 
-.read-the-docs {
-  color: #888;
+.btn {
+  border: none !important;
+}
+
+.accordion-item {
+  border: 1px solid var(--grey) !important;
 }
