@@ -6,7 +6,7 @@ import { isBeforeNow } from '../../utils/DateUtils'
 
 export default function ProtectedRoute() {
     const token = useSelector((s: RootState) => s.auth.token)
-    const location = useLocation()
+    const location = useLocation();
 
     if (!token || isBeforeNow(token.validTo)) {
         return <Navigate to="/login" replace state={{ from: location }} />

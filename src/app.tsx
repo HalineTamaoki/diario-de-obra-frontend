@@ -8,6 +8,7 @@ import { DetalhesObra } from './pages/DetalhesObra';
 import ProtectedRoute from './components/common/ProtectedRoute';
 import { Login } from './pages/Login';
 import PaginaNaoEncontrada from './pages/PaginaNaoEncontrada';
+import { CadastroUsuario } from './pages/CadastroUsuario';
 
 export function App() {
   return (
@@ -21,6 +22,7 @@ export function App() {
             </Route>
           </Route>
           <Route path='/login' element={<Login />} />
+          <Route path='/cadastro' element={<CadastroUsuario />} />
           <Route path='*' element={<PaginaNaoEncontrada />} />
         </Routes>
       </BrowserRouter>

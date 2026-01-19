@@ -39,9 +39,12 @@ export const login = createAsyncThunk<
     await new Promise((r) => setTimeout(r, 800))
     
     if (senha === '123456' && email) {
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1)
+
         const token: Token = {
           access_token: 'fake-jwt-token-123',
-          validTo: new Date().toDateString()
+          validTo: tomorrow.toDateString()
         }
         localStorage.setItem('auth', JSON.stringify(token));
         return token;
