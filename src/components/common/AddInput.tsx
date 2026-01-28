@@ -24,7 +24,7 @@ export const AddInput = ({add, id, placeholder, className}: {add: (value: string
     return (
         <div 
             id={`${id}-wrapper`} 
-            className={`w-full flex pl-4 py-1 rounded-lg mb-6 ${className}`} 
+            className={`w-full flex pl-4 py-1 rounded-lg mb-3 ${className}`} 
             style={{ borderColor: 'var(--grey)', borderWidth: '1px', borderStyle: 'solid'}}
         >
             <input 

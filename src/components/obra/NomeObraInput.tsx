@@ -19,7 +19,9 @@ export const NomeObraInput = ({obra, sairModoEdicao}: NomeObraInputProps) => {
     return (
         <NomeInput
             id='editar-nome-obra-input'
+            className='py-2.5'
             valorInicial={obra.nome}
+            defaultValue='Nome da obra'
             editar={editar} 
             sairModoEdicao={sairModoEdicao}
         />

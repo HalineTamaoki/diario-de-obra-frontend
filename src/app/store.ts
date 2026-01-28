@@ -1,15 +1,11 @@
 import { configureStore } from '@reduxjs/toolkit'
-import obraSlice from '../features/obraSlice'
 import itemsObraSlice from '../features/itemsObraSlice'
-import ideacaoSlice from '../features/ideacaoSlice'
-import orcamentoSlice from '../features/orcamentoSlice'
+import obraSlice from '../features/obraSlice'
 
 export const store = configureStore({
     reducer: {
         obra: obraSlice,
         detalhesObra: itemsObraSlice,
-        ideacao: ideacaoSlice,
-        orcamento: orcamentoSlice,
     },
 })
 
