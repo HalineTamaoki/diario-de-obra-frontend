@@ -21,10 +21,10 @@ const getEtapaAnterior = (etapa: EtapasObra) => {
       return 'ideacao';
     case 'execucao':
       return 'orcamento';
-    case 'execucao':
-      return 'ideacao';
-    default:
+    case 'finalizado':
       return 'execucao';
+    default:
+      return 'finalizado';
   }
 }
 
