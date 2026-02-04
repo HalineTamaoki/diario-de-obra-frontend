@@ -6,6 +6,10 @@ import { OrcamentoDetalhes } from "../components/detalhesObra/orcamento/Orcament
 import { Layout } from "../components/layout/Layout";
 import { DetalhesObra } from "../pages/DetalhesObra";
 import { Obra } from "../pages/Obra";
+import ProtectedRoute from "../components/common/ProtectedRoute";
+import { CadastroUsuario } from "../pages/CadastroUsuario";
+import { Login } from "../pages/Login";
+import PaginaNaoEncontrada from "../pages/PaginaNaoEncontrada";
 
 export const AppRoutes = () => {
   const navigate = useNavigate();
@@ -23,13 +27,20 @@ export const AppRoutes = () => {
 
   return (
     <Routes>
-      <Route path='/' element={<Layout />}>
-        <Route index element={<Obra />} />
-        <Route path=':idObra' element={<DetalhesObra />} />
-        <Route path='/orcamento/:idObra/:idItem/novo' element={<NovoOrcamento />} />
-        <Route path='/orcamento/:idObra/:idItem/:idOrcamento' element={<OrcamentoDetalhes />} />
-        <Route path='/nova-data/:idObra/:idItem' element={<OutraDataForm />} />
-      </Route>
-    </Routes>
+        <Route element={<ProtectedRoute />}>
+          <Route path='/' element={<Layout />}>
+            <Route index element={<Obra />} />
+            <Route path=':nome' element={<DetalhesObra />} />
+            <Route index element={<Obra />} />
+            <Route path=':idObra' element={<DetalhesObra />} />
+            <Route path='/orcamento/:idObra/:idItem/novo' element={<NovoOrcamento />} />
+            <Route path='/orcamento/:idObra/:idItem/:idOrcamento' element={<OrcamentoDetalhes />} />
+            <Route path='/nova-data/:idObra/:idItem' element={<OutraDataForm />} />
+          </Route>
+        </Route>
+        <Route path='/login' element={<Login />} />
+        <Route path='/cadastro' element={<CadastroUsuario />} />
+        <Route path='*' element={<PaginaNaoEncontrada />} />
+      </Routes>
   );
 }
