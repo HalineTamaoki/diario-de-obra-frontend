@@ -3,7 +3,7 @@ import { Button, Dropdown, Offcanvas } from 'react-bootstrap';
 import { useMediaQuery } from 'react-responsive';
 import { AcoesButtonItens } from './AcoesButtonItens';
 
-export const AcoesWithChildren = ({itens, children, btnClassName}: {itens: AcoesButtonItens[], children?: React.ReactNode, btnClassName?: string}) => {
+export const AcoesWithChildren = ({itens, children, btnClassName, disabled}: {itens: AcoesButtonItens[], children?: React.ReactNode, btnClassName?: string, disabled?: boolean}) => {
     const [show, setShow] = useState(false);
 
     const isMobile = useMediaQuery({ maxWidth: 767 });
@@ -27,7 +27,7 @@ export const AcoesWithChildren = ({itens, children, btnClassName}: {itens: Acoes
     <>
         {isMobile ? (
             <div>
-                <Button variant="button" onClick={handleShow} id="acoes-btn" onMouseDown={e => e.preventDefault()} className={`py-2 ${btnClassName}`}>
+                <Button variant="button" onClick={handleShow} id="acoes-btn" onMouseDown={e => e.preventDefault()} className={`py-2 ${btnClassName}`} disabled={disabled}>
                     {children}
                 </Button>
 
@@ -36,7 +36,7 @@ export const AcoesWithChildren = ({itens, children, btnClassName}: {itens: Acoes
                         <Offcanvas className='offcanvas-autoheight h-auto!' show={show} onHide={handleClose} placement="bottom">
                             <Offcanvas.Title></Offcanvas.Title>
                             <Offcanvas.Body className='gap-3 grid'>
-                                <AcoesButtonItens itens={itens} handleClose={handleClose}/>
+                                <AcoesButtonItens itens={itens} handleClose={handleClose} disabled={disabled}/>
                             </Offcanvas.Body>
                         </Offcanvas>
                     </div>
@@ -54,7 +54,7 @@ export const AcoesWithChildren = ({itens, children, btnClassName}: {itens: Acoes
 
                 <Dropdown.Menu onMouseDown={e => e.preventDefault()}>
                     <div className='py-1 px-2'>
-                        <AcoesButtonItens itens={itens} handleClose={handleClose}/>
+                        <AcoesButtonItens itens={itens} handleClose={handleClose} disabled={disabled}/>
                     </div>
                 </Dropdown.Menu>
             </Dropdown>

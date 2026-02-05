@@ -37,9 +37,9 @@ export const AppRoutes = () => {
             <Route path='/orcamento/:idObra/:idItem/:idOrcamento' element={<OrcamentoDetalhes />} />
             <Route path='/nova-data/:idObra/:idItem' element={<OutraDataForm />} />
           </Route>
-        </Route>
-        <Route path='/login' element={<Login />} />
-        <Route path='/cadastro' element={<CadastroUsuario />} />
+          <Route path='/login' element={<Login />} />
+          <Route path='/cadastro' element={<CadastroUsuario />} />
+        </Route>      
         <Route path='*' element={<PaginaNaoEncontrada />} />
       </Routes>
   );

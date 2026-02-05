@@ -2,7 +2,9 @@ import { useCallback, useMemo, useState } from 'react';
 import { BsEye, BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
+import { mostrarNotificacao } from '../../features/notificacaoSlice';
 import { removerObra } from '../../features/obraSlice';
+import { useDeletarObraMutation } from '../../services/obraApi';
 import type { Obra } from '../../types/Obra';
 import { AcoesButton } from '../common/AcoesButton';
 import { NomeObraInput } from './NomeObraInput';
@@ -11,9 +13,14 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
     const [editMode, setEditMode] = useState<boolean>(false);
     const navigate = useNavigate();
     const dispach = useDispatch();
+    const [deletarObra, { isLoading }] = useDeletarObraMutation();
 
     const deletar = useCallback(() => {
-        dispach(removerObra(obra.id));
+        deletarObra(obra.id).unwrap().then(() => {
+            dispach(removerObra(obra.id));
+        }).catch((error) => {
+            dispach(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao deletar obra.'}));
+        });
     }, []);
 
     const verDetalhes = useCallback(() => {
@@ -60,6 +67,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                             {id: 'acoes-obra-deletar', text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
                             {id: 'acoes-obra-ver', text: 'Ver detalhes', onClick: verDetalhes, icon: <BsEye />},
                         ]}
+                        loading={isLoading}
                     />
                 </div>
             </Link>

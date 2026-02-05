@@ -8,8 +8,11 @@ export default function ProtectedRoute() {
     const token = useSelector((s: RootState) => s.auth.token)
     const location = useLocation();
 
-    if (!token || isBeforeNow(token.validTo)) {
+    const isTokenValid = token && !isBeforeNow(token.validTo);
+    if (!isTokenValid) {
         return <Navigate to="/login" replace state={{ from: location }} />
+    } else if(isTokenValid && (location.pathname === '/login' || location.pathname === '/cadastro')) {
+        return <Navigate to="/" replace state={{ from: location }} />
     }
 
     return <Outlet />

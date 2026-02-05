@@ -19,12 +19,11 @@ export const NomeInput = ({valorInicial, defaultValue, id, className, editar, sa
     }, [value, valorInicial]);
 
     useEffect(() => {
-        const timer = setTimeout(() => {    
+        const timer = setTimeout(() => {  
             handleEditar();
         }, 1000);
 
         return () => {
-            handleEditar();
             clearTimeout(timer);
         };
     }, [value]);

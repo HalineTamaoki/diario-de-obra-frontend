@@ -1,6 +1,7 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
-import { editarObra } from '../../features/obraSlice';
+import { mostrarNotificacao } from '../../features/notificacaoSlice';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useEditarObraMutation } from '../../services/obraApi';
 import type { Obra } from '../../types/Obra';
 import { NomeInput } from '../common/NomeInput';
 
@@ -10,10 +11,14 @@ interface NomeObraInputProps {
 }
 
 export const NomeObraInput = ({obra, sairModoEdicao}: NomeObraInputProps) => {
-    const dispach = useDispatch();
+    const dispatch = useAppDispatch();
+    const [editarObra] = useEditarObraMutation();
 
     const editar = useCallback((value: string) => {
-        dispach(editarObra({id: obra.id, nome: value}));
+        editarObra({id: obra.id, nome: value}).unwrap()
+            .catch((error) => {
+                dispatch(mostrarNotificacao({mensagem: error.data?.mensagem ?? 'Erro ao editar nome da obra.', variant: 'danger'}));
+            })
     }, [obra.id]);
 
     return (

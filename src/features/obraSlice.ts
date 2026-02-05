@@ -10,9 +10,6 @@ const obraSlice = createSlice({
   name: 'obra',
   initialState,
   reducers: {
-    editarObra: (state, action: PayloadAction<{id: number, nome: string}>) => {
-      state.obras = state.obras.map(obra => obra.id === action.payload.id ? {...obra, nome: action.payload.nome} : obra);
-    },
     removerObra: (state, action: PayloadAction<number>) => {
       state.obras = state.obras.filter(obra => obra.id !== action.payload)
     },
@@ -25,8 +22,20 @@ const obraSlice = createSlice({
           state.obras.push({...action.payload, porcentagem: 0});
         }
       )
+      .addMatcher(
+        obraApi.endpoints.obterObras.matchFulfilled,
+        (state, action: PayloadAction<Obra[]>) => {
+          state.obras = action.payload;
+        }
+      )
+      .addMatcher(
+        obraApi.endpoints.editarObra.matchFulfilled,
+        (state, action: PayloadAction<NomeId>) => {
+          state.obras = state.obras.map(obra => obra.id === action.payload.id ? {...obra, nome: action.payload.nome} : obra);
+        }
+      )
   }
 })
 
-export const { editarObra, removerObra } = obraSlice.actions
+export const { removerObra } = obraSlice.actions
 export default obraSlice.reducer;
