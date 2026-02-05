@@ -38,3 +38,12 @@
 .input-no-icon::-webkit-inner-spin-button {
   display: none;
 }
+
+/*Configuração da margem para o botão do alert*/
+.alert .btn-close {
+  padding-block: 0.5rem !important;
+  padding-right: 0.25rem !important;
+  font-size: 0.85rem;
+  outline: none !important;
+  box-shadow: none !important;
+}

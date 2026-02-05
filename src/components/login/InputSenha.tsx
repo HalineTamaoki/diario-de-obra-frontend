@@ -6,10 +6,11 @@ interface InputSenhaProps {
     label: string, 
     name: string, 
     id: string,
-    validate?: (value: string) => string | undefined
+    validate?: (value: string) => string | undefined,
+    disabled?: boolean,
 }
 
-export const InputSenha = ({ label, name, id, validate}: InputSenhaProps) => {
+export const InputSenha = ({ label, name, id, validate, disabled}: InputSenhaProps) => {
     const [ mostrarSenha, setMostrarSenha] = useState<boolean>(false);
     const { register, formState: {errors} } = useFormContext();
 
@@ -42,11 +43,13 @@ export const InputSenha = ({ label, name, id, validate}: InputSenhaProps) => {
                     aria-invalid={!!errors.senha || undefined}
                     placeholder="••••••••"
                     className='pl-10 border-2 w-full py-2 rounded'
+                    disabled={disabled}
                 />
                     <button
                         type="button"
                         onClick={mostrarSenhaOnClick}
                         className="absolute inset-y-0 right-0 pr-3 flex items-center"
+                        disabled={disabled}
                     >
                         {mostrarSenha ? (
                             <BsEyeSlash className="h-5 w-5 text-gray-400 hover:text-gray-600" />

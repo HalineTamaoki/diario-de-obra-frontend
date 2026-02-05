@@ -2,7 +2,7 @@ import { useFormContext } from 'react-hook-form';
 import { BsEnvelope } from 'react-icons/bs';
 import type { Usuario } from '../../types/Usuario';
 
-export const InputEmail = () => {
+export const InputEmail = ({disabled}: {disabled?: boolean}) => {
     const { register, formState: {errors} } = useFormContext<Usuario>();
 
     return (
@@ -30,6 +30,7 @@ export const InputEmail = () => {
                     aria-invalid={!!errors.email || undefined}
                     aria-describedby={errors.email ? "email-error" : undefined}
                     className='pl-10 border-2 w-full py-2 rounded'
+                    disabled={disabled}
                 />
             </div>
             {errors.email && (

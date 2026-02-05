@@ -4,15 +4,13 @@ import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store';
 
 export const Notificacao = () => {
-    const notificacao = useSelector((s: RootState) => s.notificacao.notificacao);
+  const notificacao = useSelector((s: RootState) => s.notificacao.notificacao);
 
   return (
     <>
-      {notificacao && (
-        <Alert variant={notificacao.variant}>
-          {notificacao.mensagem}
-        </Alert>
-      )}
+      {notificacao && <Alert variant={notificacao.variant} className='w-50 z-10 position-fixed top-3 py-2 flex align-items-center' dismissible>
+        {notificacao.mensagem}
+      </Alert>}
     </>
   );
 }
