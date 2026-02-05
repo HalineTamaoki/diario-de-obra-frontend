@@ -1,10 +1,6 @@
-import { createAsyncThunk, createSlice, type PayloadAction } from '@reduxjs/toolkit';
-import type { Usuario } from '../types/Usuario';
-
-type Token = {
-    access_token: string,
-    validTo: string
-}
+import { createSlice, type PayloadAction } from '@reduxjs/toolkit';
+import { authApi } from '../services/authApi';
+import type { Token } from '../types/Usuario';
 
 type AuthState = {
   status: 'idle' | 'loading' | 'succeeded' | 'failed',
@@ -28,30 +24,6 @@ const initialState: AuthState = {
   status: 'idle'
 }
 
-export const login = createAsyncThunk<
-    Token,
-    Usuario,
-    { rejectValue: string }
->('auth/login', async (credentials, { rejectWithValue }) => {
-    const { email, senha } = credentials
-
-    //TODO: substituir pela chamada da API
-    await new Promise((r) => setTimeout(r, 800))
-    
-    if (senha === '123456' && email) {
-        const tomorrow = new Date();
-        tomorrow.setDate(tomorrow.getDate() + 1)
-
-        const token: Token = {
-          access_token: 'fake-jwt-token-123',
-          validTo: tomorrow.toDateString()
-        }
-        localStorage.setItem('auth', JSON.stringify(token));
-        return token;
-    }
-    return rejectWithValue('Credenciais inválidas')
-});
-
 const authSlice = createSlice({
   name: 'login',
   initialState,
@@ -65,11 +37,13 @@ const authSlice = createSlice({
   },
   extraReducers: (builder) => {
     builder
-      .addCase(login.pending, (state) => {state.status = 'loading'})
-      .addCase(login.fulfilled, (state,  action: PayloadAction<Token>) => {
-        state.status = 'succeeded';
-        state.token = action.payload;
-      })
+      .addMatcher(
+        authApi.endpoints.login.matchFulfilled,
+        (state, action: PayloadAction<Token>) => {
+          state.token = action.payload;
+          localStorage.setItem('auth', JSON.stringify(action.payload));
+        }
+      )
   }
 })
 

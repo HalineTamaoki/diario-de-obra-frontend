@@ -53,7 +53,7 @@ export const CadastroUsuario = () => {
                 <h1 className="text-3xl font-bold mb-2">Cadastre-se</h1>
             </div>
             <FormProvider {...methods}>
-                <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit, err => console.log(err))}>
+                <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit)}>
                     <InputEmail disabled={isLoading}/>
                     <InputSenha 
                         id='senha'

@@ -9,8 +9,7 @@ export const userApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: user,
             }),
-            extraOptions: { shoudCheckAuth: false },
-            invalidatesTags: ['Usuario'],
+            extraOptions: { shoudCheckAuth: false }
         }),
    }),
 });

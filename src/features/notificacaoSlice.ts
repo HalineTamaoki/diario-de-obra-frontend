@@ -13,13 +13,12 @@ const notificacaoSlice = createSlice({
   reducers: {
     mostrarNotificacao: (state, action: PayloadAction<Notificacao>) => {
       state.notificacao = action.payload;
-
-      setTimeout(() => {
-        state.notificacao = null;
-      }, 3000);
+    },
+    ocultarNotificacao: (state) => {
+      state.notificacao = null;
     },
   },
 })
 
-export const { mostrarNotificacao } = notificacaoSlice.actions
+export const { mostrarNotificacao, ocultarNotificacao } = notificacaoSlice.actions
 export default notificacaoSlice.reducer

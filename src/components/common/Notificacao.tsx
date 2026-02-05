@@ -1,16 +1,29 @@
 
+import { useEffect } from 'react';
 import Alert from 'react-bootstrap/Alert';
-import { useSelector } from 'react-redux';
 import type { RootState } from '../../app/store';
+import { ocultarNotificacao } from '../../features/notificacaoSlice';
+import { useAppDispatch, useAppSelector } from '../../hooks/useAppDispatch';
 
 export const Notificacao = () => {
-  const notificacao = useSelector((s: RootState) => s.notificacao.notificacao);
+    const dispatch = useAppDispatch();
+    const notificacao = useAppSelector((s: RootState) => s.notificacao.notificacao);
 
-  return (
-    <>
-      {notificacao && <Alert variant={notificacao.variant} className='w-50 z-10 position-fixed top-3 py-2 flex align-items-center' dismissible>
+    useEffect(() => {
+      if (notificacao) {
+        const timer = setTimeout(() => {
+          dispatch(ocultarNotificacao());
+        }, 3000);
+
+        return () => clearTimeout(timer);
+      }
+    }, [notificacao, dispatch]);
+
+    if (!notificacao) return null;
+
+    return (
+      <Alert variant={notificacao.variant} className='w-[90%] md:w-[50%] z-10 position-fixed top-3 py-2 flex align-items-center' dismissible>
         {notificacao.mensagem}
-      </Alert>}
-    </>
-  );
+      </Alert>
+    );
 }

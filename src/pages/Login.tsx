@@ -5,19 +5,20 @@ import { Link, useNavigate } from 'react-router-dom';
 import { LayoutNaoLogado } from '../components/layout/LayoutNaoLogado';
 import { InputEmail } from '../components/login/InputEmail';
 import { InputSenha } from '../components/login/InputSenha';
-import { login } from '../features/authSlice';
-import { useAppDispatch } from '../hooks/useAppDispatch';
+import { useLoginMutation } from '../services/authApi';
 import type { Usuario } from '../types/Usuario';
 
 export const Login = () => {
     const methods = useForm<Usuario>();
-    const { handleSubmit } = methods;
-    const dispatch = useAppDispatch();
+    const { handleSubmit, setError } = methods;
     const navigate = useNavigate();
+    const [login, { isLoading }] = useLoginMutation();
 
     const onSubmit = useCallback((data: Usuario) => {
-        dispatch(login(data)).unwrap().then(() => {
+        login(data).unwrap().then(() => {
             navigate('/');
+        }).catch((error) => {
+            setError('senha', { message: error.data?.message ?? 'Erro ao efetuar login. Tente novamente mais tarde.' });
         });
     }, []);
 
@@ -31,16 +32,17 @@ export const Login = () => {
                 <p>Faça login para continuar</p>
             </div>
             <FormProvider {...methods}>
-                <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit, err => console.log(err))}>
-                    <InputEmail />
+                <form className="space-y-6" noValidate onSubmit={handleSubmit(onSubmit)}>
+                    <InputEmail disabled={isLoading}/>
                     <InputSenha 
                         id='senha'
                         name='senha'
                         label='Nova senha'
+                        disabled={isLoading}
                     />
-
                     <button
                         type='submit'
+                        disabled={isLoading}
                         className="w-full bg-(--main) py-3 px-4 rounded-lg font-medium hover:bg-(--main-2)"
                     >
                         Entrar
