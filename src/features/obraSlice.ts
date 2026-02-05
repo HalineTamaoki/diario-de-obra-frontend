@@ -1,4 +1,6 @@
 import { createSlice, type PayloadAction } from '@reduxjs/toolkit'
+import { obraApi } from '../services/obraApi'
+import type { NomeId } from '../types/Common'
 import type { Obra } from '../types/Obra'
 
 type ObraState = { obras: Obra[] }
@@ -8,9 +10,6 @@ const obraSlice = createSlice({
   name: 'obra',
   initialState,
   reducers: {
-    addObra: (state, action: PayloadAction<Omit<Obra, 'id'>>) => {
-      state.obras.push({...action.payload, id: Math.random()});
-    },
     editarObra: (state, action: PayloadAction<{id: number, nome: string}>) => {
       state.obras = state.obras.map(obra => obra.id === action.payload.id ? {...obra, nome: action.payload.nome} : obra);
     },
@@ -18,7 +17,16 @@ const obraSlice = createSlice({
       state.obras = state.obras.filter(obra => obra.id !== action.payload)
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addMatcher(
+        obraApi.endpoints.cadastrarObra.matchFulfilled,
+        (state, action: PayloadAction<NomeId>) => {
+          state.obras.push({...action.payload, porcentagem: 0});
+        }
+      )
+  }
 })
 
-export const { addObra, editarObra, removerObra } = obraSlice.actions
+export const { editarObra, removerObra } = obraSlice.actions
 export default obraSlice.reducer;

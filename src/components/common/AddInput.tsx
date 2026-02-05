@@ -1,8 +1,17 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { BsPlus } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 
-export const AddInput = ({add, id, placeholder, className}: {add: (value: string) => void, id: string, placeholder: string, className?: string}) => {
+interface AddInputProps {
+    add: (value: string) => void, 
+    id: string, 
+    placeholder: string, 
+    className?: string,
+    loading?: boolean,
+}
+
+export const AddInput = ({add, id, placeholder, className, loading}: AddInputProps) => {
     const dispach = useDispatch();
     const [inputValue, setInputValue] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
@@ -43,8 +52,9 @@ export const AddInput = ({add, id, placeholder, className}: {add: (value: string
                 type="button"
                 onClick={adicionar}
                 id={`${id}-btn`} 
+                disabled={loading}
             >
-                <BsPlus className='text-lg'/>
+                {loading ? <Spinner className='text-(--gray) border-2' size='sm'/>: <BsPlus className='text-lg'/>}
             </button>
         </div>
     )

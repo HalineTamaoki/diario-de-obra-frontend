@@ -1,19 +1,24 @@
 import { useCallback } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import type { RootState } from "../app/store";
 import { AddInput } from "../components/common/AddInput";
 import { PageLayout } from "../components/layout/PageLayout";
 import { ObraCard } from "../components/obra/ObraCard";
-import { addObra } from "../features/obraSlice";
+import { mostrarNotificacao } from "../features/notificacaoSlice";
+import { useCadastrarObraMutation } from "../services/obraApi";
 import type { Obra as ObraType } from "../types/Obra";
-import type { RootState } from "../app/store";
 
 export const Obra = () => {
     const { obras } = useSelector((state: RootState) => state.obra);
-    const dispach = useDispatch();
+    const [ cadastrarObra, { isLoading }] = useCadastrarObraMutation();
+    const dispatch = useDispatch();
 
-    const adicionarObra = useCallback((value: string) => {
-        dispach(addObra({ nome: value, porcentagem: Math.random() * 100 }));
-    }, [dispach]);
+    const adicionarObra = useCallback((nome: string) => {
+        cadastrarObra({ nome }).unwrap()
+            .catch((error) => {
+                dispatch(mostrarNotificacao({mensagem: error.data?.mensagem ?? 'Erro ao adicionar obra.', variant: 'danger'}));
+            })
+    }, []);
 
     return (
         <PageLayout titulo="Minhas obras" id="minhas-obras">
@@ -22,6 +27,7 @@ export const Obra = () => {
                 placeholder="Adicionar nova obra"
                 add={adicionarObra}
                 className='md:w-[70%] lg:w-1/2'
+                loading={isLoading}
             />
             <div>
                 {obras.length === 0 ? (
