@@ -47,34 +47,30 @@ export const DetalhesObra = () => {
         sessionStorage.removeItem('ultimaObraVista');
     }, []);
 
-    return (
+    return isLoadingItens ? <Spinner className='text-(--secondary) border-2'/> : (
         <PageLayout 
             titulo={isLoadingItens ? '' : (obraDetalhada?.nome ?? 'Itens da obra')} 
             id="detalhes-obra" 
             backPath='/' 
             onClick={clearSessionStorage}
         >
-            {isLoadingItens ? <Spinner className='text-(--secondary) border-2'/> : (
-                <>
-                    <AddInput 
-                        id='adicionar-item-obra' 
-                        placeholder="Adicionar novo item"
-                        add={addItem}
-                        className='md:w-[70%] lg:w-1/2'
-                        loading={isLoading}
-                    />
-                    {!obraDetalhada?.items || obraDetalhada.items.length === 0 && 
-                        <p className="text-gray-500 text-center md:text-start! md:px-2">Nenhum item adicionado.</p>
-                    }
-                    <div className='grid gap-3 md:grid-cols-4 mb-4'>
-                        {obraDetalhada?.items.map((item: ItemObra, index: number) => <ItemObraCard 
-                            key={item.id}
-                            itemObra={item}
-                            index={index}
-                        />)}
-                    </div>
-                </>
-            )}
+            <AddInput 
+                id='adicionar-item-obra' 
+                placeholder="Adicionar novo item"
+                add={addItem}
+                className='md:w-[70%] lg:w-1/2'
+                loading={isLoading}
+            />
+            {!obraDetalhada?.items || obraDetalhada.items.length === 0 && 
+                <p className="text-gray-500 text-center md:text-start! md:px-2">Nenhum item adicionado.</p>
+            }
+            <div className='grid gap-3 md:grid-cols-4 mb-4'>
+                {obraDetalhada?.items.map((item: ItemObra, index: number) => <ItemObraCard 
+                    key={item.id}
+                    itemObra={item}
+                    index={index}
+                />)}
+            </div>
         </PageLayout>
     )
 }
