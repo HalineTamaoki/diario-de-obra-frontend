@@ -31,7 +31,7 @@ export const OrcamentoDetalhes = () => {
         if(editMode){
             setEditMode(false);
         } else {
-            navigate(`/${idObra}`);
+            navigate(`/obra/${idObra}`);
         }
     }, [editMode, idObra]);
 
@@ -43,21 +43,21 @@ export const OrcamentoDetalhes = () => {
     const selecionar = useCallback(() => {
         if(orcamento?.id){
             dispatch(itemsObraActions.selecionarOrcamento({id: orcamento.id, idItem: orcamento.idItem}));
-            navigate(`/${idObra}`);
+            navigate(`/obra/${idObra}`);
         }
     }, [orcamento, itemsObraActions.selecionarOrcamento]);
 
     const desselecionar = useCallback(() => {
         if(orcamento?.id){
             dispatch(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idItem: orcamento.idItem}));
-            navigate(`/${idObra}`);
+            navigate(`/obra/${idObra}`);
         }
     }, [orcamento, itemsObraActions.desselecionarOrcamento]);
 
     const deletar = useCallback(() => {
         if(orcamento?.id){
             dispatch(itemsObraActions.deletarOrcamento({id: orcamento.id, idItem: orcamento.idItem}));
-            navigate(`/${idObra}`);
+            navigate(`/obra/${idObra}`);
         }
     }, [orcamento?.id, itemsObraActions.deletarOrcamento]);
 

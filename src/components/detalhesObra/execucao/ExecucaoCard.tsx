@@ -109,7 +109,7 @@ export const ExecucaoCard = ({id}: {id: number}) => {
                 )
             }
             <Link 
-                to={`/nova-data/${id}/${itemObra?.id}`} 
+                to={`/obra/${id}/nova-data/${itemObra?.id}`} 
                 id={`execucao-nova-data-${id}`} 
                 className='text-(--blue)! text-sm w-full block underline! hover:text-(--blue-2)! mb-1 mt-2 text-end'
             >

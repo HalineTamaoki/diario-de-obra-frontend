@@ -21,7 +21,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
     }, []);
 
     const verDetalhes = useCallback(() => {
-        navigate(`/${obra.id}`);
+        navigate(`/obra/${obra.id}`);
     }, [obra.id]);
 
     const bgColor = useMemo(() => {
@@ -43,7 +43,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                 id={`obra-card-${obra.id}`}
                 className={`w-full flex justify-between md:py-6! min-w-0 px-4 align-items-center text-decoration-none ${bgColor} ${textColor}`}
                 style={{borderRadius: '0.5em'}}
-                to={`/${obra.id}`}
+                to={`/obra/${obra.id}`}
             >
                 {editMode ? (
                     <NomeObraInput sairModoEdicao={() => setEditMode(false)} obra={obra}/>

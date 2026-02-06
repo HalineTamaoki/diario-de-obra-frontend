@@ -26,8 +26,8 @@ export const OrcamentoResumoCard = ({orcamento, idItem}: {orcamento: OrcamentoRe
     }, [itemsObraActions.deletarOrcamento, orcamento.id, idItem]);
 
     const verDetalhes = useCallback(() => {
-        navigate(`/orcamento/${idObra}/${idItem}/${orcamento.id}`);
-    }, [navigate, orcamento.id]);
+        navigate(`/obra/${idObra}/orcamento/${idItem}/${orcamento.id}`);
+    }, [navigate, orcamento.id, idObra]);
 
     return (
         <div id={`orcamento-${orcamento.id}-wrapper`} className={`flex justify-between items-center border-1 border-(--secondary) rounded p-2 ${bgColor}`}>

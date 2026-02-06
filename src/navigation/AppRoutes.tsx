@@ -18,10 +18,14 @@ export const AppRoutes = () => {
   useEffect(() => {
     const ultimaObra = sessionStorage.getItem('ultimaObraVista');
     if (ultimaObra && window.location.pathname === '/') {
-      navigate(`/${ultimaObra}`, { replace: true });
+      if(ultimaObra === '0') {
+        sessionStorage.removeItem('ultimaObraVista');
+      } else {
+        navigate(`/obra/${ultimaObra}`, { replace: true });
+      }
     }
     setLoading(false);
-  }, [navigate]);
+  }, []);
 
   if (loading) return null;
 
@@ -30,12 +34,10 @@ export const AppRoutes = () => {
         <Route element={<ProtectedRoute />}>
           <Route path='/' element={<Layout />}>
             <Route index element={<Obra />} />
-            <Route path=':nome' element={<DetalhesObra />} />
-            <Route index element={<Obra />} />
-            <Route path=':idObra' element={<DetalhesObra />} />
-            <Route path='/orcamento/:idObra/:idItem/novo' element={<NovoOrcamento />} />
-            <Route path='/orcamento/:idObra/:idItem/:idOrcamento' element={<OrcamentoDetalhes />} />
-            <Route path='/nova-data/:idObra/:idItem' element={<OutraDataForm />} />
+            <Route path='/obra/:idObra' element={<DetalhesObra />} />
+            <Route path='/obra/:idObra/orcamento/:idItem/novo' element={<NovoOrcamento />} />
+            <Route path='/obra/:idObra/orcamento/:idItem/:idOrcamento' element={<OrcamentoDetalhes />} />
+            <Route path='/obra/:idObra/nova-data/:idItem' element={<OutraDataForm />} />
           </Route>
           <Route path='/login' element={<Login />} />
           <Route path='/cadastro' element={<CadastroUsuario />} />

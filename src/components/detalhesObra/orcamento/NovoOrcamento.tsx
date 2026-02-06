@@ -13,19 +13,19 @@ export const NovoOrcamento = () => {
 
     const onSubmit = useCallback((data: NovoOrcamentoType) => {
         dispach(itemsObraActions.addOrcamento(data));
-        navigate(`/${idObra}`);
+        navigate(`/obra/${idObra}`);
     }, [itemsObraActions.addOrcamento]);
 
     return (
         <PageLayout
             id='novo-orcamento'
             titulo={'Novo orçamento'}
-            backPath={`/${idObra}`}
+            backPath={`/obra/${idObra}`}
         >
             <OrcamentoForm 
                 mostrarCampoEmpresa={true}
                 onSubmit={onSubmit}
-                onCancel={() => navigate(`/${idObra}`)}
+                onCancel={() => navigate(`/obra/${idObra}`)}
             />   
         </PageLayout>
     )

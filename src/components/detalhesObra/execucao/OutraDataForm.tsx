@@ -23,11 +23,11 @@ export const OutraDataForm = () => {
 
     const submit = useCallback((data: NovaData) => {
         dispatch(itemsObraActions.addOutraData({...data, idItem: idItem ? parseFloat(idItem) : 0}));
-        navigate(`/${idObra}`);
+        navigate(`/obra/${idObra}`);
     }, [itemsObraActions.addOutraData]);
 
     const onCancel = useCallback(() => {
-        navigate(`/${idObra}`)
+        navigate(`/obra/${idObra}`)
     }, []);
 
     return (

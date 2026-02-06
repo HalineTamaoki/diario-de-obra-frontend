@@ -4,7 +4,7 @@ import { Notificacao } from "../common/Notificacao";
 export const LayoutNaoLogado = ({children}: {children: ReactNode}) => {
     return (
         <div className="min-h-screen bg-linear-to-br from-orange-50 to-orange-100 flex flex-col items-center justify-center p-4">
-            <Notificacao />
+            <Notificacao className="top-3"/>
             <div className="w-full max-w-md">
                 <div className="bg-white rounded-2xl shadow-xl p-8">
                     {children}
