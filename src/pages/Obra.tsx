@@ -1,7 +1,6 @@
 import { useCallback } from "react";
 import { Spinner } from "react-bootstrap";
-import { useDispatch, useSelector } from "react-redux";
-import type { RootState } from "../app/store";
+import { useDispatch } from "react-redux";
 import { AddInput } from "../components/common/AddInput";
 import { PageLayout } from "../components/layout/PageLayout";
 import { ObraCard } from "../components/obra/ObraCard";
@@ -10,9 +9,8 @@ import { useCadastrarObraMutation, useObterObrasQuery } from "../services/obraAp
 import type { Obra as ObraType } from "../types/Obra";
 
 export const Obra = () => {
-    const { obras } = useSelector((state: RootState) => state.obra);
     const [ cadastrarObra, { isLoading }] = useCadastrarObraMutation();
-    const { isLoading: isLoadingObras } = useObterObrasQuery();
+    const { data: obras, isLoading: isLoadingObras } = useObterObrasQuery();
     const dispatch = useDispatch();
 
     const adicionarObra = useCallback((nome: string) => {
@@ -33,7 +31,7 @@ export const Obra = () => {
                     loading={isLoading}
                 />
                 <div>
-                    {obras.length === 0 ? (
+                    {!obras || obras.length === 0 ? (
                         <p className="text-gray-500 text-center md:text-start! md:px-2">Nenhuma obra adicionada.</p>
                     ) : (
                         <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-4 w-full">

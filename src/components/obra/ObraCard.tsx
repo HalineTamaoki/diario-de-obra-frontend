@@ -3,7 +3,6 @@ import { BsEye, BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom';
 import { mostrarNotificacao } from '../../features/notificacaoSlice';
-import { removerObra } from '../../features/obraSlice';
 import { useDeletarObraMutation } from '../../services/obraApi';
 import type { Obra } from '../../types/Obra';
 import { AcoesButton } from '../common/AcoesButton';
@@ -16,9 +15,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
     const [deletarObra, { isLoading }] = useDeletarObraMutation();
 
     const deletar = useCallback(() => {
-        deletarObra(obra.id).unwrap().then(() => {
-            dispach(removerObra(obra.id));
-        }).catch((error) => {
+        deletarObra(obra.id).unwrap().catch((error) => {
             dispach(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao deletar obra.'}));
         });
     }, []);
