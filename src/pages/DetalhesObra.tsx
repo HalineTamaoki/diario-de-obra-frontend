@@ -1,4 +1,4 @@
-import { useCallback, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AddInput } from '../components/common/AddInput';
@@ -14,9 +14,13 @@ export const DetalhesObra = () => {
     const { idObra } = useParams();
     const navigate = useNavigate();
     const dispatch = useDispatch();
+    const [openItems, setOpenItems] = useState<number[]>(() => {
+        const saved = localStorage.getItem('accordion_state');
+        return saved ? JSON.parse(saved) : [];
+    });
 
     const obraIdNum = Number(idObra);
-    const isIdValido = !isNaN(obraIdNum) && obraIdNum > 0;
+    const isIdValido = !Number.isNaN(obraIdNum) && obraIdNum > 0;
     const { data: obraDetalhada, isLoading: isLoadingItens } = useObterObraDetalhadaQuery(obraIdNum, {
         skip: !isIdValido,
     });
@@ -47,6 +51,24 @@ export const DetalhesObra = () => {
         sessionStorage.removeItem('ultimaObraVista');
     }, []);
 
+    const toogleAccordionState = useCallback((id: number) => {
+        setOpenItems(prev => 
+            prev.includes(id)  ? prev.filter(i => i !== id) : [...prev, id]
+        );
+    }, [openItems]);
+    
+    useEffect(() => {
+        localStorage.setItem('accordion_state', JSON.stringify(openItems));
+    }, [openItems]);
+
+    useEffect(() => {
+        if(obraDetalhada?.items && obraDetalhada.items.length !== 0 && 
+            !obraDetalhada.items.some(item => openItems.includes(item.id))
+        ){
+            toogleAccordionState(obraDetalhada.items[0].id);
+        }
+    }, [obraDetalhada?.items]);
+
     return isLoadingItens ? <Spinner className='text-(--secondary) border-2'/> : (
         <PageLayout 
             titulo={isLoadingItens ? '' : (obraDetalhada?.nome ?? 'Itens da obra')} 
@@ -65,10 +87,12 @@ export const DetalhesObra = () => {
                 <p className="text-gray-500 text-center md:text-start! md:px-2">Nenhum item adicionado.</p>
             }
             <div className='grid gap-3 md:grid-cols-4 mb-4'>
-                {obraDetalhada?.items.map((item: ItemObra, index: number) => <ItemObraCard 
+                {obraDetalhada?.items.map((item: ItemObra) => <ItemObraCard 
                     key={item.id}
                     itemObra={item}
-                    index={index}
+                    idObra={obraIdNum}
+                    open={openItems.includes(item.id)}
+                    toogleAccordionState={toogleAccordionState}
                 />)}
             </div>
         </PageLayout>

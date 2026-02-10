@@ -71,4 +71,4 @@ export const itemObraApi = baseApi.injectEndpoints({
     }),
 });
 
-export const { useCadastrarItemMutation, useDeletarItemMutation } = itemObraApi;
+export const { useCadastrarItemMutation, useDeletarItemMutation, useEditarItemMutation } = itemObraApi;
