@@ -44,7 +44,7 @@ export const ItemObraCard = ({itemObra, open, toogleAccordionState, idObra}: Ite
                 <Accordion.Body className='px-1'>
                     <ItemObraAccordionTitle id={itemObra.id} ultimaEtapa={itemObra.ultimaEtapa}/>
                     <div className='mt-2'>
-                        {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard id={itemObra.id}/>}
+                        {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard id={itemObra.id} idObra={idObra}/>}
                         {itemObra.ultimaEtapa === 'orcamento' && <OrcamentoCard id={itemObra.id}/>}
                         {itemObra.ultimaEtapa === 'execucao' && <ExecucaoCard id={itemObra.id}/>}
                         {itemObra.ultimaEtapa === 'finalizado' && <FinalizadoCard id={itemObra.id}/>}

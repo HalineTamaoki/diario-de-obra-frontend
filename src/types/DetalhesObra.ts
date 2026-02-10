@@ -12,7 +12,7 @@ export const EtapaMap: Record<number, EtapasObra> = {
   3: 'finalizado'
 };
 
-export type ItemObraBase = {
+type ItemObraBase = {
     id: number;
     nome: string;
     ultimaEtapa: EtapasObra;

@@ -2,19 +2,28 @@ import { useCallback } from 'react';
 import { BsEye, BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
-import { itemsObraActions } from '../../../features/itemsObraSlice';
+import { mostrarNotificacao } from '../../../features/notificacaoSlice';
 import type { Ideia } from '../../../types/Ideia';
 import { AcoesWithChildren } from '../../common/AcoesWithChildren';
 import { IdeacaoImg } from './IdeacaoImg';
+import { useRemoverLinkMutation } from '../../../services/ideacaoApi';
 
-export const IdeacaoImagem = ({ideia}: {ideia: Ideia}) => {
+interface IdeacaoImagemProps {
+    ideia: Ideia,
+    obraId: number
+}
+
+export const IdeacaoImagem = ({ideia, obraId}: IdeacaoImagemProps) => {
     const isMobile = useMediaQuery({ maxWidth: 767 });
+    const [ removerLink, { isLoading }] = useRemoverLinkMutation();
 
-    const dispach = useDispatch();
+    const dispatch = useDispatch();
    
     const deletar = useCallback(() => {
-        dispach(itemsObraActions.removerLink({id: ideia.id, idItem: ideia.idItem}));
-    }, [itemsObraActions.removerLink, ideia.id]);
+        removerLink({id: ideia.id, idItem: ideia.itemObraId, obraId}).unwrap().catch((error) => {
+            dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao deletar item.'}));
+        });
+    }, [ideia, obraId]);
 
     const verImagem = useCallback(() => {
         window.open(ideia.link, '_blank');
@@ -24,7 +33,7 @@ export const IdeacaoImagem = ({ideia}: {ideia: Ideia}) => {
         <AcoesWithChildren itens={[
             {id: `acoes-ideia-${ideia.id}-deletar`, text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
             {id: `acoes-ideia-${ideia.id}-abrir`, text: 'Abrir', onClick: verImagem, icon: <BsEye />}
-        ]}>
+        ]} disabled={isLoading}>
             <IdeacaoImg url={ideia.link} />
         </AcoesWithChildren>
     ) : (
@@ -43,7 +52,7 @@ export const IdeacaoImagem = ({ideia}: {ideia: Ideia}) => {
                     <BsEye className="opacity-0 group-hover:opacity-100! text-(--white) text-3xl transition duration-200" />
                 </span>
             </button>
-            <button onClick={deletar} className='text-sm! text-(--red) p-0 mt-1'>Deletar</button>
+            <button onClick={deletar} className='text-sm! text-(--red) p-0 mt-1' disabled={isLoading}>Deletar</button>
         </div>
     )
 }
