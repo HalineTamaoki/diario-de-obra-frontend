@@ -1,8 +1,8 @@
 import { useCallback, useState } from 'react';
-import { Spinner } from 'react-bootstrap';
 import { FormProvider, useForm, useWatch } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { ButtonSpinner } from '../components/common/ButtonSpinner';
 import { LayoutNaoLogado } from '../components/layout/LayoutNaoLogado';
 import { InputEmail } from '../components/login/InputEmail';
 import { InputSenha } from '../components/login/InputSenha';
@@ -75,7 +75,7 @@ export const CadastroUsuario = () => {
                         className="w-full bg-(--main) py-3 px-4 rounded-lg font-medium hover:bg-(--main-2)"
                     >
                         Cadastrar
-                        {isLoading && <Spinner animation="border" size="sm" className="ml-2"/>}
+                        <ButtonSpinner loading={isLoading}/>
                     </button>
                     {formError && <p className="text-(--red) text-sm mb-1">{formError}</p>}
                 </form>

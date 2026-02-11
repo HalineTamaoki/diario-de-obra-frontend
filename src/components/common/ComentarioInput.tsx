@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-export const ComentarioInput = ({initialValue, alterarComentario}: {initialValue: string, alterarComentario: (novoComentario: string) => void}) => {
+export const ComentarioInput = ({initialValue, alterarComentario, disabled}: {initialValue: string, alterarComentario: (novoComentario: string) => void, disabled?: boolean}) => {
     const [value, setValue] = useState<string>(initialValue);
     
     useEffect(() => {
@@ -14,6 +14,7 @@ export const ComentarioInput = ({initialValue, alterarComentario}: {initialValue
             className='border border-(--blue)! w-full rounded-md p-2'
             onChange={e => setValue(e.target.value)}
             onBlur={() => alterarComentario(value)}
+            disabled={disabled}
         />
     )
 }

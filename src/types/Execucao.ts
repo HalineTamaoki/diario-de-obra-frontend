@@ -1,9 +1,9 @@
 export type Execucao = {
     comentarios?: string;
     previsao?: Previsao,
-    outrasDatas?: OutraData[];
+    datasAdicionais?: OutraData[];
     finalizado?: boolean,
-    idItem: number,
+    itemObraId: number,
 }
 
 export type Previsao = {
@@ -21,3 +21,5 @@ export type NovaData = Omit<OutraData, 'id'> & {
     idItem: number; 
     idObra: number;
 }
+
+export type ExecucaoResponse = Previsao & Pick<Execucao, 'comentarios' | 'itemObraId' | 'datasAdicionais'>

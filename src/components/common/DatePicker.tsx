@@ -1,5 +1,6 @@
 
 import { useRef } from "react";
+import { Spinner } from "react-bootstrap";
 import { BsCalendar } from "react-icons/bs";
 
 interface DatePickerProps {
@@ -10,6 +11,7 @@ interface DatePickerProps {
   labelClassName?: string,
   className?: string,
   inputClassName?: string,
+  loading?: boolean,
   type?: 'date' | 'datetime-local'
 }
 
@@ -21,6 +23,7 @@ export function DatePicker({
   className,
   inputClassName,
   onChange,
+  loading,
   type = 'datetime-local'
 }: DatePickerProps) {
   const inputRef = useRef<HTMLInputElement>(null);
@@ -43,6 +46,7 @@ export function DatePicker({
         onChange={(e) => onChange(e.target.value)}
         className={`block w-full rounded-md text-sm pr-10 input-no-icon ${inputClassName}`}
         pattern={type === 'datetime-local' ? "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" : "\d{4}-\d{2}-\d{2}"}
+        disabled={loading}
       />
       <button
         type="button"
@@ -50,8 +54,9 @@ export function DatePicker({
         aria-label="Abrir seletor de data e hora"
         onClick={openPicker}
         style={{ background: "transparent" }}
+        disabled={loading}
       >
-        <BsCalendar />
+        {loading ? <Spinner className='text-(--gray) border-2' size='sm'/> : <BsCalendar />}
       </button>
     </div>
   );

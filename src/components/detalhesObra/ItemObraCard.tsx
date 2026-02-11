@@ -42,12 +42,12 @@ export const ItemObraCard = ({itemObra, open, toogleAccordionState, idObra}: Ite
             <Accordion.Item eventKey={itemObra.id.toString()} style={getBgColor(itemObra.ultimaEtapa)}>
                 <ItemObraAccordionHeader itemObra={itemObra} active={open} toogleActive={() => toogleAccordionState(itemObra.id)} idObra={idObra}/>
                 <Accordion.Body className='px-1'>
-                    <ItemObraAccordionTitle id={itemObra.id} ultimaEtapa={itemObra.ultimaEtapa}/>
+                    <ItemObraAccordionTitle idItem={itemObra.id} idObra={idObra} ultimaEtapa={itemObra.ultimaEtapa}/>
                     <div className='mt-2'>
-                        {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard id={itemObra.id} idObra={idObra}/>}
-                        {itemObra.ultimaEtapa === 'orcamento' && <OrcamentoCard id={itemObra.id}/>}
-                        {itemObra.ultimaEtapa === 'execucao' && <ExecucaoCard id={itemObra.id}/>}
-                        {itemObra.ultimaEtapa === 'finalizado' && <FinalizadoCard id={itemObra.id}/>}
+                        {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard idItem={itemObra.id} idObra={idObra}/>}
+                        {itemObra.ultimaEtapa === 'orcamento' && <OrcamentoCard idItem={itemObra.id} idObra={idObra}/>}
+                        {itemObra.ultimaEtapa === 'execucao' && <ExecucaoCard idItem={itemObra.id} idObra={idObra}/>}
+                        {itemObra.ultimaEtapa === 'finalizado' && <FinalizadoCard idItem={itemObra.id} idObra={idObra}/>}
                     </div>
                 </Accordion.Body>
             </Accordion.Item >

@@ -1,7 +1,5 @@
 import { createSelector, createSlice } from '@reduxjs/toolkit';
 import type { ItemObra } from '../types/DetalhesObra';
-import { execucaoReducers } from './execucaoReducers';
-import { finalizacaoReducers } from './finalizacaoReducers';
 import { orcamentoReducer } from './orcamentoReducer';
 
 export type DetalhesObraState = { itemsObra: ItemObra[] }
@@ -12,8 +10,6 @@ const itemsObraSlice = createSlice({
   initialState,
   reducers: {
     ...orcamentoReducer,
-    ...execucaoReducers,
-    ...finalizacaoReducers
   },    
 })
 

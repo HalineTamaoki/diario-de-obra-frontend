@@ -1,10 +1,11 @@
+import type { IdObraIdItem } from '../types/DetalhesObra';
 import type { Ideia, NovaIdeia } from '../types/Ideia';
 import { baseApi } from './api';
 import { obraApi } from './obraApi';
 
 export const ideacaoApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        obterIdeiasByItem: builder.query<Ideia[], { idObra: number; idItem: number }>({
+        obterIdeiasByItem: builder.query<Ideia[], IdObraIdItem>({
             query: ({ idItem }) => ({
                 url: `/ideacao/${idItem}`,
                 method: 'GET',
@@ -54,7 +55,7 @@ export const ideacaoApi = baseApi.injectEndpoints({
         },
         }),
 
-        removerLink: builder.mutation<void, { idObra: number; idItem: number; id: number }>({
+        removerLink: builder.mutation<void, IdObraIdItem & { id: number }>({
             query: ({ id }) => ({
                 url: `/ideacao/${id}`,
                 method: 'DELETE',

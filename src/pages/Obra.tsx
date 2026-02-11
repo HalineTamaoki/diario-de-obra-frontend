@@ -1,7 +1,7 @@
 import { useCallback } from "react";
-import { Spinner } from "react-bootstrap";
 import { useDispatch } from "react-redux";
 import { AddInput } from "../components/common/AddInput";
+import { LoadingContainer } from "../components/common/LoadingContainer";
 import { PageLayout } from "../components/layout/PageLayout";
 import { ObraCard } from "../components/obra/ObraCard";
 import { mostrarNotificacao } from "../features/notificacaoSlice";
@@ -22,7 +22,7 @@ export const Obra = () => {
 
     return (
         <PageLayout titulo="Minhas obras" id="minhas-obras">
-            {isLoadingObras ? <Spinner className='text-(--secondary) border-2'/> : <>
+            <LoadingContainer isLoading={isLoadingObras}>
                 <AddInput 
                     id='adicionar-obra' 
                     placeholder="Adicionar nova obra"
@@ -41,7 +41,7 @@ export const Obra = () => {
                         </div>
                     )}
                 </div>
-            </>}
+            </LoadingContainer>
         </PageLayout>
     )
 }

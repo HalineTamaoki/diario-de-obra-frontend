@@ -2,16 +2,19 @@ import { useCallback } from 'react';
 import { useForm } from 'react-hook-form';
 import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
-import { itemsObraActions } from '../../../features/itemsObraSlice';
+import { mostrarNotificacao } from '../../../features/notificacaoSlice';
+import { useAddOutraDataMutation } from '../../../services/execucaoApi';
 import type { OutraData } from '../../../types/Execucao';
+import { ButtonSpinner } from '../../common/ButtonSpinner';
 import { PageLayout } from '../../layout/PageLayout';
 
 type NovaData = Omit<OutraData, 'id'>;
 
 export const OutraDataForm = () => {
     const { idItem, idObra } = useParams<{idItem: string, idObra: string}>();
-    const dispatch = useDispatch();
+    const [ addOutraData, { isLoading } ] = useAddOutraDataMutation();
     const navigate = useNavigate();
+    const dispatch = useDispatch();
 
     const form = useForm<NovaData>({
         defaultValues: {
@@ -22,9 +25,16 @@ export const OutraDataForm = () => {
     const { handleSubmit, register, formState: {errors} } = form;
 
     const submit = useCallback((data: NovaData) => {
-        dispatch(itemsObraActions.addOutraData({...data, idItem: idItem ? parseFloat(idItem) : 0}));
-        navigate(`/obra/${idObra}`);
-    }, [itemsObraActions.addOutraData]);
+        addOutraData({
+            ...data, 
+            idItem: idItem ? parseFloat(idItem) : -1,
+            idObra: idObra ? parseFloat(idObra) : -1,
+        }).unwrap().then(() => {
+            navigate(`/obra/${idObra}`);
+        }).catch(error => {
+            dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao adicionar outra data.'}));
+        });
+    }, [addOutraData, idItem, idObra, navigate]);
 
     const onCancel = useCallback(() => {
         navigate(`/obra/${idObra}`)
@@ -42,6 +52,7 @@ export const OutraDataForm = () => {
                     <input
                         className='border border-(--blue)! w-full rounded-md p-2'
                         {...register('nome', { required: 'Nome é obrigatório' })}
+                        disabled={isLoading}
                     />
                     {errors.nome && (
                         <span className='text-(--red) text-xs'>{errors.nome.message}</span>
@@ -54,6 +65,7 @@ export const OutraDataForm = () => {
                         className='border border-(--blue)! w-full rounded-md p-2'
                         pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"
                         {...register('data', { required: 'Data é obrigatória' })}
+                        disabled={isLoading}
                     />
                     {errors.data && (
                         <span className='text-(--red) text-xs'>{errors.data.message}</span>
@@ -63,14 +75,18 @@ export const OutraDataForm = () => {
                     <button
                         type="submit"
                         className="bg-(--blue) hover:bg-(--blue-2) w-full text-center text-white rounded font-semibold! shadow-[0_2px_4px_rgba(0,0,0,0.25)]"
+                        disabled={isLoading}
                     >
                         Salvar
+                        <ButtonSpinner loading={isLoading}/>
                     </button>
                     <button
                         onClick={onCancel}
                         className="w-full text-center rounded border-(--blue)! border hover:bg-(--blue) font-semibold! shadow-[0_2px_4px_rgba(0,0,0,0.25)]"
+                        disabled={isLoading}                    
                     >
                         Cancelar
+                        <ButtonSpinner loading={isLoading}/>
                     </button>
                 </div>
             </form>

@@ -29,3 +29,8 @@ export type IdItemId = {
   idItem: number;
   id: number;
 }
+
+export type IdObraIdItem = { 
+  idObra: number; 
+  idItem: number 
+}
