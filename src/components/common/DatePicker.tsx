@@ -15,6 +15,16 @@ interface DatePickerProps {
   type?: 'date' | 'datetime-local'
 }
 
+const formatValue = (type: string, val?: string) => {
+  if (!val) return "";
+  
+  if (type === 'datetime-local') {
+    return val.substring(0, 16);
+  }
+  
+  return val.substring(0, 10);
+};
+
 export function DatePicker({
   id,
   label,
@@ -42,7 +52,7 @@ export function DatePicker({
         ref={inputRef}
         id={`date-input-${id}`}
         type={type}
-        value={value ?? ""}
+        value={formatValue(type, value)}
         onChange={(e) => onChange(e.target.value)}
         className={`block w-full rounded-md text-sm pr-10 input-no-icon ${inputClassName}`}
         pattern={type === 'datetime-local' ? "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" : "\d{4}-\d{2}-\d{2}"}
