@@ -28,13 +28,13 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active, idObra}
     const textColor = useMemo(() => itemObra.ultimaEtapa === 'execucao' ? 'text-white' : 'text-(--black)!', [itemObra.ultimaEtapa]);
 
     const editar = useCallback((value: string) => {
-        editarItem({id: itemObra.id, nome: value, obraId: idObra}).unwrap().catch((error) => {
+        editarItem({id: itemObra.id, nome: value, idObra: idObra}).unwrap().catch((error) => {
             dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao editar item.'}));
         });
     }, [itemObra.id, idObra]);
 
     const deletar = useCallback(() => {
-        deletarItem({id: itemObra.id, obraId: idObra}).unwrap().catch((error) => {
+        deletarItem({id: itemObra.id, idObra: idObra}).unwrap().catch((error) => {
             dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao deletar item.'}));
         });
     }, [itemObra.id, idObra]);

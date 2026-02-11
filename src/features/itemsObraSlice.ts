@@ -23,7 +23,7 @@ export default itemsObraSlice.reducer
 export const selectItemObra = createSelector(
   [
     (state: DetalhesObraState) => state.itemsObra,
-    (_: DetalhesObraState, itemObraId: number) => itemObraId
+    (_: DetalhesObraState, itemidObra: number) => itemidObra
   ],
-  (itemsObra, itemObraId) => itemsObra.find(i => i.id === itemObraId) ?? null
+  (itemsObra, itemidObra) => itemsObra.find(i => i.id === itemidObra) ?? null
 );

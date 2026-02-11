@@ -10,20 +10,20 @@ import { useRemoverLinkMutation } from '../../../services/ideacaoApi';
 
 interface IdeacaoImagemProps {
     ideia: Ideia,
-    obraId: number
+    idObra: number
 }
 
-export const IdeacaoImagem = ({ideia, obraId}: IdeacaoImagemProps) => {
+export const IdeacaoImagem = ({ideia, idObra}: IdeacaoImagemProps) => {
     const isMobile = useMediaQuery({ maxWidth: 767 });
     const [ removerLink, { isLoading }] = useRemoverLinkMutation();
 
     const dispatch = useDispatch();
    
     const deletar = useCallback(() => {
-        removerLink({id: ideia.id, idItem: ideia.itemObraId, obraId}).unwrap().catch((error) => {
+        removerLink({id: ideia.id, idItem: ideia.itemidObra, idObra}).unwrap().catch((error) => {
             dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao deletar item.'}));
         });
-    }, [ideia, obraId]);
+    }, [ideia, idObra]);
 
     const verImagem = useCallback(() => {
         window.open(ideia.link, '_blank');

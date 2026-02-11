@@ -16,3 +16,8 @@ export type OutraData = {
     nome: string,
     data: string,
 }
+
+export type NovaData = Omit<OutraData, 'id'> & {
+    idItem: number; 
+    idObra: number;
+}

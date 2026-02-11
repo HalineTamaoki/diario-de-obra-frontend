@@ -19,9 +19,9 @@ export const DetalhesObra = () => {
         return saved ? JSON.parse(saved) : [];
     });
 
-    const obraIdNum = Number(idObra);
-    const isIdValido = !Number.isNaN(obraIdNum) && obraIdNum > 0;
-    const { data: obraDetalhada, isLoading: isLoadingItens } = useObterObraDetalhadaQuery(obraIdNum, {
+    const idObraNum = Number(idObra);
+    const isIdValido = !Number.isNaN(idObraNum) && idObraNum > 0;
+    const { data: obraDetalhada, isLoading: isLoadingItens } = useObterObraDetalhadaQuery(idObraNum, {
         skip: !isIdValido,
     });
     const [cadastrarItem, { isLoading }] = useCadastrarItemMutation();
@@ -35,14 +35,14 @@ export const DetalhesObra = () => {
     }, [isIdValido, navigate, dispatch]);
 
     const addItem = useCallback((value: string) => 
-        cadastrarItem({ obraId: obraIdNum, nome: value }).unwrap()
+        cadastrarItem({ idObra: idObraNum, nome: value }).unwrap()
             .catch((error) => {
                 dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao adicionar item.'}));
             })
     , []);
 
     useEffect(() => {
-        if(isIdValido && idObra && obraIdNum !== 0){
+        if(isIdValido && idObra && idObraNum !== 0){
             sessionStorage.setItem('ultimaObraVista', idObra);
         }
     }, []);
@@ -90,7 +90,7 @@ export const DetalhesObra = () => {
                 {obraDetalhada?.items.map((item: ItemObra) => <ItemObraCard 
                     key={item.id}
                     itemObra={item}
-                    idObra={obraIdNum}
+                    idObra={idObraNum}
                     open={openItems.includes(item.id)}
                     toogleAccordionState={toogleAccordionState}
                 />)}

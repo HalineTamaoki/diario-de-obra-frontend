@@ -4,13 +4,13 @@ import { baseApi } from './api';
 
 export const itemObraApi = baseApi.injectEndpoints({
     endpoints: (builder) => ({
-        cadastrarItem: builder.mutation<NomeId, { obraId: number; nome: string }>({
-            query: ({ obraId, ...body }) => ({ url: `/item/${obraId}`, method: 'POST', body }),
-            async onQueryStarted({ obraId }, { dispatch, queryFulfilled }) {
+        cadastrarItem: builder.mutation<NomeId, { idObra: number; nome: string }>({
+            query: ({ idObra, ...body }) => ({ url: `/item/${idObra}`, method: 'POST', body }),
+            async onQueryStarted({ idObra }, { dispatch, queryFulfilled }) {
                 try {
                     const { data: novoItem } = await queryFulfilled;
                     dispatch(
-                        obraApi.util.updateQueryData('obterObraDetalhada', obraId, (draft) => {
+                        obraApi.util.updateQueryData('obterObraDetalhada', idObra, (draft) => {
                             draft.items.push({ ...novoItem, ultimaEtapa: 'ideacao' });
                         })
                     );
@@ -33,16 +33,16 @@ export const itemObraApi = baseApi.injectEndpoints({
                 queryFulfilled.catch(patchResult.undo);
             },
         }),
-        editarItem: builder.mutation<NomeId, NomeId & { obraId: number }>({
+        editarItem: builder.mutation<NomeId, NomeId & { idObra: number }>({
             query: ({ id, nome }) => ({
                 url: '/item',
                 method: 'PUT',
                 body: { id, nome },
             }),
             extraOptions: { shoudCheckAuth: true },
-            async onQueryStarted({ id, obraId, nome }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ id, idObra, nome }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    obraApi.util.updateQueryData('obterObraDetalhada', obraId, (draft) => {
+                    obraApi.util.updateQueryData('obterObraDetalhada', idObra, (draft) => {
                         const item = draft.items.find(i => i.id === id);
                         if (item) {
                             item.nome = nome;
@@ -57,11 +57,11 @@ export const itemObraApi = baseApi.injectEndpoints({
                 }
             },
         }),
-        deletarItem: builder.mutation<void, { id: number; obraId: number }>({
+        deletarItem: builder.mutation<void, { id: number; idObra: number }>({
             query: ({ id }) => ({ url: `/item/${id}`, method: 'DELETE' }),
-            async onQueryStarted({ id, obraId }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ id, idObra }, { dispatch, queryFulfilled }) {
                 const patchResult = dispatch(
-                    obraApi.util.updateQueryData('obterObraDetalhada', obraId, (draft) => {
+                    obraApi.util.updateQueryData('obterObraDetalhada', idObra, (draft) => {
                         draft.items = draft.items.filter(item => item.id !== id);
                     })
                 );

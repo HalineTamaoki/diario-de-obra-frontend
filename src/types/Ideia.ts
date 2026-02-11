@@ -1,9 +1,9 @@
 export type NovaIdeia = {
     link: string;
-    itemObraId: number;
-    obraId: number;
+    itemidObra: number;
+    idObra: number;
 }
 
-export type Ideia = Omit<NovaIdeia, 'obraId'> & {
+export type Ideia = Omit<NovaIdeia, 'idObra'> & {
     id: number;
 }
