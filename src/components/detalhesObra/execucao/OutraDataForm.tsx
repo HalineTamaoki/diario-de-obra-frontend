@@ -26,7 +26,8 @@ export const OutraDataForm = () => {
 
     const submit = useCallback((data: NovaData) => {
         addOutraData({
-            ...data, 
+            nome: data.nome,
+            data: `${data.data}Z`,
             idItem: idItem ? parseFloat(idItem) : -1,
             idObra: idObra ? parseFloat(idObra) : -1,
         }).unwrap().then(() => {
@@ -44,7 +45,7 @@ export const OutraDataForm = () => {
         <PageLayout
             id='nova-data'
             titulo={'Adicionar outra data'}
-            backPath={`/${idObra}`}
+            backPath={`/obra/${idObra}`}
         >
             <form onSubmit={handleSubmit(submit)} className='lg:w-1/2' noValidate>
                 <div className='mb-3'>
@@ -86,7 +87,6 @@ export const OutraDataForm = () => {
                         disabled={isLoading}                    
                     >
                         Cancelar
-                        <ButtonSpinner loading={isLoading}/>
                     </button>
                 </div>
             </form>
