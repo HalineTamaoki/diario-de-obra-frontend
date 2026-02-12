@@ -19,7 +19,8 @@ const formatValue = (type: string, val?: string) => {
   if (!val) return "";
   
   if (type === 'datetime-local') {
-    return val.substring(0, 16);
+    const cleanDate = val.split('.')[0].replace('Z', '');
+    return cleanDate.substring(0, 16);
   }
   
   return val.substring(0, 10);
@@ -43,6 +44,22 @@ export function DatePicker({
     inputRef.current?.showPicker?.();
   };
 
+  const handleChange = (eventValue: string) => {
+    if (!eventValue) {
+      onChange("");
+      return;
+    }
+
+    let dateWithHours = eventValue;
+    if (type === 'date') {
+      dateWithHours = `${eventValue}T00:00:00`;
+    }
+
+    const dateWithTimezone = `${dateWithHours}Z`;
+
+    onChange(dateWithTimezone);
+  };
+
   return (
     <div className={`relative items-center max-w-full min-w-0 ${className}`}>
       <label htmlFor={`date-input-${id}`} className={labelClassName}>
@@ -53,7 +70,7 @@ export function DatePicker({
         id={`date-input-${id}`}
         type={type}
         value={formatValue(type, value)}
-        onChange={(e) => onChange(e.target.value)}
+        onChange={(e) => handleChange(e.target.value)}
         className={`block w-full rounded-md text-sm pr-10 input-no-icon ${inputClassName}`}
         pattern={type === 'datetime-local' ? "\d{4}-\d{2}-\d{2}T\d{2}:\d{2}" : "\d{4}-\d{2}-\d{2}"}
         disabled={loading}

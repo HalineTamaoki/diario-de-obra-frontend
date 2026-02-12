@@ -1,5 +1,5 @@
 import type { IdObraIdItem } from '../types/DetalhesObra';
-import type { Execucao, ExecucaoResponse, NovaData, OutraData, Previsao } from '../types/Execucao';
+import type { Execucao, NovaData, OutraData, Previsao } from '../types/Execucao';
 import { baseApi } from './api';
 import { obraApi } from './obraApi';
 
@@ -10,12 +10,6 @@ export const execucaoApi = baseApi.injectEndpoints({
                 url: `/execucao/${idItem}`,
                 method: 'GET',
             }),
-            transformResponse: (response: ExecucaoResponse): Execucao => {
-                return {
-                    ...response,
-                    previsao: { inicio: response?.inicio, termino: response?.termino }
-                };
-            },
             async onQueryStarted({ idObra, idItem }, { dispatch, queryFulfilled }) {
                 try {
                     const { data: execData } = await queryFulfilled;
@@ -59,13 +53,15 @@ export const execucaoApi = baseApi.injectEndpoints({
             },
         }),
 
-        editarPrevisao: builder.mutation<void, Previsao & IdObraIdItem>({
+        editarPrevisao: builder.mutation<Previsao, Previsao & IdObraIdItem>({
             query: ({ idItem, ...body }) => ({
                 url: `/execucao/${idItem}`,
                 method: 'PUT',
                 body,
             }),
-            async onQueryStarted({ idObra, idItem, inicio, termino }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ idObra, idItem }, { dispatch, queryFulfilled }) {
+                const { data } = await queryFulfilled;
+                const { inicio, termino } = data;
                 const updateCache = (draft: any, isObraCache: boolean) => {
                     if (isObraCache) {
                         const item = draft.items.find((i: any) => i.id === idItem);
@@ -85,22 +81,22 @@ export const execucaoApi = baseApi.injectEndpoints({
                 });
             },
         }),
-        editarComentarioExecucao: builder.mutation<void, IdObraIdItem & { comentario: string }>({
-            query: ({ idItem, comentario }) => ({
+        editarComentarioExecucao: builder.mutation<void, IdObraIdItem & { comentarios: string }>({
+            query: ({ idItem, comentarios }) => ({
                 url: `/execucao/${idItem}`,
                 method: 'PUT',
-                body: { comentario },
+                body: { comentarios },
             }),
-            async onQueryStarted({ idObra, idItem, comentario }, { dispatch, queryFulfilled }) {
+            async onQueryStarted({ idObra, idItem, comentarios }, { dispatch, queryFulfilled }) {
                 const patchExec = dispatch(
                     execucaoApi.util.updateQueryData('obterExecucao', { idObra, idItem }, (draft) => {
-                        draft.comentarios = comentario;
+                        draft.comentarios = comentarios;
                     })
                 );
                 const patchObra = dispatch(
                     obraApi.util.updateQueryData('obterObraDetalhada', idObra, (draft) => {
                         const item = draft.items.find(i => i.id === idItem);
-                        if (item?.execucao) item.execucao.comentarios = comentario;
+                        if (item?.execucao) item.execucao.comentarios = comentarios;
                     })
                 );
                 queryFulfilled.catch(() => { patchExec.undo(); patchObra.undo(); });

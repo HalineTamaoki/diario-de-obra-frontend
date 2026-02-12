@@ -1,15 +1,12 @@
-import { useCallback, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { mostrarNotificacao } from '../../../features/notificacaoSlice';
-import { useEtapasItem } from '../../../hooks/useEtapasItem';
 import { useEditarComentarioExecucaoMutation, useEditarOutraDataMutation, useEditarPrevisaoMutation, useObterExecucaoQuery, useRemoverOutraDataMutation } from '../../../services/execucaoApi';
-import { useMarcarFinalizadoMutation } from '../../../services/finalizacaoApi';
 import type { IdObraIdItem } from '../../../types/DetalhesObra';
 import type { OutraData, Previsao } from '../../../types/Execucao';
 import { AcoesButton } from '../../common/AcoesButton';
-import { ButtonSpinner } from '../../common/ButtonSpinner';
 import { ComentarioInput } from '../../common/ComentarioInput';
 import { DatePicker } from '../../common/DatePicker';
 import { LoadingContainer } from '../../common/LoadingContainer';
@@ -22,25 +19,23 @@ export const ExecucaoCard = (props: IdObraIdItem) => {
     const [ editarComentarioExecucao, { isLoading: isEditarComentarioLoading } ] = useEditarComentarioExecucaoMutation();
     const [ removerOutraData, { isLoading: isRemoverOutraDataLoading } ] = useRemoverOutraDataMutation();
     const [ editarOutraData, { isLoading: isEditarOutraDataLoading } ] = useEditarOutraDataMutation();
-    const [ marcarFinalizado, { isLoading: isMarcarFinalizadoLoading } ] = useMarcarFinalizadoMutation();
-    const { avancarEtapa } = useEtapasItem(idObra);
 
     const isEditarLoading = useMemo(() => 
-        isEditarPrevisaoLoading || isEditarComentarioLoading || isEditarOutraDataLoading || isMarcarFinalizadoLoading
-    , [isEditarComentarioLoading, isEditarPrevisaoLoading, isEditarOutraDataLoading, isMarcarFinalizadoLoading]);
+        isEditarPrevisaoLoading || isEditarComentarioLoading || isEditarOutraDataLoading
+    , [isEditarComentarioLoading, isEditarPrevisaoLoading, isEditarOutraDataLoading]);
 
     const dispatch = useDispatch();
 
-    const duracao = useMemo(() => diffDays(execucao?.previsao?.inicio, execucao?.previsao?.termino), [execucao?.previsao]);
+    const duracao = useMemo(() => diffDays(execucao?.inicio, execucao?.termino), [execucao]);
     
     const alterarPrevisao = useCallback((key: keyof Previsao, novoValor: string) => {
         editarPrevisao({
             ...props,
-            ...execucao?.previsao,
+            ...execucao,
             [key]: novoValor,
         }).unwrap().catch(error => 
             dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao editar previsão.'})));
-    }, [execucao?.previsao, editarPrevisao, props]); 
+    }, [execucao, editarPrevisao, props]); 
 
     const alterarOutraData = useCallback((data: OutraData) => {
         editarOutraData({
@@ -55,26 +50,21 @@ export const ExecucaoCard = (props: IdObraIdItem) => {
             dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao remover outra data.'})));
     }, [props, removerOutraData]);
 
-    const marcarComoFinalizado = useCallback(() => {
-        marcarFinalizado({...props, selecionado: true}).unwrap().then(() => {
-            avancarEtapa(idItem);
-        }).catch(error => 
-            dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao marcar como finalizado.'})));
-    }, [props]);
-
     const alterarComentario = useCallback((value: string) => {
         if(value !== execucao?.comentarios){
-            editarComentarioExecucao({...props, comentario: value}).unwrap().catch(error => 
+            editarComentarioExecucao({...props, comentarios: value}).unwrap().catch(error => 
                 dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao editar comentário.'})));
         }
     }, [execucao?.comentarios, editarComentarioExecucao, props]);
+
+    useEffect(() => console.log('execucao', execucao), [execucao]);
 
     return (
         <div id={`execucao-${idItem}`} className='px-2 pt-2 grid gap-1 w-full max-w-full min-w-0 max-h-60 overflow-auto'>
             <LoadingContainer isLoading={isLoading} className='justify-center'>
                 <DatePicker 
                     label='Início'
-                    value={execucao?.previsao?.inicio} 
+                    value={execucao?.inicio} 
                     id='previsao-inicio' 
                     labelClassName='font-medium'
                     inputClassName='mt-1'
@@ -83,7 +73,7 @@ export const ExecucaoCard = (props: IdObraIdItem) => {
                 />
                 <DatePicker 
                     label='Término'
-                    value={execucao?.previsao?.termino} 
+                    value={execucao?.termino} 
                     id='previsao-termino' 
                     labelClassName='font-medium'
                     inputClassName='mt-1'
@@ -135,14 +125,6 @@ export const ExecucaoCard = (props: IdObraIdItem) => {
                 >
                     Adicionar outra data
                 </Link>
-                {!execucao?.finalizado && <button 
-                    onClick={marcarComoFinalizado}
-                    className='bg-(--blue) hover:bg-(--blue-2) w-full text-center text-white rounded shadow-[0_2px_4px_rgba(0,0,0,0.25)] mt-3'
-                    disabled={isMarcarFinalizadoLoading}
-                >
-                    Marcar como finalizado
-                    <ButtonSpinner loading={isMarcarFinalizadoLoading}/>
-                </button>}
             </LoadingContainer>
         </div>
     )
