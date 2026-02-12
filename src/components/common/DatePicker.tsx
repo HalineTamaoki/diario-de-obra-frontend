@@ -18,12 +18,15 @@ interface DatePickerProps {
 const formatValue = (type: string, val?: string) => {
   if (!val) return "";
   
-  if (type === 'datetime-local') {
-    const cleanDate = val.split('.')[0].replace('Z', '');
-    return cleanDate.substring(0, 16);
+  const novaData = new Date(val);
+  const offset = novaData.getTimezoneOffset() * 60000;
+  const localISOTime = new Date(novaData.getTime() - offset).toISOString();
+
+  if (type === 'date') {
+    return localISOTime.split('T')[0];
   }
   
-  return val.substring(0, 10);
+  return localISOTime.slice(0, 16);
 };
 
 export function DatePicker({
@@ -55,7 +58,7 @@ export function DatePicker({
       dateWithHours = `${eventValue}T00:00:00`;
     }
 
-    const dateWithTimezone = `${dateWithHours}Z`;
+    const dateWithTimezone = `${dateWithHours}-03:00`;
 
     onChange(dateWithTimezone);
   };

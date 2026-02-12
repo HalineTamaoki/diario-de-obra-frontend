@@ -27,7 +27,7 @@ export const OutraDataForm = () => {
     const submit = useCallback((data: NovaData) => {
         addOutraData({
             nome: data.nome,
-            data: `${data.data}Z`,
+            data: `${data.data}-03:00`,
             idItem: idItem ? parseFloat(idItem) : -1,
             idObra: idObra ? parseFloat(idObra) : -1,
         }).unwrap().then(() => {
