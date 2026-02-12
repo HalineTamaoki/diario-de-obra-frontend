@@ -1,4 +1,4 @@
-import type { IdObraIdItem } from '../types/DetalhesObra';
+import type { IdObraIdItem, IdObraIdItemId } from '../types/DetalhesObra';
 import type { Ideia, NovaIdeia } from '../types/Ideia';
 import { baseApi } from './api';
 import { obraApi } from './obraApi';
@@ -55,7 +55,7 @@ export const ideacaoApi = baseApi.injectEndpoints({
         },
         }),
 
-        removerLink: builder.mutation<void, IdObraIdItem & { id: number }>({
+        removerLink: builder.mutation<void, IdObraIdItemId>({
             query: ({ id }) => ({
                 url: `/ideacao/${id}`,
                 method: 'DELETE',

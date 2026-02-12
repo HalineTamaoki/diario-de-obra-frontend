@@ -1,4 +1,4 @@
-import type { IdObraIdItem } from '../types/DetalhesObra';
+import type { IdObraIdItem, IdObraIdItemId } from '../types/DetalhesObra';
 import type { Execucao, NovaData, OutraData, Previsao } from '../types/Execucao';
 import { baseApi } from './api';
 import { obraApi } from './obraApi';
@@ -138,7 +138,7 @@ export const execucaoApi = baseApi.injectEndpoints({
                 }
             },
         }),
-        removerOutraData: builder.mutation<void, IdObraIdItem & { id: number }>({
+        removerOutraData: builder.mutation<void, IdObraIdItemId>({
             query: ({ id }) => ({ 
                 url: `/execucao/${id}`, 
                 method: 'DELETE' 

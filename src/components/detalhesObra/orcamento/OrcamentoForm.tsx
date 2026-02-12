@@ -2,20 +2,23 @@ import { useForm } from 'react-hook-form';
 import { useParams } from 'react-router-dom';
 import type { NovoOrcamentoType } from '../../../types/Orcamento';
 import { useCallback } from 'react';
+import { ButtonSpinner } from '../../common/ButtonSpinner';
+import { formatValue } from '../../../utils/DateUtils';
 
 interface OrcamentoFormProps {
     onSubmit: (data: NovoOrcamentoType) => void,
     onCancel: () => void,
     mostrarCampoEmpresa?: boolean,
-    valorInicial?: NovoOrcamentoType
+    valorInicial?: NovoOrcamentoType,
+    loading?: boolean
 }
 
-export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorInicial}: OrcamentoFormProps) => {
+export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorInicial, loading}: OrcamentoFormProps) => {
     const {idItem} = useParams<{idItem: string}>();
     const form = useForm<NovoOrcamentoType>({
         defaultValues: valorInicial ?? {
             idItem: idItem ? parseFloat(idItem) : 0,
-            data: new Date().toISOString().split('T')[0],
+            data: formatValue('date', new Date().toISOString().split(':')[0] + ':00:00Z'),
         },
     });
     const { handleSubmit, register, formState: {errors} } = form;
@@ -24,7 +27,10 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
         if(Number.isNaN(data.valor)) {
             data.valor = undefined;
         }
-        onSubmit(data);
+        onSubmit({
+            ...data,
+            data: `${data.data}T00:00:00-03:00`
+        });
     }, [onSubmit]);
 
     return (
@@ -34,6 +40,7 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
                 <input
                     type='text'
                     className='border border-(--secondary)! w-full rounded-md p-2'
+                    disabled={loading}
                     {...register('empresa', { required: 'Empresa é obrigatória' })}
                 />
                 {errors.empresa && (
@@ -46,6 +53,7 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
                     type='number'
                     step={0.01}
                     className='border border-(--secondary)! w-full rounded-md p-2'
+                    disabled={loading}
                     {...register('valor', {
                         valueAsNumber: true,
                         validate: (v) => {
@@ -66,6 +74,7 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
                 <input
                     type='date'
                     className='border border-(--secondary)! w-full rounded-md p-2'
+                    disabled={loading}
                     {...register('data', { required: 'Data é obrigatória' })}
                 />
                 {errors.data && (
@@ -77,6 +86,7 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
                 <textarea
                     rows={3}
                     className='border border-(--secondary)! w-full rounded-md p-2'
+                    disabled={loading}
                     {...register('comentarios')}
                 />
             </div>
@@ -84,12 +94,15 @@ export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorIni
                 <button
                     type="submit"
                     className="bg-(--secondary) hover:bg-(--secondary-2) w-full text-center rounded font-semibold! shadow-[0_2px_4px_rgba(0,0,0,0.25)]"
+                    disabled={loading}
                 >
                     Salvar
+                    <ButtonSpinner loading={loading}/>
                 </button>
                 <button
                     onClick={onCancel}
                     className="w-full text-center rounded border-(--secondary)! border hover:bg-(--secondary) font-semibold! shadow-[0_2px_4px_rgba(0,0,0,0.25)]"
+                    disabled={loading}
                 >
                     Cancelar
                 </button>

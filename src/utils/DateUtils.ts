@@ -7,7 +7,6 @@ export const isBeforeNow = (isoDate: string) => {
 
 export const formatValue = (type: string, val?: string) => {
   if (!val) return "";
-  console.log(val)
   
   const novaData = new Date(val);
   const offset = novaData.getTimezoneOffset() * 60000;

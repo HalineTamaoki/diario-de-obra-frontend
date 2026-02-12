@@ -1,29 +1,32 @@
 import { useCallback, useMemo } from 'react'
 import { BsEye, BsPatchCheck, BsPatchCheckFill, BsTrash3 } from 'react-icons/bs'
 import { useDispatch } from 'react-redux'
-import { useNavigate, useParams } from 'react-router-dom'
-import { itemsObraActions } from '../../../features/itemsObraSlice'
+import { useNavigate } from 'react-router-dom'
+import { mostrarNotificacao } from '../../../features/notificacaoSlice'
+import { useDeletarOrcamentoMutation, useSelecionarOrcamentoMutation } from '../../../services/orcamentoApi'
+import type { IdObraIdItem } from '../../../types/DetalhesObra'
 import type { OrcamentoResumo } from '../../../types/Orcamento'
 import { AcoesButton } from '../../common/AcoesButton'
 
-export const OrcamentoResumoCard = ({orcamento, idItem}: {orcamento: OrcamentoResumo, idItem: number}) => {
-    const dispach = useDispatch();
+export const OrcamentoResumoCard = ({orcamento, idItem, idObra}: {orcamento: OrcamentoResumo} & IdObraIdItem) => {
+    const dispatch = useDispatch();
     const navigate = useNavigate();
-    const { idObra } = useParams<{idObra: string}>();
+    const [ selecionarOrcamento, { isLoading: isSelecionarOrcamentoLoading }] = useSelecionarOrcamentoMutation();
+    const [ deletarOrcamento, { isLoading: isDeletarOrcamentoLoading }] = useDeletarOrcamentoMutation();
 
     const bgColor = useMemo(() => orcamento.selecionado ? 'bg-(--secondary)' : '', [orcamento.selecionado]);
     
     const selecionar = useCallback(() => {
-        dispach(itemsObraActions.selecionarOrcamento({id: orcamento.id, idItem: idItem}));
-    }, [itemsObraActions.selecionarOrcamento, orcamento.id]);
-
-    const desselecionar = useCallback(() => {
-        dispach(itemsObraActions.desselecionarOrcamento({id: orcamento.id, idItem: idItem}));
-    }, [itemsObraActions.desselecionarOrcamento, orcamento.id]);
+        selecionarOrcamento({id: orcamento.id, idItem, idObra, selecionado: !orcamento.selecionado}).unwrap().catch(error => {
+            dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao selecionar orçamento.'}));
+        });
+    }, [orcamento.id, idItem, idObra, orcamento.selecionado, selecionarOrcamento, dispatch]);
 
     const deletar = useCallback(() => {
-        dispach(itemsObraActions.deletarOrcamento({id: orcamento.id, idItem: idItem}));
-    }, [itemsObraActions.deletarOrcamento, orcamento.id, idItem]);
+        deletarOrcamento({id: orcamento.id, idItem, idObra}).unwrap().catch(error => {
+            dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao selecionar orçamento.'}));
+        });
+    }, [orcamento.id, idItem, idObra]);
 
     const verDetalhes = useCallback(() => {
         navigate(`/obra/${idObra}/orcamento/${idItem}/${orcamento.id}`);
@@ -38,18 +41,19 @@ export const OrcamentoResumoCard = ({orcamento, idItem}: {orcamento: OrcamentoRe
                 </div>
                 <div>
                     <p id={`orcamento-${orcamento.id}-valor`} className='text-[0.9rem] mb-0'>
-                        Valor: {orcamento.valor ? `R$${orcamento.valor.toFixed(2)}` : '-'}
+                        Valor: {orcamento.valor ? `R$${orcamento.valor}` : '-'}
                     </p>
                 </div>
             </div>
             <AcoesButton 
                 itens={[
                     orcamento.selecionado ? 
-                        {id: `acoes-orcamento-${orcamento.id}-desselecionar`, text: 'Desselecionar', onClick: desselecionar, icon: <BsPatchCheck />} :
+                        {id: `acoes-orcamento-${orcamento.id}-desselecionar`, text: 'Desselecionar', onClick: selecionar, icon: <BsPatchCheck />} :
                         {id: `acoes-orcamento-${orcamento.id}-selecionar`, text: 'Marcar como selecionado', onClick: selecionar, icon: <BsPatchCheckFill />},
                     {id: `acoes-orcamento-${orcamento.id}-detalhes`, text: 'Ver detalhes/editar', onClick: verDetalhes, icon: <BsEye />},
                     {id: `acoes-orcamento-${orcamento.id}-deletar`, text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
                 ]}
+                loading={isSelecionarOrcamentoLoading || isDeletarOrcamentoLoading}
             />
         </div>        
     )
