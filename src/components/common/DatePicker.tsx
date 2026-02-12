@@ -2,6 +2,7 @@
 import { useRef } from "react";
 import { Spinner } from "react-bootstrap";
 import { BsCalendar } from "react-icons/bs";
+import { formatValue } from "../../utils/DateUtils";
 
 interface DatePickerProps {
   id: string;
@@ -14,20 +15,6 @@ interface DatePickerProps {
   loading?: boolean,
   type?: 'date' | 'datetime-local'
 }
-
-const formatValue = (type: string, val?: string) => {
-  if (!val) return "";
-  
-  const novaData = new Date(val);
-  const offset = novaData.getTimezoneOffset() * 60000;
-  const localISOTime = new Date(novaData.getTime() - offset).toISOString();
-
-  if (type === 'date') {
-    return localISOTime.split('T')[0];
-  }
-  
-  return localISOTime.slice(0, 16);
-};
 
 export function DatePicker({
   id,

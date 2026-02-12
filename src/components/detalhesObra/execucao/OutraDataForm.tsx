@@ -5,6 +5,7 @@ import { useNavigate, useParams } from 'react-router-dom';
 import { mostrarNotificacao } from '../../../features/notificacaoSlice';
 import { useAddOutraDataMutation } from '../../../services/execucaoApi';
 import type { OutraData } from '../../../types/Execucao';
+import { formatValue } from '../../../utils/DateUtils';
 import { ButtonSpinner } from '../../common/ButtonSpinner';
 import { PageLayout } from '../../layout/PageLayout';
 
@@ -19,7 +20,7 @@ export const OutraDataForm = () => {
     const form = useForm<NovaData>({
         defaultValues: {
             nome: undefined,
-            data: new Date().toISOString().split(':')[0] + ':00',
+            data: formatValue('datetime-local', new Date().toISOString().split(':')[0] + ':00:00Z'),
         },
     });
     const { handleSubmit, register, formState: {errors} } = form;
