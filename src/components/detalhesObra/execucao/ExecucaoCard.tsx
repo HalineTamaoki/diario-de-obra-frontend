@@ -10,7 +10,7 @@ import { AcoesButton } from '../../common/AcoesButton';
 import { ComentarioInput } from '../../common/ComentarioInput';
 import { DatePicker } from '../../common/DatePicker';
 import { LoadingContainer } from '../../common/LoadingContainer';
-import { diffDays } from '../../common/utils';
+import { diffDays } from '../../../utils/DateUtils';
 
 export const ExecucaoCard = (props: IdObraIdItem) => {
     const {idItem, idObra} = props;
