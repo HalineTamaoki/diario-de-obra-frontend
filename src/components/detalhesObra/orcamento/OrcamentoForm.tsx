@@ -16,7 +16,10 @@ interface OrcamentoFormProps {
 export const OrcamentoForm = ({onSubmit, onCancel, mostrarCampoEmpresa, valorInicial, loading}: OrcamentoFormProps) => {
     const {idItem} = useParams<{idItem: string}>();
     const form = useForm<NovoOrcamentoType>({
-        defaultValues: valorInicial ?? {
+        defaultValues: valorInicial ? {
+            ...valorInicial,
+            data: formatValue('date', valorInicial.data)
+        } : {
             idItem: idItem ? parseFloat(idItem) : 0,
             data: formatValue('date', new Date().toISOString().split(':')[0] + ':00:00Z'),
         },

@@ -7,6 +7,7 @@ import { useDeletarOrcamentoMutation, useSelecionarOrcamentoMutation } from '../
 import type { IdObraIdItem } from '../../../types/DetalhesObra'
 import type { OrcamentoResumo } from '../../../types/Orcamento'
 import { AcoesButton } from '../../common/AcoesButton'
+import { converterMoeda } from '../../../utils/NumberUtils'
 
 export const OrcamentoResumoCard = ({orcamento, idItem, idObra}: {orcamento: OrcamentoResumo} & IdObraIdItem) => {
     const dispatch = useDispatch();
@@ -41,7 +42,7 @@ export const OrcamentoResumoCard = ({orcamento, idItem, idObra}: {orcamento: Orc
                 </div>
                 <div>
                     <p id={`orcamento-${orcamento.id}-valor`} className='text-[0.9rem] mb-0'>
-                        Valor: {orcamento.valor ? `R$${orcamento.valor}` : '-'}
+                        Valor: {orcamento.valor ? converterMoeda(orcamento.valor) : '-'}
                     </p>
                 </div>
             </div>

@@ -4,6 +4,8 @@ import { useNavigate, useParams } from 'react-router-dom'
 import { mostrarNotificacao } from '../../../features/notificacaoSlice'
 import { useDeletarOrcamentoMutation, useEditarOrcamentoMutation, useObterOrcamentoDetalhesQuery, useSelecionarOrcamentoMutation } from '../../../services/orcamentoApi'
 import type { NovoOrcamentoType } from '../../../types/Orcamento'
+import { converterData } from '../../../utils/DateUtils'
+import { converterMoeda } from '../../../utils/NumberUtils'
 import { ButtonSpinner } from '../../common/ButtonSpinner'
 import { LoadingContainer } from '../../common/LoadingContainer'
 import { OrcamentoDetalhesPageWrapper } from './OrcamentoDetalhesPageWrapper'
@@ -71,10 +73,10 @@ export const OrcamentoDetalhes = () => {
             ) : (
                 <div className='w-full gap-2 grid lg:w-1/2'>
                     <p className='mb-0'>
-                        Valor: <span className='w-full' onClick={() => setEditMode(true)}>R${orcamento?.valor ?? '-'}</span>
+                        Valor: <span className='w-full' onClick={() => setEditMode(true)}>{orcamento?.valor ? converterMoeda(orcamento.valor) : '-'}</span>
                     </p>
                     <p className='mb-0'>
-                        Data do envio: <span className='w-full' onClick={() => setEditMode(true)}>{orcamento?.data ?? '-'}</span>
+                        Data do envio: <span className='w-full' onClick={() => setEditMode(true)}>{converterData(orcamento.data) ?? '-'}</span>
                     </p>
                     <p className='mb-0'>
                         Comentários:

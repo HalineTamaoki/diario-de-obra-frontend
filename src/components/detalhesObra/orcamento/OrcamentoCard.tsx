@@ -4,6 +4,7 @@ import { useObterTodosOrcamentosQuery } from '../../../services/orcamentoApi';
 import type { IdObraIdItem } from '../../../types/DetalhesObra';
 import { LoadingContainer } from '../../common/LoadingContainer';
 import { OrcamentoResumoCard } from './OrcamentoResumoCard';
+import { converterMoeda } from '../../../utils/NumberUtils';
 
 export const OrcamentoCard = (props: IdObraIdItem) => {
     const { idItem, idObra } = props;
@@ -19,7 +20,7 @@ export const OrcamentoCard = (props: IdObraIdItem) => {
     return (
         <div className='px-2 pt-2 overflow-auto max-h-60'>
             <LoadingContainer isLoading={isLoading} className='justify-center'>
-                {valorMedio > 0 &&<p id={`orcamento-card-media-${idItem}`} className='mb-1'>Média: R${valorMedio.toFixed(2)}</p>}
+                {valorMedio > 0 &&<p id={`orcamento-card-media-${idItem}`} className='mb-1'>Média: {converterMoeda(valorMedio)}</p>}
                 <Link to={`/obra/${idObra}/orcamento/${idItem}/novo`} id={`orcamento-card-novo-${idItem}`} className='text-(--blue)! text-sm w-full block underline! hover:text-(--blue-2)! mb-3'>
                     Adicionar novo
                 </Link>

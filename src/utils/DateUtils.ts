@@ -18,3 +18,10 @@ export const formatValue = (type: string, val?: string) => {
   
   return localISOTime.slice(0, 16);
 };
+
+export const converterData = (data?: string) => {
+  if (!data) return;
+  
+  const novaData = new Date(data);
+  return novaData.toLocaleDateString();
+};

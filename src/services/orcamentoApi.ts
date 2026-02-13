@@ -65,29 +65,42 @@ export const orcamentoApi = baseApi.injectEndpoints({
                 method: 'POST',
                 body: { selecionado },
             }),
-            async onQueryStarted({ id, idItem, idObra }, { dispatch, queryFulfilled }) {
-                const updateSelection = (draft: OrcamentoResumo[]) => {
-                    draft.forEach(orc => {
-                        orc.selecionado = orc.id === id;
-                    });
+            async onQueryStarted({ id, idItem, idObra, selecionado }, { dispatch, queryFulfilled }) {
+                const updateFn = (draft: any[]) => {
+                    const orcamento = draft.find(orc => orc.id === id);
+                    if (orcamento) {
+                        orcamento.selecionado = selecionado;
+                    }
                 };
 
-                const patchLista = dispatch(orcamentoApi.util.updateQueryData('obterTodosOrcamentos', { idObra, idItem }, updateSelection));
-                const patchObra = dispatch(
-                    obraApi.util.updateQueryData('obterObraDetalhada', idObra, (draft) => {
-                        const item = draft.items.find(i => i.id === idItem);
-                        if (item?.orcamento) updateSelection(item.orcamento);
+                const patchDetalhes = dispatch(
+                    orcamentoApi.util.updateQueryData('obterOrcamentoDetalhes', { id }, (draft) => {
+                        if (draft) draft.selecionado = selecionado;
                     })
                 );
 
-                queryFulfilled.catch(() => {
+                const patchLista = dispatch(
+                    orcamentoApi.util.updateQueryData('obterTodosOrcamentos', { idObra, idItem }, updateFn)
+                );
+
+                const patchObra = dispatch(
+                    obraApi.util.updateQueryData('obterObraDetalhada', idObra, (draft) => {
+                        const item = draft.items.find(i => i.id === idItem);
+                        if (item?.orcamento) updateFn(item.orcamento);
+                    })
+                );
+
+                try {
+                    await queryFulfilled;
+                } catch {
+                    patchDetalhes.undo();
                     patchLista.undo();
                     patchObra.undo();
-                });
+                }
             },
         }),
 
-        editarOrcamento: builder.mutation<OrcamentoResumo, NovoOrcamentoType & IdObraIdItemId>({
+        editarOrcamento: builder.mutation<OrcamentoDetalhesType, NovoOrcamentoType & IdObraIdItemId>({
             query: (body) => ({
                 url: `/orcamento`,
                 method: 'PUT',
@@ -98,11 +111,16 @@ export const orcamentoApi = baseApi.injectEndpoints({
                     const { data: orcamentoAtualizado } = await queryFulfilled;
 
                     dispatch(
+                        orcamentoApi.util.updateQueryData('obterOrcamentoDetalhes', { id }, (draft) => {
+                            Object.assign(draft, orcamentoAtualizado);
+                        })
+                    );
+                    dispatch(
                         orcamentoApi.util.updateQueryData('obterTodosOrcamentos', { idObra, idItem }, (draft) => {
-                        const index = draft.findIndex(orc => orc.id === id);
-                        if (index !== -1) {
-                            draft[index] = orcamentoAtualizado; 
-                        }
+                            const index = draft.findIndex(orc => orc.id === id);
+                            if (index !== -1) {
+                                draft[index] = orcamentoAtualizado; 
+                            }
                         })
                     );
 
@@ -120,7 +138,7 @@ export const orcamentoApi = baseApi.injectEndpoints({
                 } catch {
                 }
             },
-            }),
+        }),
 
         deletarOrcamento: builder.mutation<void, IdObraIdItemId>({
             query: ({ id }) => ({
