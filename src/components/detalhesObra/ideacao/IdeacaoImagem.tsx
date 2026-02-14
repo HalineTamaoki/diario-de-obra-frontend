@@ -1,12 +1,12 @@
 import { useCallback } from 'react';
 import { BsEye, BsTrash3 } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
 import { useMediaQuery } from 'react-responsive';
 import { mostrarNotificacao } from '../../../features/notificacaoSlice';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
+import { useRemoverLinkMutation } from '../../../services/ideacaoApi';
 import type { Ideia } from '../../../types/Ideia';
 import { AcoesWithChildren } from '../../common/AcoesWithChildren';
 import { IdeacaoImg } from './IdeacaoImg';
-import { useRemoverLinkMutation } from '../../../services/ideacaoApi';
 
 interface IdeacaoImagemProps {
     ideia: Ideia,
@@ -17,7 +17,7 @@ export const IdeacaoImagem = ({ideia, idObra}: IdeacaoImagemProps) => {
     const isMobile = useMediaQuery({ maxWidth: 767 });
     const [ removerLink, { isLoading }] = useRemoverLinkMutation();
 
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
    
     const deletar = useCallback(() => {
         removerLink({id: ideia.id, idItem: ideia.itemidObra, idObra}).unwrap().catch((error) => {

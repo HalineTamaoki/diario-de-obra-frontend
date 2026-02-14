@@ -1,17 +1,17 @@
 import { useCallback } from "react";
-import { useDispatch } from "react-redux";
 import { AddInput } from "../components/common/AddInput";
 import { LoadingContainer } from "../components/common/LoadingContainer";
 import { PageLayout } from "../components/layout/PageLayout";
 import { ObraCard } from "../components/obra/ObraCard";
 import { mostrarNotificacao } from "../features/notificacaoSlice";
+import { useAppDispatch } from "../hooks/useAppDispatch";
 import { useCadastrarObraMutation, useObterObrasQuery } from "../services/obraApi";
 import type { Obra as ObraType } from "../types/Obra";
 
 export const Obra = () => {
     const [ cadastrarObra, { isLoading }] = useCadastrarObraMutation();
     const { data: obras, isLoading: isLoadingObras } = useObterObrasQuery();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const adicionarObra = useCallback((nome: string) => {
         cadastrarObra({ nome }).unwrap()

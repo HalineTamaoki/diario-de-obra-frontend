@@ -1,6 +1,6 @@
 import { useCallback } from 'react';
-import { useDispatch } from 'react-redux';
 import { mostrarNotificacao } from '../../../features/notificacaoSlice';
+import { useAppDispatch } from '../../../hooks/useAppDispatch';
 import { useAddLinkMutation, useObterIdeiasByItemQuery } from '../../../services/ideacaoApi';
 import type { IdObraIdItem } from '../../../types/DetalhesObra';
 import { AddInput } from '../../common/AddInput';
@@ -10,7 +10,7 @@ import { IdeacaoImagem } from './IdeacaoImagem';
 export const IdeacaoCard = (props: IdObraIdItem) => {
     const {idItem, idObra} = props;
     const { data: ideias, isLoading } = useObterIdeiasByItemQuery(props);
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [ addLink, { isLoading: isAddIdeiaLoading }] = useAddLinkMutation();
  
     const addIdeia = useCallback((value: string) => {

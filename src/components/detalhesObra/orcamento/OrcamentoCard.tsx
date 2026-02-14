@@ -27,7 +27,7 @@ export const OrcamentoCard = (props: IdObraIdItem) => {
                 {orcamentos && orcamentos.length > 0 ? (
                 <div className='grid gap-2'>
                     {orcamentos.map((orcamento) => 
-                    <OrcamentoResumoCard orcamento={orcamento} key={orcamento.id} idItem={idItem} idObra={idObra}/>)}
+                        <OrcamentoResumoCard orcamento={orcamento} key={orcamento.id} idItem={idItem} idObra={idObra}/>)}
                 </div>  
                 ) : (
                     <p className="text-gray-500 text-start text-sm mb-0">Nenhum orçamento adicionado.</p>

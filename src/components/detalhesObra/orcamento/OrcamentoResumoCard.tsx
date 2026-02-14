@@ -1,16 +1,16 @@
 import { useCallback, useMemo } from 'react'
 import { BsEye, BsPatchCheck, BsPatchCheckFill, BsTrash3 } from 'react-icons/bs'
-import { useDispatch } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { mostrarNotificacao } from '../../../features/notificacaoSlice'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useDeletarOrcamentoMutation, useSelecionarOrcamentoMutation } from '../../../services/orcamentoApi'
 import type { IdObraIdItem } from '../../../types/DetalhesObra'
 import type { OrcamentoResumo } from '../../../types/Orcamento'
-import { AcoesButton } from '../../common/AcoesButton'
 import { converterMoeda } from '../../../utils/NumberUtils'
+import { AcoesButton } from '../../common/AcoesButton'
 
 export const OrcamentoResumoCard = ({orcamento, idItem, idObra}: {orcamento: OrcamentoResumo} & IdObraIdItem) => {
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [ selecionarOrcamento, { isLoading: isSelecionarOrcamentoLoading }] = useSelecionarOrcamentoMutation();
     const [ deletarOrcamento, { isLoading: isDeletarOrcamentoLoading }] = useDeletarOrcamentoMutation();

@@ -1,7 +1,7 @@
 import { useCallback, useState } from 'react'
-import { useDispatch } from 'react-redux'
 import { useNavigate, useParams } from 'react-router-dom'
 import { mostrarNotificacao } from '../../../features/notificacaoSlice'
+import { useAppDispatch } from '../../../hooks/useAppDispatch'
 import { useDeletarOrcamentoMutation, useEditarOrcamentoMutation, useObterOrcamentoDetalhesQuery, useSelecionarOrcamentoMutation } from '../../../services/orcamentoApi'
 import type { NovoOrcamentoType } from '../../../types/Orcamento'
 import { converterData } from '../../../utils/DateUtils'
@@ -18,7 +18,7 @@ export const OrcamentoDetalhes = () => {
     const idOrcamentoNum = parseFloat(idOrcamento!);
     
     const { data: orcamento, isLoading } = useObterOrcamentoDetalhesQuery({id: idOrcamentoNum});
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const navigate = useNavigate();
     const [editMode, setEditMode] = useState<boolean>(false);
     const [ editarOrcamento, { isLoading: isEditarOrcamentoLoading }] = useEditarOrcamentoMutation();

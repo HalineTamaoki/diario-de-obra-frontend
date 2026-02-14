@@ -1,7 +1,7 @@
 import React, { useCallback, useRef, useState } from 'react';
 import { Spinner } from 'react-bootstrap';
 import { BsPlus } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
 interface AddInputProps {
     add: (value: string) => void, 
@@ -12,7 +12,7 @@ interface AddInputProps {
 }
 
 export const AddInput = ({add, id, placeholder, className, loading}: AddInputProps) => {
-    const dispach = useDispatch();
+    const dispach = useAppDispatch();
     const [inputValue, setInputValue] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 

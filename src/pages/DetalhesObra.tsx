@@ -1,11 +1,11 @@
 import { useCallback, useEffect, useState } from 'react';
-import { useDispatch } from 'react-redux';
 import { useNavigate, useParams } from 'react-router-dom';
 import { AddInput } from '../components/common/AddInput';
 import { LoadingContainer } from '../components/common/LoadingContainer';
 import { ItemObraCard } from '../components/detalhesObra/ItemObraCard';
 import { PageLayout } from '../components/layout/PageLayout';
 import { mostrarNotificacao } from '../features/notificacaoSlice';
+import { useAppDispatch } from '../hooks/useAppDispatch';
 import { useCadastrarItemMutation } from '../services/itemObraApi';
 import { useObterObraDetalhadaQuery } from '../services/obraApi';
 import type { ItemObra } from '../types/DetalhesObra';
@@ -13,7 +13,7 @@ import type { ItemObra } from '../types/DetalhesObra';
 export const DetalhesObra = () => {
     const { idObra } = useParams();
     const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
     const [openItems, setOpenItems] = useState<number[]>(() => {
         const saved = localStorage.getItem('accordion_state');
         return saved ? JSON.parse(saved) : [];

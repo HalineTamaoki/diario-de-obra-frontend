@@ -1,7 +1,7 @@
 import { useCallback, useMemo, useState } from 'react';
 import { BsChevronDown, BsChevronUp, BsTrash3 } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
 import { mostrarNotificacao } from '../../features/notificacaoSlice';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 import { useDeletarItemMutation, useEditarItemMutation } from '../../services/itemObraApi';
 import type { ItemObra } from '../../types/DetalhesObra';
 import { AcoesButton } from '../common/AcoesButton';
@@ -12,7 +12,7 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active, idObra}
     const [editMode, setEditMode] = useState<boolean>(false);
     const [deletarItem, { isLoading: deleteLoading }] = useDeletarItemMutation();
     const [editarItem, { isLoading: editLoading }] = useEditarItemMutation();
-    const dispatch = useDispatch();
+    const dispatch = useAppDispatch();
 
     const bgColor = useMemo(() => {
         const { ultimaEtapa } = itemObra;
