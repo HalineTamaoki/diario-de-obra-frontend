@@ -92,6 +92,19 @@ describe('FinalizadoCard', () => {
         }));
     });
 
+    it('deve chamar alterarComentario ao mudar o comentario', async () => {
+        const editarComentarioSpy = vi.fn().mockReturnValue({ unwrap: () => Promise.resolve() });
+        (useEditarComentarioFinalizacaoMutation as any).mockReturnValue([editarComentarioSpy, { isLoading: false }]);
+        (useObterFinalizacaoQuery as any).mockReturnValue({ data: mockData, isLoading: false });
+
+        renderWithProviders();
+
+        const comentarioInput = screen.getByTestId('mock-comentarios-input');
+        fireEvent.change(comentarioInput, {target: {value: 'Novo Comentário'}});
+
+        expect(editarComentarioSpy).toHaveBeenCalled();
+    });
+
     it('deve chamar marcarFinalizado ao clicar no botão principal', async () => {
         const marcarSpy = vi.fn().mockReturnValue({ unwrap: () => Promise.resolve(), catch: () => Promise.resolve() });
         (useMarcarFinalizadoMutation as any).mockReturnValue([marcarSpy, { isLoading: false }]);

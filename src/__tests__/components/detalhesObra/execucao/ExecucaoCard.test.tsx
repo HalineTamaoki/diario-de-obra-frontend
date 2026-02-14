@@ -155,6 +155,21 @@ describe('ExecucaoCard', () => {
         expect(editarComentarioSpy).toHaveBeenCalled(); 
     });
 
+    it('deve chamar alterarOutraData quando editar outraData', async () => {
+        const editarOutraData = vi.fn().mockReturnValue({ unwrap: () => Promise.resolve() });
+        (useEditarOutraDataMutation as any).mockReturnValue([editarOutraData, { isLoading: false }]);
+        (useObterExecucaoQuery as any).mockReturnValue({ data: mockExecucao, isLoading: false });
+
+        renderWithProviders();
+
+        if(mockExecucao.datasAdicionais){
+            const outraDataInput = screen.getByTestId(mockExecucao.datasAdicionais[0].id.toString());
+            fireEvent.change(outraDataInput, {target: {value: '2027-01-01'}});
+        }
+
+        expect(editarOutraData).toHaveBeenCalled(); 
+    });
+
     it('deve exibir o link para adicionar outra data com os IDs corretos', () => {
         (useObterExecucaoQuery as any).mockReturnValue({ data: mockExecucao, isLoading: false });
         renderWithProviders({ idItem: 1, idObra: 123 });

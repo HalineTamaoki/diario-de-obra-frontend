@@ -5,7 +5,7 @@ import { NomeInput } from '../../common/NomeInput'
 import { PageTitleWrapper } from '../../layout/PageTitleWrapper'
 import { PageWrapper } from '../../layout/PageWrapper'
 
-interface OrcamentoDetalhesPageWrapperProps {
+export interface OrcamentoDetalhesPageWrapperProps {
     children: ReactNode, 
     editMode: boolean, 
     voltar?: () => void, 

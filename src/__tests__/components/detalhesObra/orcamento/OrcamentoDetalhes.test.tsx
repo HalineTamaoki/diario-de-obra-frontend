@@ -2,6 +2,7 @@ import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { OrcamentoDetalhes } from '../../../../components/detalhesObra/orcamento/OrcamentoDetalhes';
+import type { OrcamentoDetalhesPageWrapperProps } from '../../../../components/detalhesObra/orcamento/OrcamentoDetalhesPageWrapper';
 import {
     useDeletarOrcamentoMutation,
     useEditarOrcamentoMutation,
@@ -29,6 +30,18 @@ vi.mock('../../../../components/detalhesObra/orcamento/OrcamentoForm', () => ({
     )
 }));
 
+vi.mock('../../../../components/detalhesObra/orcamento/OrcamentoDetalhesPageWrapper', () => ({
+    OrcamentoDetalhesPageWrapper: (props: OrcamentoDetalhesPageWrapperProps) => (
+        <div>
+            <button onClick={() => props.voltar?.()} data-testid="wrapper-voltar">
+                Voltar
+            </button>
+            <p>{props.orcamento.empresa}</p>
+            {props.children}
+        </div>
+    )
+}));
+
 const mockDispatch = vi.fn();
 vi.mock('../../../../hooks/useAppDispatch', () => ({
     useAppDispatch: () => mockDispatch,
@@ -48,6 +61,7 @@ const renderWithProviders = () => {
         <MemoryRouter initialEntries={['/obra/1/orcamento/10/50']}>
             <Routes>
                 <Route path="/obra/:idObra/orcamento/:idItem/:idOrcamento" element={<OrcamentoDetalhes />} />
+                <Route path="/obra/:idObra" element={<div>Página da Obra</div>} />
             </Routes>
         </MemoryRouter>
     );
@@ -102,6 +116,31 @@ describe('OrcamentoDetalhes', () => {
         expect(comentarios).not.toBeInTheDocument();
         fireEvent.click(screen.getByText('Cancelar'));
         expect(screen.getByText(mockOrcamento.comentarios)).toBeInTheDocument();
+    });
+
+    it('deve sair do modo de edição ao clicar em voltar', async () => {
+        useObterMock.mockReturnValue({ data: mockOrcamento, isLoading: false } as any);
+        renderWithProviders();
+
+        
+        const comentarios = screen.getByText(mockOrcamento.comentarios);
+        fireEvent.click(comentarios);
+        expect(comentarios).not.toBeInTheDocument();
+
+        const voltarBtn = screen.getByText('Voltar');
+        fireEvent.click(voltarBtn);
+
+        expect(screen.getByText(mockOrcamento.comentarios)).toBeInTheDocument();
+    });
+
+    it('deve navegar para página da obra ao clicar em voltar', async () => {
+        useObterMock.mockReturnValue({ data: mockOrcamento, isLoading: false } as any);
+        renderWithProviders();
+        
+        const voltarBtn = screen.getByText('Voltar');
+        fireEvent.click(voltarBtn);
+
+        await waitFor(() => expect(screen.getByText('Página da Obra')).toBeInTheDocument());
     });
 
     it('deve chamar a mutação de seleção ao clicar no botão selecionar', async () => {
