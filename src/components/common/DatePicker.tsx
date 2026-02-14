@@ -4,7 +4,7 @@ import { Spinner } from "react-bootstrap";
 import { BsCalendar } from "react-icons/bs";
 import { formatValue } from "../../utils/DateUtils";
 
-interface DatePickerProps {
+export interface DatePickerProps {
   id: string;
   label: string;
   value?: string;

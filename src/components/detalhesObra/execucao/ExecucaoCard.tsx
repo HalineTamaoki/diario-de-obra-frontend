@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo } from 'react';
+import { useCallback, useMemo } from 'react';
 import { BsTrash3 } from 'react-icons/bs';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -6,11 +6,11 @@ import { mostrarNotificacao } from '../../../features/notificacaoSlice';
 import { useEditarComentarioExecucaoMutation, useEditarOutraDataMutation, useEditarPrevisaoMutation, useObterExecucaoQuery, useRemoverOutraDataMutation } from '../../../services/execucaoApi';
 import type { IdObraIdItem } from '../../../types/DetalhesObra';
 import type { OutraData, Previsao } from '../../../types/Execucao';
+import { diffDays } from '../../../utils/DateUtils';
 import { AcoesButton } from '../../common/AcoesButton';
 import { ComentarioInput } from '../../common/ComentarioInput';
 import { DatePicker } from '../../common/DatePicker';
 import { LoadingContainer } from '../../common/LoadingContainer';
-import { diffDays } from '../../../utils/DateUtils';
 
 export const ExecucaoCard = (props: IdObraIdItem) => {
     const {idItem, idObra} = props;
@@ -56,8 +56,6 @@ export const ExecucaoCard = (props: IdObraIdItem) => {
                 dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao editar comentário.'})));
         }
     }, [execucao?.comentarios, editarComentarioExecucao, props]);
-
-    useEffect(() => console.log('execucao', execucao), [execucao]);
 
     return (
         <div id={`execucao-${idItem}`} className='px-2 pt-2 grid gap-1 w-full max-w-full min-w-0 max-h-60 overflow-auto'>

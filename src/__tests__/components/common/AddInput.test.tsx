@@ -2,8 +2,13 @@ import { render, screen, fireEvent } from '@testing-library/react';
 import { vi } from 'vitest';
 import { AddInput } from '../../../components/common/AddInput';
 
-vi.mock('react-redux', () => ({
-    useDispatch: () => vi.fn(),
+const mockDispatch = vi.fn();
+vi.mock('../../../hooks/useAppDispatch', () => ({
+    useAppDispatch: () => mockDispatch,
+}));
+
+vi.mock('../../../features/notificacaoSlice', () => ({
+    mostrarNotificacao: vi.fn((payload) => ({ type: 'notificacao/mostrar', payload })),
 }));
 
 describe('AddInput Component', () => {

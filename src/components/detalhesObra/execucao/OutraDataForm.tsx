@@ -52,6 +52,7 @@ export const OutraDataForm = () => {
                 <div className='mb-3'>
                     <p className='mb-2'>Nome: <span className='text-(--red)'>*</span></p>
                     <input
+                        id="outa-data-nome-input"
                         className='border border-(--blue)! w-full rounded-md p-2'
                         {...register('nome', { required: 'Nome é obrigatório' })}
                         disabled={isLoading}
@@ -63,6 +64,7 @@ export const OutraDataForm = () => {
                 <div className='mb-3'>
                     <p className='mb-2'>Data: <span className='text-(--red)'>*</span></p>
                     <input
+                        id="outa-data-data-input"
                         type='datetime-local'
                         className='border border-(--blue)! w-full rounded-md p-2'
                         pattern="\d{4}-\d{2}-\d{2}T\d{2}:\d{2}"
