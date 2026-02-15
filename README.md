@@ -6,7 +6,7 @@ O Diário de Obra é uma aplicação moderna em React, projetada para ajudar usu
 
 ---
 
-## **Pré-requisitors**
+## **Pré-requisitos**
 
 - **Node.js** (v18 ou maior)
 - **npm** (v9+) ou **yarn** (v1+)
@@ -52,6 +52,24 @@ npm run preview
 # ou
 yarn preview
 ```
+
+### Executar testes unitários
+
+- **Testes unitários:**
+
+ ```bash
+ npm run test
+ ```
+
+## Cobertura de Testes
+
+- **Gerar relatório de cobertura:**
+
+   ```bash
+   npm run coverage
+   ```
+
+- O relatório estará disponível na pasta `coverage/`.
 
 ---
 
