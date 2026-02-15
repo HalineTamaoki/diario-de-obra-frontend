@@ -10,7 +10,7 @@ export interface AcoesButtonItens {
     icon: React.ReactNode
 }
 
-export const AcoesButtonItens = ({itens, handleClose}: {itens: AcoesButtonItens[], handleClose: () => void}) => {
+export const AcoesButtonItens = ({itens, handleClose, disabled}: {itens: AcoesButtonItens[], handleClose: () => void, disabled?: boolean}) => {
     const isMd = useMediaQuery({ minWidth: 768 });
 
     return (
@@ -20,6 +20,7 @@ export const AcoesButtonItens = ({itens, handleClose}: {itens: AcoesButtonItens[
                     <AcaoButton 
                         key={item.id}
                         id={item.id} 
+                        disabled={disabled}
                         onClick={(e) => {
                             handleClose();
                             item.onClick(e);

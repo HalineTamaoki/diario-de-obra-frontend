@@ -1,20 +1,28 @@
 import { useCallback, useMemo, useState } from 'react';
-import { BsTrash3 } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
-import { Link } from 'react-router-dom';
-import { removerObra } from '../../features/obraSlice';
+import { BsEye, BsTrash3 } from 'react-icons/bs';
+import { Link, useNavigate } from 'react-router-dom';
+import { mostrarNotificacao } from '../../features/notificacaoSlice';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useDeletarObraMutation } from '../../services/obraApi';
 import type { Obra } from '../../types/Obra';
 import { AcoesButton } from '../common/AcoesButton';
 import { NomeObraInput } from './NomeObraInput';
 
 export const ObraCard = ({obra}: {obra: Obra}) => {
     const [editMode, setEditMode] = useState<boolean>(false);
-
-    const dispach = useDispatch();
+    const navigate = useNavigate();
+    const dispach = useAppDispatch();
+    const [deletarObra, { isLoading }] = useDeletarObraMutation();
 
     const deletar = useCallback(() => {
-        dispach(removerObra(obra.id));
+        deletarObra(obra.id).unwrap().catch((error) => {
+            dispach(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao deletar obra.'}));
+        });
     }, []);
+
+    const verDetalhes = useCallback(() => {
+        navigate(`/obra/${obra.id}`);
+    }, [obra.id]);
 
     const bgColor = useMemo(() => {
         const { porcentagem } = obra;
@@ -35,8 +43,7 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                 id={`obra-card-${obra.id}`}
                 className={`w-full flex justify-between md:py-6! min-w-0 px-4 align-items-center text-decoration-none ${bgColor} ${textColor}`}
                 style={{borderRadius: '0.5em'}}
-                to={`/${obra.nome}`}
-                state={{id: obra.id}}
+                to={`/obra/${obra.id}`}
             >
                 {editMode ? (
                     <NomeObraInput sairModoEdicao={() => setEditMode(false)} obra={obra}/>
@@ -55,7 +62,9 @@ export const ObraCard = ({obra}: {obra: Obra}) => {
                         color={textColor} 
                         itens={[
                             {id: 'acoes-obra-deletar', text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
+                            {id: 'acoes-obra-ver', text: 'Ver detalhes', onClick: verDetalhes, icon: <BsEye />},
                         ]}
+                        loading={isLoading}
                     />
                 </div>
             </Link>

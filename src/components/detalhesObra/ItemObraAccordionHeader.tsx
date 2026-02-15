@@ -1,15 +1,18 @@
 import { useCallback, useMemo, useState } from 'react';
 import { BsChevronDown, BsChevronUp, BsTrash3 } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
-import { editarItemObra, removerItemObra } from '../../features/itemsObraSlice';
+import { mostrarNotificacao } from '../../features/notificacaoSlice';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
+import { useDeletarItemMutation, useEditarItemMutation } from '../../services/itemObraApi';
 import type { ItemObra } from '../../types/DetalhesObra';
 import { AcoesButton } from '../common/AcoesButton';
 import { NomeInput } from '../common/NomeInput';
 
 
-export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemObra: ItemObra, active: boolean, toogleActive: () => void}) => {
+export const ItemObraAccordionHeader = ({itemObra, toogleActive, active, idObra}: {itemObra: ItemObra, active: boolean, toogleActive: () => void, idObra: number}) => {
     const [editMode, setEditMode] = useState<boolean>(false);
-    const dispach = useDispatch();
+    const [deletarItem, { isLoading: deleteLoading }] = useDeletarItemMutation();
+    const [editarItem, { isLoading: editLoading }] = useEditarItemMutation();
+    const dispatch = useAppDispatch();
 
     const bgColor = useMemo(() => {
         const { ultimaEtapa } = itemObra;
@@ -23,14 +26,18 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
     }, [itemObra.ultimaEtapa]);
 
     const textColor = useMemo(() => itemObra.ultimaEtapa === 'execucao' ? 'text-white' : 'text-(--black)!', [itemObra.ultimaEtapa]);
-    
+
     const editar = useCallback((value: string) => {
-        dispach(editarItemObra({id: itemObra.id, nome: value}));
-    }, [itemObra.id]);
+        editarItem({id: itemObra.id, nome: value, idObra: idObra}).unwrap().catch((error) => {
+            dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao editar item.'}));
+        });
+    }, [itemObra.id, idObra]);
 
     const deletar = useCallback(() => {
-        dispach(removerItemObra(itemObra.id));
-    }, [itemObra.id]);
+        deletarItem({id: itemObra.id, idObra: idObra}).unwrap().catch((error) => {
+            dispatch(mostrarNotificacao({variant: 'danger', mensagem: error.data?.message ?? 'Erro ao deletar item.'}));
+        });
+    }, [itemObra.id, idObra]);
 
     return (
         <div 
@@ -40,7 +47,9 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
             {editMode ? (
                 <NomeInput 
                     id='editar-nome-obra-input'
+                    className='py-2.5'
                     valorInicial={itemObra.nome}
+                    defaultValue='Nome do item'
                     editar={editar} 
                     sairModoEdicao={() => setEditMode(false)}
                 />
@@ -59,6 +68,7 @@ export const ItemObraAccordionHeader = ({itemObra, toogleActive, active}: {itemO
                     itens={[
                         {id: 'acoes-obra-deletar', text: 'Deletar', onClick: deletar, className: 'text-(--red)', icon: <BsTrash3 />},
                     ]}
+                    loading={deleteLoading || editLoading}
                 />
                 <button className='p-0'>
                     {active ? <BsChevronUp className='text-xl'/> : <BsChevronDown className='text-xl'/>}

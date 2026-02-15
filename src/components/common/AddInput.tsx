@@ -1,9 +1,18 @@
 import React, { useCallback, useRef, useState } from 'react';
+import { Spinner } from 'react-bootstrap';
 import { BsPlus } from 'react-icons/bs';
-import { useDispatch } from 'react-redux';
+import { useAppDispatch } from '../../hooks/useAppDispatch';
 
-export const AddInput = ({add, id, placeholder, className}: {add: (value: string) => void, id: string, placeholder: string, className?: string}) => {
-    const dispach = useDispatch();
+interface AddInputProps {
+    add: (value: string) => void, 
+    id: string, 
+    placeholder: string, 
+    className?: string,
+    loading?: boolean,
+}
+
+export const AddInput = ({add, id, placeholder, className, loading}: AddInputProps) => {
+    const dispach = useAppDispatch();
     const [inputValue, setInputValue] = useState<string>('');
     const inputRef = useRef<HTMLInputElement>(null);
 
@@ -24,7 +33,7 @@ export const AddInput = ({add, id, placeholder, className}: {add: (value: string
     return (
         <div 
             id={`${id}-wrapper`} 
-            className={`w-full flex pl-4 py-1 rounded-lg mb-6 ${className}`} 
+            className={`w-full flex pl-4 py-1 rounded-lg mb-3 ${className}`} 
             style={{ borderColor: 'var(--grey)', borderWidth: '1px', borderStyle: 'solid'}}
         >
             <input 
@@ -43,8 +52,9 @@ export const AddInput = ({add, id, placeholder, className}: {add: (value: string
                 type="button"
                 onClick={adicionar}
                 id={`${id}-btn`} 
+                disabled={loading}
             >
-                <BsPlus className='text-lg'/>
+                {loading ? <Spinner className='text-(--gray) border-2' size='sm'/>: <BsPlus className='text-lg'/>}
             </button>
         </div>
     )

@@ -1,13 +1,17 @@
 import { Accordion } from 'react-bootstrap'
 import type { ItemObra } from '../../types/DetalhesObra'
 import { ItemObraAccordionHeader } from './ItemObraAccordionHeader'
-import { useCallback, useState } from 'react'
 import { ItemObraAccordionTitle } from './ItemObraAccordionTitle'
+import { ExecucaoCard } from './execucao/ExecucaoCard'
+import { FinalizadoCard } from './finalizado/FinalizadoCard'
 import { IdeacaoCard } from './ideacao/IdeacaoCard'
+import { OrcamentoCard } from './orcamento/OrcamentoCard'
 
 interface ItemObraCardProps {
     itemObra: ItemObra,
-    index: number
+    open: boolean,
+    toogleAccordionState: (itemId: number) => void,
+    idObra: number,
 }
 
 const getBgColor = (ultimaEtapa: string) => {
@@ -32,21 +36,18 @@ const getBgColor = (ultimaEtapa: string) => {
   } as React.CSSProperties;
 }
 
-export const ItemObraCard = ({itemObra, index}: ItemObraCardProps) => {
-    const [activeKey, setActiveKey] = useState<string | null>(index === 0 ? itemObra.id.toString() : null); 
-
-    const toogleSelect = useCallback(() => {
-        setActiveKey(prev => prev === null ? itemObra.id.toString() : null);
-    }, [itemObra.id, activeKey]);
-    
+export const ItemObraCard = ({itemObra, open, toogleAccordionState, idObra}: ItemObraCardProps) => {
     return (
-        <Accordion id='detalhes-obra-accordion' activeKey={activeKey} >
+        <Accordion id='detalhes-obra-accordion' activeKey={open ? itemObra.id.toString() : null} className='max-w-full min-w-0'>
             <Accordion.Item eventKey={itemObra.id.toString()} style={getBgColor(itemObra.ultimaEtapa)}>
-                <ItemObraAccordionHeader itemObra={itemObra} active={!!activeKey} toogleActive={toogleSelect}/>
+                <ItemObraAccordionHeader itemObra={itemObra} active={open} toogleActive={() => toogleAccordionState(itemObra.id)} idObra={idObra}/>
                 <Accordion.Body className='px-1'>
-                    <ItemObraAccordionTitle id={itemObra.id} ultimaEtapa={itemObra.ultimaEtapa}/>
+                    <ItemObraAccordionTitle idItem={itemObra.id} idObra={idObra} ultimaEtapa={itemObra.ultimaEtapa}/>
                     <div className='mt-2'>
-                        {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard id={itemObra.id}/>}
+                        {itemObra.ultimaEtapa === 'ideacao' && <IdeacaoCard idItem={itemObra.id} idObra={idObra}/>}
+                        {itemObra.ultimaEtapa === 'orcamento' && <OrcamentoCard idItem={itemObra.id} idObra={idObra}/>}
+                        {itemObra.ultimaEtapa === 'execucao' && <ExecucaoCard idItem={itemObra.id} idObra={idObra}/>}
+                        {itemObra.ultimaEtapa === 'finalizado' && <FinalizadoCard idItem={itemObra.id} idObra={idObra}/>}
                     </div>
                 </Accordion.Body>
             </Accordion.Item >

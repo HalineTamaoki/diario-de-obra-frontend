@@ -75,29 +75,35 @@ yarn preview
 
 ## **Estrutura de pastas**
 
-```
 diario-de-obra-frontend/
-├── public/                # Arquivos estáticos
+├── public/                        # Arquivos estáticos
 ├── src/
-│   ├── app/               # Configuração da store do Redux
-│   ├── assets/            # Imagens e ícones
-│   ├── components/        # Componentes React reutilizáveis
-│   │   ├── common/        # Elementos de interface (UI) compartilhados
-│   │   ├── detalhesObra/  # Detalhes do item, execução, ideação, etc.
-│   │   ├── layout/        # Componentes de layout (Cabeçalho, Rodapé, etc.)
-│   │   ├── obra/          # Cards e inputs relacionados à obra
-│   ├── features/          # Redux slices e reducers
-│   ├── navigation/        # Roteamento da aplicação
-│   ├── pages/             # Páginas principais (Obra, DetalhesObra)
-│   ├── types/             # Tipagens TypeScript
-│   ├── app.css            # Estilos gerais da aplicação
-│   ├── index.css          # Estilos globais
-│   ├── main.tsx           # Ponto de entrada (Entry point)
-│   ├── app.tsx            # Componente raiz
-├── package.json           # Metadados e scripts do projeto
-├── vite.config.ts         # Configuração do Vite
-├── tsconfig*.json         # Configurações do TypeScript
-└── index.html             # Template HTML
+│   ├── __tests__/                 # Testes unitários
+│   ├── app/                       # Configuração da store do Redux
+│   ├── assets/                    # Imagens e ícones
+│   ├── components/                # Componentes React reutilizáveis
+│   │   ├── common/                # Elementos de interface compartilhados
+│   │   ├── detalhesObra/          # Detalhes dos itens da obra (ideação, execução, etc.)
+│   │   ├── layout/                # Layouts (Header, Footer, etc.)
+│   │   ├── obra/                  # Cards e inputs relacionados à obra
+│   ├── features/                  # Redux slices e reducers
+│   ├── hooks/                     # Custom React hooks
+│   ├── navigation/                # Roteamento da aplicação
+│   ├── pages/                     # Páginas principais (Obra, DetalhesObra)
+│   ├── services/                  # Serviços e integrações externas
+│   ├── types/                     # Tipagens TypeScript
+│   ├── utils/                     # Funções utilitárias
+│   ├── app.css                    # Estilos gerais da aplicação
+│   ├── index.css                  # Estilos globais
+│   ├── main.tsx                   # Ponto de entrada (Entry point)
+│   ├── app.tsx                    # Componente raiz
+├── coverage/                      # Relatórios de cobertura de testes
+├── package.json                   # Metadados e scripts do projeto
+├── vite.config.ts                 # Configuração do Vite
+├── vitest.config.ts               # Configuração do Vitest
+├── tsconfig*.json                 # Configurações do TypeScript
+├── index.html                     # Template HTML
+└── README.md   
 ```
 
 ---
@@ -112,7 +118,8 @@ diario-de-obra-frontend/
 - 🖼️ **React Icons** (biblioteca de ícones)
 - 📝 **TypeScript** (segurança de tipos)
 - 🚀 **Vite** (ferramenta de build rápida)
-- 📱 **React Responsive** (media queries/responsividade)
+- 🧪 **Vitest** (testes unitários)
+- 📊 **React Responsive** (media queries/responsividade)
 - 🧪 **React Hook Form** (gerenciamento de formulários)
 
 ---

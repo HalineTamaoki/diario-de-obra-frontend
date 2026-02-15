@@ -1,16 +1,15 @@
 import { configureStore } from '@reduxjs/toolkit'
-import obraSlice from '../features/obraSlice'
-import itemsObraSlice from '../features/itemsObraSlice'
-import ideacaoSlice from '../features/ideacaoSlice'
-import orcamentoSlice from '../features/orcamentoSlice'
+import authSlice from '../features/authSlice'
+import notificacaoSlice from '../features/notificacaoSlice'
+import { baseApi } from '../services/api'
 
 export const store = configureStore({
     reducer: {
-        obra: obraSlice,
-        detalhesObra: itemsObraSlice,
-        ideacao: ideacaoSlice,
-        orcamento: orcamentoSlice,
+        [baseApi.reducerPath]: baseApi.reducer,
+        auth: authSlice,
+        notificacao: notificacaoSlice,
     },
+    middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(baseApi.middleware),
 })
 
 export type RootState = ReturnType<typeof store.getState>

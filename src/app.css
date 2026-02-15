@@ -17,3 +17,33 @@
 .accordion-item {
   border: 1px solid var(--grey) !important;
 }
+
+
+/* Remove cromagem/ícone nativo o máximo possível */
+.input-no-icon {
+  appearance: none;               /* padrão */
+  -webkit-appearance: none;       /* Safari/Chrome */
+  -moz-appearance: none;          /* Firefox */
+}
+
+/* Esconde o indicador do date/datetime-local em WebKit/Blink */
+.input-no-icon::-webkit-calendar-picker-indicator {
+  opacity: 0;
+  display: none;
+  -webkit-appearance: none;
+}
+
+/* Opcional: remover clear/spin buttons (em alguns navegadores) */
+.input-no-icon::-webkit-clear-button,
+.input-no-icon::-webkit-inner-spin-button {
+  display: none;
+}
+
+/*Configuração da margem para o botão do alert*/
+.alert .btn-close {
+  padding-block: 0.5rem !important;
+  padding-right: 0.25rem !important;
+  font-size: 0.85rem;
+  outline: none !important;
+  box-shadow: none !important;
+}
