@@ -75,6 +75,7 @@ yarn preview
 
 ## **Estrutura de pastas**
 
+```
 diario-de-obra-frontend/
 ├── public/                        # Arquivos estáticos
 ├── src/
